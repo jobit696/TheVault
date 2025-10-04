@@ -1,0 +1,109 @@
+.genreGameCard {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    will-change: transform;
+}
+
+.genreGameCard:hover {
+    transform: translateY(-8px);
+    border-color: #e63946;
+    box-shadow: 
+        0 15px 40px rgba(230, 57, 70, 0.3),
+        0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.gameImage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.gameInfo {
+    padding: 1rem;
+    background-color: #1a1a1a;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameTitle {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
+    min-height: 2.6em;
+}
+
+.gameRating {
+    color: #ffd700;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.genreGameCard {
+    position: relative;
+}
+
+.favoriteButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.favoriteButton:hover {
+    background: rgba(230, 57, 70, 0.8);
+    transform: scale(1.1);
+}
+
+.favoriteButton button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .gameImage {
+        height: 150px;
+    }
+    
+    .gameTitle {
+        font-size: 0.85rem;
+    }
+}

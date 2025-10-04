@@ -1,0 +1,66 @@
+/* ========== IMPORTS ========== */
+@import url(/src/css/global/customFonts.css);
+@import url(/src/css/global/customNavbar.css);
+@import url(/src/css/global/gameListBanner.css);
+@import url(/src/css/global/customCarousel.css);
+@import url(/src/css/global/customFooter.css);
+@import url(/src/css/global/customForms.css);
+@import url(/src/css/global/loading.css);
+
+/* ========== BASE STYLES ========== */
+
+:root
+{
+--colore-sfondo: #0D0B0A;
+--colore-sfondo2: #1a1615;
+--colorebianco1:rgba(255, 255, 255, 0.473);
+}
+
+#root {
+    height: 100%;
+    padding: 10px;
+    
+}
+
+
+html {
+    height: 100vh;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    background: var(--colore-sfondo);
+    box-sizing: border-box;
+}
+
+
+/* ========== LAYOUT ========== */
+.style-layout-system {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.style-header {
+    flex-shrink: 0;
+}
+
+.style-footer {
+    flex-shrink: 0;
+}
+
+.loading-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.half-section
+{
+    padding-top: 50px;
+    background: var(--colore-sfondo2);
+}
+

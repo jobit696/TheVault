@@ -1,0 +1,134 @@
+/* ========CARD GAME ========= */
+.cardGame {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+}
+
+.cardGame:hover {
+    transform: translateY(-8px);
+    border-color: #e63946;
+    box-shadow: 
+        0 15px 40px rgba(230, 57, 70, 0.3),
+        0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cardGameImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; 
+    overflow: hidden;
+    background: #1a1a1a;
+}
+
+.cardGameImage {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardGameImageWrapper > span {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.cardGameContent {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardGameTitle {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita a 2 righe */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    min-height: 2.8em; /* 2 righe fisse */
+}
+
+.cardGameInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #868686;
+    font-size: 13px;
+}
+
+.cardGameRating {
+    color: #ffd700;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.cardGameReleased {
+    color: #868686;
+}
+
+.cardGameGenres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto; 
+}
+
+.genreTag {
+    background: linear-gradient(145deg, rgba(230, 57, 70, 0.2), rgba(230, 57, 70, 0.1));
+    color: #e63946;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid rgba(230, 57, 70, 0.3);
+    transition: all 0.3s ease;
+}
+
+.genreTag:hover {
+    background: linear-gradient(145deg, #e63946, #d62839);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .cardGameTitle {
+        font-size: 14px;
+    }
+    
+    .cardGameContent {
+        padding: 12px;
+    }
+    
+    .cardGameInfo {
+        font-size: 12px;
+    }
+    
+    .genreTag {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}

@@ -1,0 +1,28 @@
+.statCard {
+    padding: 1rem;
+}
+
+.statLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: clamp(0.7rem, 2vw, 0.85rem); 
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statColorBox {
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.statValue {
+    font-size: clamp(1.2rem, 4vw, 2rem); 
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}

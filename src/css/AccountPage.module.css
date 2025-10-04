@@ -1,0 +1,542 @@
+/* ========== ACCOUNT PAGE CONTAINER ========== */
+.container {
+    max-width: 1400px;
+    margin: 20px auto;
+    margin-top: 0;
+    padding: 20px;
+}
+
+.pageTitle {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(230, 57, 70, 0.3);
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.pageHeader i {
+  font-size: 2rem;
+  color: #e63946;
+  text-shadow: 0 2px 10px rgba(230, 57, 70, 0.5);
+}
+
+.pageTitle {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(230, 57, 70, 0.3);
+}
+
+/* ========== MAIN GRID LAYOUT ========== */
+.mainGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ========== FORM WIDGET ========== */
+.formWidget {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    padding: 30px;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    height: 100%;
+}
+
+/* ========== AVATAR SECTION ========== */
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.avatarCircle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #e63946;
+    box-shadow: 
+        0 0 20px rgba(230, 57, 70, 0.4),
+        inset 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+}
+
+.avatarCircle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========== FILE INPUT BUTTON ========== */
+.fileInputWrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.fileInput {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+
+.fileInputLabel {
+    background: linear-gradient(145deg, #e63946, #d62839);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 
+        0 4px 12px rgba(230, 57, 70, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.fileInputLabel:hover {
+    background: linear-gradient(145deg, #ff4757, #e63946);
+    box-shadow: 
+        0 6px 20px rgba(230, 57, 70, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.fileInputLabel:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 8px rgba(230, 57, 70, 0.4),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== FORM FIELDS ========== */
+.formField {
+    margin-bottom: 20px;
+}
+
+.formLabel {
+    display: block;
+    color: #868686;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.formInput {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.formInput:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #e63946;
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+}
+
+.formInput:disabled {
+    background: rgba(255, 255, 255, 0.02);
+    color: #666;
+    cursor: not-allowed;
+}
+
+.formInput::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* ========== SUBMIT BUTTON ========== */
+.submitButton {
+    width: 100%;
+    background: linear-gradient(145deg, #e63946, #d62839);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 
+        0 4px 12px rgba(230, 57, 70, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+    background: linear-gradient(145deg, #ff4757, #e63946);
+    box-shadow: 
+        0 6px 20px rgba(230, 57, 70, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.submitButton:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 8px rgba(230, 57, 70, 0.4),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.submitButton:disabled {
+    background: linear-gradient(145deg, #555, #444);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ========== SECTION WIDGET ========== */
+.sectionWidget {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    padding: 25px;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.sectionTitle {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 5px rgba(230, 57, 70, 0.3);
+}
+
+/* ========== STATS GRID ========== */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.statCard {
+    background: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.statCard:hover {
+    background: rgba(230, 57, 70, 0.15);
+    border-color: #e63946;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+}
+
+.statNumber {
+    color: #e63946;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+}
+
+.statLabel {
+    color: #868686;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 5px;
+}
+
+/* ========== GENRES LIST ========== */
+.genresList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.genreItem {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.genreName {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.genreCount {
+    color: #868686;
+    font-size: 0.85rem;
+}
+
+.genreBar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.genreBarFill {
+    height: 100%;
+    background: linear-gradient(90deg, #e63946, #ff4757);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* ========== GAMES GRID ========== */
+.gamesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.gameCard {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.gameCard:hover {
+    transform: translateY(-5px);
+    border-color: #e63946;
+    box-shadow: 0 10px 25px rgba(230, 57, 70, 0.3);
+}
+
+.gameImagePlaceholder {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gameRating {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e63946;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.gameName {
+    padding: 12px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Aggiungi alla fine del file */
+
+.removeButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(230, 57, 70, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    font-family: Arial, sans-serif; 
+    font-weight: normal; 
+    line-height: 30px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+    padding: 0;
+}
+
+.removeButton:hover {
+    background: #ff4757;
+    transform: scale(1.1);
+}
+
+.gameCard {
+    position: relative;
+}
+
+.gameCard a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ========== LAST MESSAGE WIDGET ========== */
+.lastMessageWidget {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    padding: 25px;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    margin-top: 20px;
+    margin-bottom: 35px;
+    width: 100%; /* ✅ AGGIUNTO */
+}
+
+.lastMessageTitle {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 5px rgba(230, 57, 70, 0.3);
+}
+
+.lastMessageCard {
+    background: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.lastMessageCard:hover {
+    background: rgba(230, 57, 70, 0.15);
+    border-color: #e63946;
+    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+}
+
+.lastMessageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.lastMessageGameName {
+    color: #e63946;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+}
+
+.lastMessageTime {
+    color: #868686;
+    font-size: 0.85rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.lastMessageContent {
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-style: italic;
+    word-wrap: break-word;
+}
+
+.lastMessageLink {
+    display: inline-block;
+    color: #e63946;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+}
+
+.lastMessageLink:hover {
+    color: #ff4757;
+    text-shadow: 0 0 15px rgba(230, 57, 70, 0.6);
+    transform: translateX(5px);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .mainGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gamesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .formWidget {
+        padding: 20px;
+    }
+
+    .sectionWidget {
+        padding: 20px;
+    }
+
+    .pageTitle {
+        font-size: 1.5rem;
+    }
+
+    .gamesGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,153 @@
+/* ========== BANNER CONTAINER BACKGROUND A SCORRIMENTO ========== */
+.banner-games-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.banner-games-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, 
+        rgba(0,0,0,0.7) 0%, 
+        rgba(0,0,0,0.5) 50%, 
+        rgba(0,0,0,0.9) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    color: white;
+    font-size: clamp(3rem, 4vw, 5rem);
+    font-weight: 900;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.9);
+    letter-spacing: -2px;
+    pointer-events: none;
+    text-align: center;
+}
+
+/* ========== GAMES SCROLL BACKGROUND A SCORRIMENTO ========== */
+.games-scroll-wrapper {
+    display: flex;
+    gap: 0.25rem;
+    animation: scroll 120s linear infinite;
+    transform: perspective(1200px) rotateX(2deg);
+    transform-origin: center center;
+}
+
+.banner-content-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.banner-searchbar-wrapper {
+  position: relative;
+  left: 25px;
+    margin-top: 140px;
+    max-height: 30px;
+    height: clamp(20px,4vw,30px);
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@keyframes scroll {
+    0% {
+        transform: perspective(1200px) rotateX(2deg) translateX(0);
+    }
+    100% {
+        transform: perspective(1200px) rotateX(2deg) translateX(-50%);
+    }
+}
+
+/* ========== GAME CARDS BACKGROUND A SCORRIMENTO  ========== */
+.game-card-wrapper {
+    flex-shrink: 0;
+    width: 180px;
+    transition: transform 0.3s ease;
+}
+
+.custom-image-card {
+    width: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    background-color: #0a0a0a;
+    transition: box-shadow 0.3s ease;
+}
+
+.card-img {
+    width: 180px;
+    height: 230px;
+    object-fit: cover;
+    display: block;
+}
+
+/* ========== BANNER BACKGROUND A SCORRIMENTO SCHERMI MOLTO PICCOLI ========== */
+
+
+@media (max-width: 1600px) {
+       .banner-searchbar-wrapper {
+  position: relative;
+  left: 25px;
+    margin-top: 110px;
+    max-height: 30px;
+   
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-games-container {
+        height: 140px;
+    }
+    
+    .banner-title {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        letter-spacing: -1px;
+    }
+    
+    .card-img {
+        width: 100px;
+        height: 130px;
+    }
+    
+    .game-card-wrapper {
+        width: 100px;
+    }
+    
+    .custom-image-card {
+        width: 100px;
+    }
+    
+    .games-scroll-wrapper {
+        gap: 0.15rem;
+    }
+
+    .banner-searchbar-wrapper {
+  position: relative;
+  left: 25px;
+    margin-top: 70px;
+    max-height: 30px;
+   
+    }
+    
+}
+

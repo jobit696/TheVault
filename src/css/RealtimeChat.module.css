@@ -1,0 +1,114 @@
+.chatContainer {
+  margin-top: 20px;
+  padding: 20px;
+  width: 100%;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
+  border: 2px solid #333;
+  border-radius: 10px;
+  overflow-y: auto;
+  gap: 12px;
+  box-shadow: 
+    inset 0 2px 8px rgba(0, 0, 0, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.chatContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chatContainer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
+.chatContainer::-webkit-scrollbar-thumb {
+  background: linear-gradient(145deg, #fa260a, #d11d04);
+  border-radius: 5px;
+}
+
+.chatContainer::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(145deg, #ff4757, #e63946);
+}
+
+.messageCard {
+  background: linear-gradient(145deg, rgba(40, 40, 40, 0.95), rgba(30, 30, 30, 0.9));
+  border-radius: 10px;
+  padding: 15px;
+  border-left: 4px solid #e63946;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.messageCard:hover {
+  transform: translateX(5px);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.username {
+  font-weight: 700;
+  color: #e63946;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #868686;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.messageContent {
+  color: #e0e0e0;
+  font-size: 15px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.loading {
+  text-align: center;
+  color: #868686;
+  padding: 40px 20px;
+  font-size: 15px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.error {
+  background: linear-gradient(145deg, #dc3545, #c82333);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+.emptyState {
+  text-align: center;
+  color: #868686;
+  padding: 60px 20px;
+  font-size: 15px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}

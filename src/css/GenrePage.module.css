@@ -1,0 +1,55 @@
+.genrePage {
+    padding: 3rem 0;
+}
+
+.genreHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.genreTitle {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.genreCount {
+    color: #999;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.gridGamesList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.pagination {
+    min-width: 120px;
+}
+
+.pageNumber {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 100px;
+    text-align: center;
+}
+
+
+
+
+/* Responsive */
+@media (max-width: 767px) {
+    .gridGamesList {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .genreTitle {
+        font-size: 2rem;
+    }
+}
