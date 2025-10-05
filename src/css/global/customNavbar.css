@@ -165,6 +165,31 @@
         inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.navbar-toggler {
+    color: rgba(255, 255, 255, 0.37);
+    opacity: 1 !important;
+    border: none;
+    background: none;
+    transition: color 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-toggler:active {
+    color: rgba(255, 140, 0, 1);
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:focus-visible {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    
+}
+
+
 
 /* =============SEARCHBAR=========== */
 .custom-searchbar-input {
@@ -289,6 +314,7 @@
         z-index: 10;
         top: 50%;
         transform: translateY(-50%);
+        
     }
 
     .custom-navbar .navbar-collapse {
@@ -296,7 +322,7 @@
         margin: 0;
         width: 100%;
         padding: 0;
-        border-radius: 0 ;
+        border-radius: 0 0 10px 10px ;
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-top: none;
         text-align: center;
