@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/exo-2": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/orbitron": "^5.2.8",
+    "@fontsource/rajdhani": "^5.2.7",
+    "@fontsource/roboto": "^5.2.8",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
