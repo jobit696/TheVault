@@ -51,7 +51,8 @@ export default function GamesStats() {
     ];
 
     return (
-        <div className='container-md my-4'>
+        <div className='dark-container'>
+            <div className="container-md">
             <div className="row text-center justify-content-center">
                 {stats.map(stat => (
                     <div key={stat.key} className="col-3 mb-3 d-flex flex-column align-items-center">
@@ -69,6 +70,7 @@ export default function GamesStats() {
                         </div>
                     </div>
                 ))}
+            </div>
             </div>
         </div>
     );

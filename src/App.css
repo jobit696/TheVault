@@ -24,10 +24,10 @@ html {
 body {
     height: 100%;
     margin: 0;
-      background: #0D0B0A;
+    background: #0D0B0A;
     background-image: 
-        radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 140, 66, 0.02) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.015) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 140, 66, 0.01) 0%, transparent 50%);
     box-sizing: border-box;
     position: relative;
     overflow-x: hidden;
@@ -43,7 +43,7 @@ body::before {
     width: 100%;
     height: 100%;
     background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.01) 2px, rgba(255, 255, 255, 0.01) 4px);
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.008) 2px, rgba(255, 255, 255, 0.008) 4px);
     pointer-events: none;
     z-index: -1;
 }
@@ -99,4 +99,16 @@ header,
 footer {
     position: relative;
     z-index: 2;
+}
+
+.dark-container {
+    background-color: #0D0B0A;
+    width: 100%;
+    box-shadow: 
+        0 5px 10px 5px rgba(13, 11, 10, 0.9),
+        0 10px 20px 10px rgba(13, 11, 10, 0.7),
+        0 20px 40px 20px rgba(13, 11, 10, 0.5),
+        0 30px 60px 30px rgba(13, 11, 10, 0.3),
+        0 40px 80px 40px rgba(13, 11, 10, 0.1);
+    margin-bottom: 50px;
 }
