@@ -258,7 +258,7 @@ export default function AccountPage() {
               <div className={styles.statLabel}>Top Genre</div>
             </div>
             <div className={styles.statCard}>
-              <div className={styles.statNumber} style={{ fontSize: '14px' }}>
+              <div className={styles.statNumber} style={{ fontSize: '0.8rem' }}>
                 {gameStats.newestFavorite.length > 15 
                   ? gameStats.newestFavorite.substring(0, 15) + '...' 
                   : gameStats.newestFavorite}

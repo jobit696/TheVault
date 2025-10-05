@@ -3,7 +3,7 @@ import { Carousel } from 'react-bootstrap';
 import ConsoleScene from "./3d_scene/ConsoleScene.jsx";
 import styles from "../css/ConsoleList.module.css";
 
-export default function ConsoleList({title = "- Browse by TOP Platforms -"}) {
+export default function ConsoleList({title = "- Browse by Platforms -"}) {
   
     const [cardsPerSlide, setCardsPerSlide] = useState(4);
     const [activeIndex, setActiveIndex] = useState(0);

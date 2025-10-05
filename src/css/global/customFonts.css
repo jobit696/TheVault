@@ -1,6 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto:wght@300;400;500;700&display=swap');
+;
+
 @font-face {
     font-family: '3d';
     src: url('../../assets/fonts/3dlet.ttf'), format('truetype');
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'rave';
+    src: url('../../assets/fonts/SpaceRave.ttf'), format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+

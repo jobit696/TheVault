@@ -7,22 +7,16 @@
 @import url(/src/css/global/customForms.css);
 @import url(/src/css/global/loading.css);
 
+
+
+/* ========== VARIABLES ========== */
+:root {
+    --colore-sfondo: #0D0B0A;
+    --colore-sfondo2: #1a1615;
+    --colorebianco1: rgba(255, 255, 255, 0.473);
+}
+
 /* ========== BASE STYLES ========== */
-
-:root
-{
---colore-sfondo: #0D0B0A;
---colore-sfondo2: #1a1615;
---colorebianco1:rgba(255, 255, 255, 0.473);
-}
-
-#root {
-    height: 100%;
-    padding: 10px;
-    
-}
-
-
 html {
     height: 100vh;
 }
@@ -32,24 +26,45 @@ body {
     margin: 0;
     background: var(--colore-sfondo);
     box-sizing: border-box;
+    position: relative;
+    overflow-x: hidden;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
 }
 
+#root {
+    height: 100%;
+    padding: 10px;
+}
 
 /* ========== LAYOUT ========== */
 .style-layout-system {
     height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .style-header {
     flex-shrink: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .style-footer {
     flex-shrink: 0;
+    position: relative;
+    z-index: 2;
 }
 
+.main-container {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+/* ========== UTILITY CLASSES ========== */
 .loading-container {
     flex: 1;
     display: flex;
@@ -58,9 +73,14 @@ body {
     align-items: center;
 }
 
-.half-section
-{
+.half-section {
     padding-top: 50px;
     background: var(--colore-sfondo2);
 }
 
+/* Assicura che Header e Footer siano sopra le particelle */
+header,
+footer {
+    position: relative;
+    z-index: 2;
+}

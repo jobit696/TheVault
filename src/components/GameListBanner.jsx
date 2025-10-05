@@ -1,6 +1,7 @@
 // GameListBanner.jsx
 import SearchBar from './SearchBar.jsx';
 import SimpleImageCard from './SimpleImageCard.jsx';
+import TextSpawner from './TextSpawner.jsx';
 
 export default function GameListBanner({ games, games_number = 30 }) {
     
@@ -23,7 +24,7 @@ export default function GameListBanner({ games, games_number = 30 }) {
     return (
         <div className='banner-games-container'>
             <div className="banner-content-wrapper">
-                <h1 className='banner-title'>The Vault</h1>
+                <h1 className='banner-title'><TextSpawner _array={['T','h','e',' ','V','a','u','l','t']} _showTime={200} _unshowTime={300} _infinite={false} /></h1>
                 <div className="banner-searchbar-wrapper">
                     <SearchBar/>
                 </div>

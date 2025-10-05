@@ -103,6 +103,7 @@
     width: max-content;
     --p: clamp(20px, 3vw, 40px);
     padding: clamp(2px, 0.5vw, 4px) clamp(30px, 4vw, 50px);
+    min-height: 30px;
     display: flex;
     align-items: center;
     clip-path: polygon(var(--p) 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
@@ -173,6 +174,11 @@
         padding: 40px 40px;
     }
 
+    .gameListTitle {
+        left: -10px;
+        font-size: clamp(0.7rem, 3vw, 0.9rem);
+    }
+
     .consoleCarouselWrapper :global(.carousel-control-prev),
     .consoleCarouselWrapper :global(.carousel-control-next) {
         width: 45px;
@@ -191,7 +197,7 @@
     }
     
     .gameListTitle {
-        left: -20px;
+        left: 0px;
         font-size: clamp(0.7rem, 3vw, 0.9rem);
     }
 

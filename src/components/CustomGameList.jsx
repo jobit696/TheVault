@@ -14,7 +14,9 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 600) {
+                setCardsPerSlide(1); 
+            } else if (window.innerWidth < 768) {
                 setCardsPerSlide(2); 
             } else if (window.innerWidth < 1200) {
                 setCardsPerSlide(3); 

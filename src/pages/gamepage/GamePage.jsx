@@ -123,9 +123,11 @@ export default function GamePage() {
 
             {/* Screenshots Section */}
             <div className="container mt-5 pb-5 text-sm-center">
-                <h2 className={styles.sectionTitle}>
+                <div className={styles.parallelogram}>
+                    <h2 className={styles.sectionTitle}>
                     Screenshots
                 </h2>
+                </div>
 
                 <div className="row g-5 ">
                     {screenshots.map((screenshot) => (

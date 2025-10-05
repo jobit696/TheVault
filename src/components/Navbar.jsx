@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import SessionContext from '../context/SessionContext';
 import supabase from '../supabase/supabase-client';
 
@@ -7,6 +7,7 @@ export default function Navbar() {
     const navigate = useNavigate();
     const { session } = useContext(SessionContext);
     const [username, setUsername] = useState('');
+    const navbarRef = useRef(null);
     
     useEffect(() => {
         const getUsername = async () => {
@@ -25,6 +26,29 @@ export default function Navbar() {
         
         getUsername();
     }, [session]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const navbarCollapse = document.getElementById('navbarNav');
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            
+            // Verifica se il click è fuori dalla navbar
+            if (navbarRef.current && 
+                !navbarRef.current.contains(event.target)) {
+                
+                // Se il menu è aperto, chiudilo
+                if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                    navbarToggler?.click();
+                }
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
     
     const handleLoginClick = () => {
         navigate("/login");
@@ -45,7 +69,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg custom-navbar">
+            <nav className="navbar navbar-expand-lg custom-navbar" ref={navbarRef}>
                 <Link className="custom-navbar-brand" to="/">V</Link>
                 <div className="container-fluid">
                     
@@ -88,7 +112,7 @@ export default function Navbar() {
                         
                         {!session ? (
                             <button className="custom-navbar-button" onClick={handleLoginClick} data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                                <i className="fas fa-user"></i>
+                                <i className="fas fa-user"></i> Join
                             </button>
                         ) : (
                             <div className="navbar-user-buttons">

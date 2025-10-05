@@ -9,6 +9,10 @@
     margin: 0;
     padding: 0;
     z-index: -10;
+    box-shadow: 
+    0 10px 50px rgba(0, 0, 0, 0.4),
+    0 30px 100px rgba(0, 0, 0, 0.2),
+    0 50px 150px rgba(0, 0, 0, 0.1);
 }
 
 .banner-games-container::after {
@@ -24,19 +28,29 @@
 }
 
 .banner-title {
+    font-family: 'Orbitron', sans-serif;
+    white-space: nowrap;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100;
     color: white;
-    font-size: clamp(3rem, 4vw, 5rem);
+    font-size: clamp(2rem, 8vw, 5rem);
+/* Mobile: 2rem (32px) → Desktop: 5rem (80px) */
     font-weight: 900;
     text-shadow: 0 4px 30px rgba(0,0,0,0.9);
-    letter-spacing: -2px;
+        text-shadow: 
+    0 0 8px rgba(255, 140, 0, 0.3),
+    0 0 15px rgba(255, 120, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+    letter-spacing: 5px;
     pointer-events: none;
     text-align: center;
 }
+
+
+
 
 /* ========== GAMES SCROLL BACKGROUND A SCORRIMENTO ========== */
 .games-scroll-wrapper {
@@ -61,14 +75,14 @@
 }
 
 .banner-searchbar-wrapper {
-  position: relative;
-  left: 25px;
+    position: relative;
     margin-top: 140px;
     max-height: 30px;
-    height: clamp(20px,4vw,30px);
+    height: clamp(20px, 4vw, 30px);
     max-width: 300px;
     margin-left: auto;
     margin-right: auto;
+   transform: translateX(20px);
 }
 
 @keyframes scroll {
@@ -109,7 +123,7 @@
 @media (max-width: 1600px) {
        .banner-searchbar-wrapper {
   position: relative;
-  left: 25px;
+  
     margin-top: 110px;
     max-height: 30px;
    
@@ -145,7 +159,7 @@
 
     .banner-searchbar-wrapper {
   position: relative;
-  left: 25px;
+   transform: translateX(25px); 
     margin-top: 70px;
     max-height: 30px;
    

@@ -171,23 +171,27 @@
     background-color: transparent;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 140, 0, 0.479);
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.2);
 }
 
 .custom-searchbar-input:focus {
     background-color: transparent;
-    color: white;
+    color: #ffffff;
     border-color: rgba(255, 255, 255, 0.5);
     box-shadow: none;
 }
 
 .custom-searchbar-input::placeholder {
     color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
 }
 
 .custom-searchbar-submit {
     cursor: pointer;
     background-color: transparent !important;
-    color: white !important;
+    
+     color: rgba(255, 140, 0, 0.9) !important;
 }
 
 .custom-searchbar-submit:hover {
@@ -195,9 +199,11 @@
 }
 
 .navbar-user-buttons {
+    position: absolute;
   display: flex;
   gap: 10px;
   align-items: center;
+  right: 15px;
 }
 
 .navbar-circle-button {
