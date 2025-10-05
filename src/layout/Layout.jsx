@@ -7,6 +7,7 @@ export default function Layout() {
   const bannerGames = useLoaderData(); 
   return (
     <div className="style-layout-system">
+      //particles
       <ParticlesBackground />
       
       <Header bannerGames={bannerGames} /> 
