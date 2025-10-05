@@ -15,9 +15,11 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
     const loading = games ? false : hookData.loading;
     const error = games ? null : hookData.error;
 
-    useEffect(() => {
+ useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 768) {
+         if (window.innerWidth < 600) {
+                setCardsPerSlide(1); 
+            } else if (window.innerWidth < 768) {
                 setCardsPerSlide(2); 
             } else if (window.innerWidth < 1200) {
                 setCardsPerSlide(3); 
