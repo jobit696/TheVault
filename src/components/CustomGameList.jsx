@@ -9,8 +9,8 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-const API_KEY = import.meta.env.VITE_RAW_G_KEY;
-const BASE_URL = import.meta.env.VITE_RAW_G_URL;
+    const API_KEY = import.meta.env.VITE_RAW_G_KEY;
+    const BASE_URL = import.meta.env.VITE_RAW_G_URL;
 
     useEffect(() => {
         const handleResize = () => {
@@ -60,6 +60,22 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
         chunkedGames.push(games.slice(i, i + cardsPerSlide));
     }
 
+    const prevIcon = (
+        <span className={styles.customArrow}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </span>
+    );
+
+    const nextIcon = (
+        <span className={styles.customArrow}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </span>
+    );
+
     if (loading) {
         return (
             <div className={`container-fluid ${styles.popularGamesCarouselWrapper} ${styles.loaderContainer} my-4 d-flex justify-content-center align-items-center`}>
@@ -92,6 +108,8 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
                 interval={null} 
                 indicators={true}
                 controls={true}
+                prevIcon={prevIcon}
+                nextIcon={nextIcon}
             >
                 {chunkedGames.map((gruppo, slideIndex) => (
                     <Carousel.Item key={slideIndex}>

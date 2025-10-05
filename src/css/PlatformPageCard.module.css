@@ -16,9 +16,9 @@
 
 .gameCard:hover {
     transform: translateY(-8px);
-    border-color: #e63946;
+    border-color: #d11d04;
     box-shadow: 
-        0 15px 40px rgba(230, 57, 70, 0.3),
+        0 15px 40px rgba(209, 29, 4, 0.3),
         0 5px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -69,7 +69,7 @@
 }
 
 .favoriteButton:hover {
-    background: rgba(230, 57, 70, 0.8);
+    background: rgba(209, 29, 4, 0.8);
     transform: scale(1.1);
 }
 

@@ -8,6 +8,7 @@
     align-items: center;
     margin: 0;
     padding: 0;
+    z-index: -10;
 }
 
 .banner-games-container::after {
@@ -44,6 +45,7 @@
     animation: scroll 120s linear infinite;
     transform: perspective(1200px) rotateX(2deg);
     transform-origin: center center;
+    z-index: -9;
 }
 
 .banner-content-wrapper {

@@ -88,12 +88,29 @@ export default function Navbar() {
                         
                         {!session ? (
                             <button className="custom-navbar-button" onClick={handleLoginClick} data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                                LOGIN
+                                <i className="fas fa-user"></i>
                             </button>
                         ) : (
-                            <button className="custom-navbar-button" onClick={handleAccountClick} data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                                <i className="fas fa-user"></i> {username || 'User'}
-                            </button>
+                            <div className="navbar-user-buttons">
+                                <button 
+                                    className="navbar-circle-button" 
+                                    onClick={handleAccountClick}
+                                    title={username || 'User'}
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#navbarNav"
+                                >
+                                    <i className="fas fa-user"></i>
+                                </button>
+                                <button 
+                                    className="navbar-circle-button logout-button" 
+                                    onClick={handleSignOut}
+                                    title="Logout"
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#navbarNav"
+                                >
+                                    <i className="fas fa-sign-out-alt"></i>
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>

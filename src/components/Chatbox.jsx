@@ -20,19 +20,19 @@ export default function Chatbox({ data }) {
         return;
       }
       
- const { error } = await supabase
-  .from("messages")
-  .insert([
-    {
-      profile_id: session?.user.id,
-      profile_username: session?.user.user_metadata.username,
-      game_id: gameId,
-      game_name: data?.name,
-      game_slug: data?.slug, 
-      content: message,
-    },
-  ])
-  .select();
+      const { error } = await supabase
+        .from("messages")
+        .insert([
+          {
+            profile_id: session?.user.id,
+            profile_username: session?.user.user_metadata.username,
+            game_id: gameId,
+            game_name: data?.name,
+            game_slug: data?.slug, 
+            content: message,
+          },
+        ])
+        .select();
       
       if (error) {
         console.log(error);
@@ -41,6 +41,11 @@ export default function Chatbox({ data }) {
       }
     }
   };
+
+  // Solo utente loggato
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className={styles.chatWrapper}>

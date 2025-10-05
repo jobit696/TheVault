@@ -48,7 +48,7 @@ export default function ToggleFavorite({ data }) {
           game_name: game.name,
           game_slug: game.slug, 
           game_image: game.background_image,
-          genres: genresString, // ⬅️ AGGIUNGI QUESTA RIGA
+          genres: genresString, 
         },
       ])
       .select();
