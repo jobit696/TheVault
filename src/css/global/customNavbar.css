@@ -237,6 +237,9 @@
 /* Quando la navbar è collapsed (mobile) */
 @media (max-width: 991px) {
   .navbar-user-buttons {
+    position: relative;
+    left: 0;
+    right: 0;
     width: 100%;
     margin-top: 15px;
     padding: 10px 10px;
