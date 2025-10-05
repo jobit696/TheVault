@@ -10,7 +10,7 @@ export default function SearchPage() {
     const games = data?.results || [];
 
     return (
-        <div className="container my-5">
+        <div className="container my-2 mb-5">
             <div className="row mb-4">
                 <div className="col-12">
                     <h1 className={styles.searchResultsTitle}>

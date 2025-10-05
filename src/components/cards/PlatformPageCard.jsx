@@ -6,12 +6,20 @@ import ToggleFavorite from '../ui/ToggleFavorite';
 import styles from '../../css/PlatformPageCard.module.css';
 
 function PlatformPageCard({ game }) {
+    const primaryGenre = game?.genres?.[0]?.name;
+
     return (
         <Link to={`/games/${game.slug}/${game.id}`} className={styles.gameCard}>
             <div className={styles.cardWrapper}>
                 <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
                     <ToggleFavorite data={game} />
                 </div>
+
+                {primaryGenre && (
+                    <div className={styles.genreBadge}>
+                        {primaryGenre}
+                    </div>
+                )}
 
                 <LazyLoadImage
                     src={game.background_image}

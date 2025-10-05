@@ -10,6 +10,10 @@
     margin: 0 auto;
     overflow: hidden;
     z-index: 1;
+    /* box-shadow: 0 0 5px 30px rgba(0, 0, 0, 0.295); */
+    margin-top: 60px !important;
+    margin-bottom: 60px !important;
+    border: 1px solid gray;
 }
 
 /* Video di sfondo */
@@ -73,7 +77,7 @@
     background: radial-gradient(circle, rgba(255, 0, 0, 0.055) 0%, rgba(13, 11, 10, 0.8) 100%);
     border-radius: 15px;
     z-index: -1;
-    box-shadow: inset 0 0 20px 60px #0D0B0A;
+    /* box-shadow: inset 0 0 20px 60px #0D0B0A; */
 }
 
 /* Contenuto sopra il video */
