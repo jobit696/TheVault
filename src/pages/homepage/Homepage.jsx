@@ -1,8 +1,8 @@
-import ConsoleList from "../../components/ConsoleList";
-import CustomGameList from "../../components/CustomGameList";
-import GenreList from "../../components/GenreList";
-import PopularGameList from "../../components/PopularGameList";
-import UpcomingGamesCarousel from "../../components/UpcomingGamesCarousel";
+import ConsoleList from "../../components/lists/ConsoleList";
+import CustomGameList from "../../components/lists/CustomGameList";
+import GenreList from "../../components/lists/GenreList";
+import PopularGameList from "../../components/lists/PopularGameList";
+import UpcomingGamesCarousel from "../../components/lists/UpcomingGamesCarousel";
 import { useLoaderData } from 'react-router';
 
 function Homepage() {

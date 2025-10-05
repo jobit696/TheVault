@@ -1,8 +1,9 @@
 import { useContext } from "react";
-import SessionContext from "../context/SessionContext";
-import GameListBanner from "./GameListBanner"
-import GamesStats from "./GamesStats"
+import SessionContext from "../../context/SessionContext";
+import GameListBanner from "../lists/GameListBanner"
+import GamesStats from "./GamesStats";
 import Navbar from "./Navbar"
+
 
 export default function Header({ bannerGames }) {
     const { session } = useContext(SessionContext);
@@ -17,3 +18,4 @@ export default function Header({ bannerGames }) {
         </>
     )
 }
+

@@ -43,7 +43,7 @@
     }
 }
 
-/* Varianti per più movimento naturale */
+/* Varianti per più movimento */
 .particle:nth-child(2n) {
     animation-duration: 20s;
     background: radial-gradient(circle, rgba(255, 120, 0, 0.9), rgba(255, 140, 0, 0.6));

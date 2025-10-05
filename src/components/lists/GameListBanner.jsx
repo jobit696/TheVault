@@ -1,7 +1,7 @@
 // GameListBanner.jsx
-import SearchBar from './SearchBar.jsx';
-import SimpleImageCard from './SimpleImageCard.jsx';
-import TextSpawner from './TextSpawner.jsx';
+import SearchBar from '../ui/SearchBar.jsx';
+import SimpleImageCard from '../cards/SimpleImageCard.jsx';
+import TextSpawner from '../ui/TextSpawner.jsx';
 
 export default function GameListBanner({ games, games_number = 30 }) {
     

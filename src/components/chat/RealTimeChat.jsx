@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import supabase from '../supabase/supabase-client';
-import styles from '../css/RealtimeChat.module.css';
+import supabase from '../../supabase/supabase-client';
+import styles from '../../css/RealtimeChat.module.css';
 
 dayjs.extend(relativeTime);
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from '../css/UpcomingGamesCarousel.module.css';
+import styles from '../../css/UpcomingGamesCarousel.module.css';
 
 export default function UpcomingGamesCarousel({ customGames = [] }) {
     const [games, setGames] = useState([]);

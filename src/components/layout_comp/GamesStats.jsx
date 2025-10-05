@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from '../css/GameStats.module.css';
+import styles from '../../css/GameStats.module.css';
 
 export default function GamesStats() {
     const finalStats = {

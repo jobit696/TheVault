@@ -204,3 +204,33 @@
     font-size: 28px;
   }
 }
+
+.password-field {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+    z-index: 1000;
+}
+
+.password-toggle:hover {
+    color: rgba(255, 140, 0, 0.9);
+}
+
+.password-toggle:focus {
+    outline: none;
+    color: rgba(255, 140, 0, 1);
+}
+
+.password-toggle i {
+    font-size: 1rem;
+}

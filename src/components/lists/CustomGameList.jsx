@@ -1,23 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
-import { useGetGiochiPopolari } from '../functions/gameFunctions.js';
-import InteractiveImageCard from './InteractiveImageCard.jsx';
-import styles from '../css/PopularGameList.module.css';
+import InteractiveImageCard from '../cards/InteractiveImageCard.jsx';
+import styles from '../../css/PopularGameList.module.css';
 
-export default function PopularGameList({ games, title = 'senza titolo' }) {
+export default function CustomGameList({ title = 'Featured Games', gameIds = [] }) {
     const [cardsPerSlide, setCardsPerSlide] = useState(5);
-    
-    // Se non riceve games come prop
-    const hookData = useGetGiochiPopolari(10);
-    
-    // altrimenti >> hook
-    const giochi = games?.results || games || hookData.giochi;
-    const loading = games ? false : hookData.loading;
-    const error = games ? null : hookData.error;
+    const [games, setGames] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
- useEffect(() => {
+    const API_KEY = import.meta.env.VITE_RAW_G_KEY;
+    const BASE_URL = import.meta.env.VITE_RAW_G_URL;
+
+    useEffect(() => {
         const handleResize = () => {
-         if (window.innerWidth < 600) {
+            if (window.innerWidth < 600) {
                 setCardsPerSlide(1); 
             } else if (window.innerWidth < 768) {
                 setCardsPerSlide(2); 
@@ -33,9 +30,36 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        const fetchGames = async () => {
+            if (gameIds.length === 0) {
+                setLoading(false);
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const promises = gameIds.map(id => 
+                    fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`)
+                        .then(res => res.json())
+                );
+                
+                const results = await Promise.all(promises);
+                setGames(results);
+                setError(null);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchGames();
+    }, [gameIds]);
+
     const chunkedGames = [];
-    for (let i = 0; i < giochi.length; i += cardsPerSlide) {
-        chunkedGames.push(giochi.slice(i, i + cardsPerSlide));
+    for (let i = 0; i < games.length; i += cardsPerSlide) {
+        chunkedGames.push(games.slice(i, i + cardsPerSlide));
     }
 
     const prevIcon = (
@@ -73,9 +97,13 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
         );
     }
 
+    if (games.length === 0) {
+        return null;
+    }
+
     return (
         <div className={`container-fluid ${styles.popularGamesCarouselWrapper} my-4`}>
-            <div className={`${styles.gameListTitle} ${styles.parallelogram}`}>
+            <div className={`${styles.gameListTitle2} ${styles.parallelogram}`}>
                 {title}
             </div>
             <Carousel 
@@ -93,7 +121,7 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
                                     <InteractiveImageCard 
                                         url={gioco.background_image} 
                                         title={gioco.name}
-                                        number={Math.floor((slideIndex * cardsPerSlide + index) / giochi.length * 10) + 1}
+                                        number={slideIndex * cardsPerSlide + index + 1}
                                         show_number={true}
                                         gioco={gioco}
                                     />

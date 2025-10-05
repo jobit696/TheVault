@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
-import GenreImageCard from './GenreImageCard.jsx';
-import styles from '../css/GenreList.module.css';
+import GenreImageCard from '../cards/GenreImageCard.jsx';
+import styles from '../../css/GenreList.module.css';
 
 export default function GenreList({ genres, games_number = 30, title = "Genres" }) {
     const [cardsPerSlide, setCardsPerSlide] = useState(5);

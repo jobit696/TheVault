@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router';
 import { useContext, useState, useEffect, useRef } from 'react';
-import SessionContext from '../context/SessionContext';
-import supabase from '../supabase/supabase-client';
+import SessionContext from '../../context/SessionContext';
+import supabase from '../../supabase/supabase-client';
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -32,11 +32,11 @@ export default function Navbar() {
             const navbarCollapse = document.getElementById('navbarNav');
             const navbarToggler = document.querySelector('.navbar-toggler');
             
-            // Verifica se il click è fuori dalla navbar
+            // Click fuori dalla navbar
             if (navbarRef.current && 
                 !navbarRef.current.contains(event.target)) {
                 
-                // Se il menu è aperto, chiudilo
+                // Se il menu è aperto, chiude
                 if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                     navbarToggler?.click();
                 }

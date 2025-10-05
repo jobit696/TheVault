@@ -11,7 +11,7 @@ export default function SearchBar() {
         if (typeof search === 'string' && search.trim().length !== 0) {
             navigate(`/search?q=${search}`);
             setAriaInvalid(null);
-            setSearch(""); // Pulisce la searchbar dopo la ricerca
+            setSearch(""); 
         } else {
             setAriaInvalid(true);
         }

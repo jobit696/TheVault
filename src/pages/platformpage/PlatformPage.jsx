@@ -2,7 +2,7 @@ import { useParams, useLoaderData, useNavigate, useSearchParams } from "react-ro
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import styles from "../../css/PlatformPage.module.css";
-import PlatformPageCard from "../../components/PlatformPageCard";
+import PlatformPageCard from "../../components/cards/PlatformPageCard";
 import xboxgamebanner from '../../assets/images/platform_images/xboxgamebanner.jpg';
 import ps5gamebanner from '../../assets/images/platform_images/ps5gamebanner.jpg';
 import switchgamebanner from '../../assets/images/platform_images/switchgamebanner.jpg';

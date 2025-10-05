@@ -2,7 +2,7 @@ import { useLoaderData, useNavigate, useSearchParams } from "react-router";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import styles from "../../css/AllGamesPage.module.css";
-import PlatformPageCard from "../../components/PlatformPageCard";
+import PlatformPageCard from "../../components/cards/PlatformPageCard";
 
 export default function AllGamesPage() {
     const data = useLoaderData();

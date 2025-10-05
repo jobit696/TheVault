@@ -1,5 +1,5 @@
 import { useParams, useLoaderData, useNavigate, useSearchParams } from "react-router";
-import GenreGameCard from "../../components/GenreGameCard";
+import GenreGameCard from "../../components/cards/GenreGameCard";
 import styles from "../../css/GenrePage.module.css";
 
 export default function GenrePage() {

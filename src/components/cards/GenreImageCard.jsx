@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Link } from 'react-router';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import styles from '../css/GenreImageCard.module.css';
+import styles from '../../css/GenreImageCard.module.css';
 
 function GenreImageCard({url, genre_name, genre_id}) {
     // Crea slug 

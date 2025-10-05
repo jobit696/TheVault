@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import '../css/Particles.css';
+import '../../css/Particles.css';
 
 export default function ParticlesBackground() {
     useEffect(() => {

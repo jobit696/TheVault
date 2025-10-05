@@ -24,7 +24,7 @@ export default function TextSpawner({_array, _showTime, _unshowTime, _infinite =
       } else {
         // Animazione completata
         if (_infinite) {
-          // Modalità infinita: reset e riavvio
+          // _infinite==true: reset e riavvio
           setTimeout(() => {
             setVisibleLetters(-1)
             setIsAnimating(false) 
@@ -34,7 +34,7 @@ export default function TextSpawner({_array, _showTime, _unshowTime, _infinite =
             }, 300)
           }, _unshowTime)
         } else {
-          // Modalità singola: ferma l'animazione
+          // _infinite==false: ferma l'animazione
           setHasCompleted(true)
         }
       }

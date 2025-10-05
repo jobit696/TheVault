@@ -102,18 +102,21 @@
 .parallelogram {
     width: max-content;
     --p: clamp(20px, 3vw, 40px);
-    padding: clamp(2px, 0.5vw, 4px) clamp(30px, 4vw, 50px);
-    min-height: 30px;
+    padding: clamp(4px, 0.8vw, 8px) clamp(35px, 5vw, 60px);
+    min-height: 35px;
     display: flex;
     align-items: center;
     clip-path: polygon(var(--p) 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
-    background: linear-gradient(145deg, #d11d04, #b01803);
+    background: linear-gradient(135deg, #d11d04 0%, #b01803 50%, #8a1202 100%);
+    position: relative;
     overflow: visible;
     box-shadow: 
+        0 0 20px rgba(209, 29, 4, 0.5),
         0 4px 15px rgba(209, 29, 4, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-    position: relative;
+        0 8px 25px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
 }
 
 .parallelogram::before {
@@ -121,9 +124,44 @@
     position: absolute;
     inset: 0;
     clip-path: polygon(var(--p) 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.15) 50%, 
+        transparent
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+.parallelogram::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    clip-path: polygon(var(--p) 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
+    background: linear-gradient(135deg, 
+        rgba(255, 140, 0, 0.3), 
+        transparent 30%
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.parallelogram:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 0 30px rgba(209, 29, 4, 0.7),
+        0 6px 20px rgba(209, 29, 4, 0.5),
+        0 10px 30px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.parallelogram:hover::before {
+    opacity: 1;
+}
+
+.parallelogram:hover::after {
+    opacity: 1;
 }
 
 /* ========NAVIGATION ARROWS========= */

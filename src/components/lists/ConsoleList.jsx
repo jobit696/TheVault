@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Carousel } from 'react-bootstrap';
-import ConsoleScene from "./3d_scene/ConsoleScene.jsx";
-import styles from "../css/ConsoleList.module.css";
+import ConsoleScene from "../3d_scene/ConsoleScene.jsx";
+import styles from "../../css/ConsoleList.module.css";
 
 export default function ConsoleList({title = "- Browse by Platforms -"}) {
   

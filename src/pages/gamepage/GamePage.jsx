@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useLoaderData } from "react-router";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import ToggleFavorite from "../../components/ToggleFavorite";
+import ToggleFavorite from "../../components/ui/ToggleFavorite";
 import styles from "../../css/GamePage.module.css";
-import Chatbox from "../../components/Chatbox";
+import Chatbox from "../../components/chat/Chatbox";
 
 export default function GamePage() {
     const { game, screenshots, videos } = useLoaderData();

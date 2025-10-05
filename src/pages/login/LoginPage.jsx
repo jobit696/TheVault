@@ -9,6 +9,7 @@ export default function LoginPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (event) => {
@@ -60,11 +61,11 @@ export default function LoginPage() {
                     />
                   </div>
 
-                  <div className="field full-width">
-                    <div className="fas fa-lock custom-input-icon"></div>
+                  <div className="field full-width password-field">
+                   
                     <input
                       className="register-input"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Password"
                       id="password"
                       name="password"
@@ -73,6 +74,14 @@ export default function LoginPage() {
                       required
                       autoComplete="current-password"
                     />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </button>
                   </div>
                 </div>
 

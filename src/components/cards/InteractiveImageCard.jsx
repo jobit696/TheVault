@@ -2,8 +2,8 @@ import { memo } from 'react';
 import { Link } from 'react-router';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import ToggleFavorite from '../components/ToggleFavorite';
-import styles from '../css/InteractiveImageCard.module.css';
+import ToggleFavorite from '../ui/ToggleFavorite';
+import styles from '../../css/InteractiveImageCard.module.css';
 
 function InteractiveImageCard({url, title, number, show_number, gioco}) {
     const primaryGenre = gioco?.genres?.[0]?.name;

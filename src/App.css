@@ -64,7 +64,7 @@ body {
     flex: 1;
 }
 
-/* ========== UTILITY CLASSES ========== */
+/* ========== UTILITY ========== */
 .loading-container {
     flex: 1;
     display: flex;
@@ -78,7 +78,7 @@ body {
     background: var(--colore-sfondo2);
 }
 
-/* Assicura che Header e Footer siano sopra le particelle */
+/* Header e Footer sopra le particelle */
 header,
 footer {
     position: relative;

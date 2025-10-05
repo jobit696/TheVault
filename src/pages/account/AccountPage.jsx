@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import supabase from '../../supabase/supabase-client';
 import SessionContext from '../../context/SessionContext';
-import Avatar from '../../components/Avatar';
+import Avatar from '../../components/ui/Avatar';
 import { Link } from 'react-router';
 import styles from '../../css/AccountPage.module.css';
 import dayjs from 'dayjs';
@@ -174,7 +174,7 @@ export default function AccountPage() {
     <div className={styles.container}>
      <div className={styles.pageHeader}>
   <i className="fas fa-cog"></i>
-  {/* <h2 className={styles.pageTitle}>Profile</h2> */}
+  
 </div>
 
       <div className={styles.mainGrid}>
@@ -296,7 +296,7 @@ export default function AccountPage() {
         </div>
       </div>
 
-      {/* Last Message Widget - SPOSTATO QUI FUORI DALLA GRIGLIA */}
+      {/* Last Message Widget */}
       {lastMessage && (
         <div className={styles.lastMessageWidget}>
           <h3 className={styles.lastMessageTitle}>Latest Chat Activity</h3>

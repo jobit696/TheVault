@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData } from "react-router";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import ParticlesBackground from "../components/ParticlesBackground";
+import Footer from "../components/layout_comp/Footer";
+import Header from "../components/layout_comp/Header";
+import ParticlesBackground from "../components/layout_comp/ParticlesBackground";
 
 export default function Layout() {
   const bannerGames = useLoaderData(); 

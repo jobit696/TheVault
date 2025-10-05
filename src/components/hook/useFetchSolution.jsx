@@ -6,7 +6,7 @@ export default function useFetchSolution(initialUrl) {
     const [error, setError] = useState(null);
     const [url, updateUrl] = useState(initialUrl);
 
-    // Sincronizza url interno quando initialUrl cambia dall'esterno
+    // Sincronizza url interno quando initialUrl cambia
     useEffect(() => {
         updateUrl(initialUrl);
     }, [initialUrl]);

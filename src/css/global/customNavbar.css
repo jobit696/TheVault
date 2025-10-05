@@ -250,7 +250,7 @@
     flex: 1;
     width: auto;
     height: 40px;
-    border-radius: 10px; /* Rettangolare invece di circolare */
+    border-radius: 10px; 
     gap: 8px;
   }
 
@@ -258,7 +258,7 @@
     margin-right: 8px;
   }
 
-  /* Aggiungi testo ai pulsanti su mobile */
+  /* Testo bottoni mobile */
   .navbar-circle-button[title]::after {
     content: attr(title);
     font-size: 14px;

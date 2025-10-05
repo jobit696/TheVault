@@ -1,5 +1,5 @@
 import { useSearchParams, useLoaderData } from "react-router";
-import CardGame from "../../components/CardGame";
+import CardGame from "../../components/cards/CardGame";
 import styles from "../../css/SearchPage.module.css";
 
 export default function SearchPage() {

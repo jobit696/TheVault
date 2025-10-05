@@ -2,8 +2,8 @@ import { memo } from 'react';
 import { Link } from 'react-router';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import ToggleFavorite from './ToggleFavorite';
-import styles from '../css/GenreGameCard.module.css';
+import ToggleFavorite from '../ui/ToggleFavorite';
+import styles from '../../css/GenreGameCard.module.css';
 
 function GenreGameCard({ game }) {
     return (
