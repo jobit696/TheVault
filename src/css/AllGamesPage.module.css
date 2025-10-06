@@ -1,51 +1,47 @@
-
-
-.heroSection {
-    position: relative;
-    min-height: 50vh;
-    display: flex;
-    align-items: flex-end;
+.allGamesPage {
     padding: 0;
-    overflow: hidden;
+    padding-bottom: 3rem;
+}
+
+.gamesHeader {
+    text-align: center;
     margin-bottom: 3rem;
 }
 
-.heroImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-
-.heroOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9));
-    z-index: 0;
-}
-
-.heroContent {
-    position: relative;
-    z-index: 1;
-}
-
-.heroTitle {
-    font-size: 3.5rem;
-    font-weight: bold;
+.gamesTitle {
     color: white;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 
-.heroSubtitle {
-    color: #ccc;
-    font-size: 1.2rem;
+.pageTitle {
+    color: #fff;
+    font-size: clamp(1rem, 4vw,2rem);
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(209, 29, 4, 0.3);
+    background-color: #8585851c;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+
+}
+
+
+.gamesCount {
+    color: #999;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.gridGamesList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
 .pagination {
@@ -60,6 +56,14 @@
     text-align: center;
 }
 
-.loaderContainer {
-    min-height: 400px;
+/* Responsive */
+@media (max-width: 767px) {
+    .gridGamesList {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .gamesTitle {
+        font-size: 2rem;
+    }
 }

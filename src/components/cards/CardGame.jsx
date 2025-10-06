@@ -7,6 +7,7 @@ import xboxLogo from '../../assets/logos/xboxLogo.svg';
 import playstationLogo from '../../assets/logos/playstationLogo.svg';
 import switchLogo from '../../assets/logos/switchLogo.svg';
 import pcLogo from '../../assets/logos/winLogo.svg';
+import { div } from 'three/tsl';
 
 function CardGame({ game }) {
     // Funzione per verificare se una piattaforma è disponibile
@@ -25,6 +26,7 @@ function CardGame({ game }) {
     };
 
     return (
+        <div className='hasElectricity'>
         <Link to={`/games/${game.slug}/${game.id}`} style={{ textDecoration: 'none' }}>
             <div className={styles.cardGame}>
                 <div className={styles.cardGameImageWrapper}>
@@ -88,6 +90,7 @@ function CardGame({ game }) {
                 </div>
             </div>
         </Link>
+        </div>
     );
 }
 

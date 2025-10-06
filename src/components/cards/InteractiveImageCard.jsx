@@ -28,6 +28,7 @@ function InteractiveImageCard({url, title, number, show_number, gioco}) {
     };
 
     return (
+        <div className="hasElectricity">
         <Link to={`/games/${gioco.slug}/${gioco.id}`} style={{ textDecoration: 'none' }}>
             <div className={styles.cardFlipContainer}>
                 {show_number && (
@@ -98,6 +99,7 @@ function InteractiveImageCard({url, title, number, show_number, gioco}) {
                 </div>
             </div>
         </Link>
+        </div>
     );
 }
 

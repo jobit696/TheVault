@@ -10,14 +10,13 @@ export default function SearchPage() {
     const games = data?.results || [];
 
     return (
-        <div className="container my-2 mb-5">
-            <div className="row mb-4">
-                <div className="col-12">
-                    <h1 className={styles.searchResultsTitle}>
+        <>
+          <h1 className={`${styles.searchResultsTitle} ${styles.pageTitle}`}>
                         Search Results: <span className={styles.searchQuery}>{query}</span>
                     </h1>
-                </div>
-            </div>
+                    <div className="mb-3">.</div>
+        <div className="container  my-5">
+       
 
             {games.length > 0 ? (
                 <div className="row g-4">
@@ -37,5 +36,6 @@ export default function SearchPage() {
                 </div>
             )}
         </div>
+        </>
     );
 }

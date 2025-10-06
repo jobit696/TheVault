@@ -1,0 +1,23 @@
+/* Colori dei fulmini */
+:root {
+  --lightning-primary: #00ffff;
+  --lightning-secondary: #ffffff;
+  --lightning-hover: #ffc400;
+  --lightning-ambient: #00e1ff;
+}
+
+.lightningPrimary {
+  color: var(--lightning-primary);
+}
+
+.lightningSecondary {
+  color: var(--lightning-secondary);
+}
+
+.lightningHover {
+  color: var(--lightning-hover);
+}
+
+.lightningAmbient {
+  color: var(--lightning-ambient);
+}

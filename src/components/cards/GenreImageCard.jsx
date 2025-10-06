@@ -9,6 +9,7 @@ function GenreImageCard({url, genre_name, genre_id}) {
     const genreSlug = genre_name.toLowerCase().replace(/\s+/g, '-');
     
     return (
+        <div className="hasElectricity">
         <Link to={`/genre/${genre_id}`} style={{ textDecoration: 'none' }}>
             <div className={`card ${styles.customGenreCard}`}>
                 <LazyLoadImage
@@ -31,6 +32,7 @@ function GenreImageCard({url, genre_name, genre_id}) {
                 <p className={styles.genreLabel}>{genre_name}</p>
             </div>
         </Link>
+        </div>
     );
 }
 

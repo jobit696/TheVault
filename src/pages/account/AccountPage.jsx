@@ -245,7 +245,7 @@ export default function AccountPage() {
 
         <div className={styles.rightColumn}>
           <div className={styles.statsGrid}>
-            <div className={styles.statCard}>
+            <div className={`${styles.statCard}` }>
               <div className={styles.statNumber}>{gameStats.totalGames}</div>
               <div className={styles.statLabel}>Favorite Games</div>
             </div>
@@ -331,7 +331,7 @@ export default function AccountPage() {
         ) : (
           <div className={styles.gamesGrid}>
             {favoriteGames.map(game => (
-              <div key={game.id} className={styles.gameCard}>
+              <div key={game.id} className={`${styles.gameCard} hasElectricity`}>
                 <button 
                   className={styles.removeButton}
                   onClick={() => removeFavorite(game.game_id)}

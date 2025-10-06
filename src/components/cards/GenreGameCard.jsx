@@ -26,6 +26,7 @@ function GenreGameCard({ game }) {
     };
 
     return (
+        <div className="hasElectricity">
         <Link to={`/games/${game.slug}/${game.id}`} style={{ textDecoration: 'none' }}>
             <div className={styles.genreGameCard}>
                 <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
@@ -75,6 +76,7 @@ function GenreGameCard({ game }) {
                 </div>
             </div>
         </Link>
+        </div>
     );
 }
 

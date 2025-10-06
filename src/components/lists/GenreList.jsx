@@ -32,7 +32,7 @@ export default function GenreList({ genres, games_number = 30, title = "Genres" 
     }
 
     const prevIcon = (
-        <span className={styles.customArrow}>
+       <span className={`${styles.customArrow} hasElectricity`}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
@@ -40,7 +40,7 @@ export default function GenreList({ genres, games_number = 30, title = "Genres" 
     );
 
     const nextIcon = (
-        <span className={styles.customArrow}>
+        <span className={`${styles.customArrow} hasElectricity`}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
             </svg>

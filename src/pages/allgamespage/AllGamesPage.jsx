@@ -1,8 +1,6 @@
 import { useLoaderData, useNavigate, useSearchParams } from "react-router";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import GenreGameCard from "../../components/cards/GenreGameCard";
 import styles from "../../css/AllGamesPage.module.css";
-import PlatformPageCard from "../../components/cards/PlatformPageCard";
 
 export default function AllGamesPage() {
     const data = useLoaderData();
@@ -10,6 +8,7 @@ export default function AllGamesPage() {
     const navigate = useNavigate();
     
     const giochi = data?.results || [];
+    const totalCount = data?.count || 0;
     const page = parseInt(searchParams.get('page') || '1');
 
     const handlePageChange = (newPage) => {
@@ -19,44 +18,20 @@ export default function AllGamesPage() {
 
     return (
         <div className={styles.allGamesPage}>
-            {/* Hero Section */}
-            <div className={styles.heroSection}>
-                <LazyLoadImage
-                    src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200"
-                    alt="All Games"
-                    effect="blur"
-                    threshold={0}
-                    className={styles.heroImage}
-                    wrapperProps={{
-                        style: {
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%'
-                        }
-                    }}
-                />
-                
-                <div className={styles.heroOverlay}></div>
-
-                <div className={`container pb-5 ${styles.heroContent}`}>
-                    <h1 className={styles.heroTitle}>
+            <h2 className={`${styles.gamesTitle} ${styles.pageTitle}`}>
                         All Games
-                    </h1>
-                    <p className={styles.heroSubtitle}>
-                        Explore our entire gaming collection
+                    </h2>
+            <div className="container">
+                <div className={styles.gamesHeader}>
+                    
+                    <p className={styles.gamesCount}>
+                        {totalCount.toLocaleString()} games available
                     </p>
                 </div>
-            </div>
-
-            {/* Games Grid */}
-            <div className="container">
-                <div className="row g-4">
+                
+                <div className={styles.gridGamesList}>
                     {giochi.map((game) => (
-                        <div key={game.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <PlatformPageCard game={game} />
-                        </div>
+                        <GenreGameCard key={game.id} game={game} />
                     ))}
                 </div>
 

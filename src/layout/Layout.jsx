@@ -9,6 +9,7 @@ export default function Layout() {
     <div className="style-layout-system">
       {/* PARTICLES BACKGROUND */}
       <ParticlesBackground />
+      
       {/* NAVBAR - BANNER - TITOLO */}
       <Header bannerGames={bannerGames} /> 
       <div className="main-container">
