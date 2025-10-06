@@ -20,11 +20,12 @@ export default function GenrePage() {
 
     return (
         <div className={styles.genrePage}>
-            <div className="container">
-                <div className={styles.genreHeader}>
-                    <h2 className={styles.genreTitle}>
+             <h2 className={`${styles.genreTitle} ${styles.pageTitle}`}>
                         {genreName} Games
                     </h2>
+            <div className="container">
+                <div className={styles.genreHeader}>
+                   
                     <p className={styles.genreCount}>
                         {totalCount.toLocaleString()} games found
                     </p>
