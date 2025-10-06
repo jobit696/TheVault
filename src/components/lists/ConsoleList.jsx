@@ -83,6 +83,8 @@ export default function ConsoleList({title = "- Browse by Platforms -"}) {
     );
 
     return (
+         <>
+                <h1 className={styles.pageTitle}>PLATFORMS</h1>
         <div className={`container-fluid ${styles.consoleCarouselWrapper} my-4`}>
             {/* Video Background con Lazy Loading */}
             {!videoLoaded && (
@@ -138,5 +140,6 @@ export default function ConsoleList({title = "- Browse by Platforms -"}) {
                 </Carousel>
             </div>
         </div>
+        </>
     );
 }

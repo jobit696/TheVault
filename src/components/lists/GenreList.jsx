@@ -49,6 +49,8 @@ export default function GenreList({ genres, games_number = 30, title = "Genres" 
 
 
     return (
+        <>
+        <h1 className={styles.pageTitle}>ALL GENRES</h1>
         <div className={`container-fluid ${styles.genreCarouselWrapper} my-4`}>
             <div className={`${styles.genreListTitle} ${styles.parallelogram}`}>
                 {title}
@@ -77,5 +79,6 @@ export default function GenreList({ genres, games_number = 30, title = "Genres" 
                 ))}
             </Carousel>
         </div>
+        </>
     );
 }

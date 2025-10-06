@@ -20,11 +20,11 @@ function Homepage() {
         <>
 
 
-            <PopularGameList games={popularGames} title="- Top 10 Popular Games -" />
+            <PopularGameList games={popularGames} title="- Top 10 -" />
             <GenreList genres={genres} title="- Browse by Genres -" />
             <ConsoleList />
             <CustomGameList 
-    title="- Our Top 10 -" 
+    title="- Top 10 -" 
     gameIds={[326243, 2551, 452639, 47234, 836449, 9767, 5192, 29143, 10141, 3144]} 
 />
 <UpcomingGamesCarousel customGames={upcomingGames} />

@@ -72,6 +72,9 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
         }, [releaseDate]);
 
         return (
+            <>
+             
+             
             <div className={styles.countdown}>
                 <div className={styles.countdownItem}>
                     <span className={styles.countdownNumber}>{String(timeLeft.days).padStart(2, '0')}</span>
@@ -90,6 +93,7 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
                     <span className={styles.countdownLabel}>Sec</span>
                 </div>
             </div>
+            </>
         );
     };
 
@@ -107,6 +111,7 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
 
     if (loading) {
         return (
+            
             <div className={styles.upcomingCarouselWrapper}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <div style={{ textAlign: 'center' }}>
@@ -115,6 +120,7 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
                     </div>
                 </div>
             </div>
+            
         );
     }
 
@@ -123,7 +129,9 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
     const currentGame = games[currentIndex];
 
     return (
-        <div style={{ width: '100%', marginTop: '4rem' }}>
+        <>
+                   <h1 className={styles.pageTitle}>MOST ANTICIPATED</h1>
+        <div style={{ width: '100%'}}>
           
             <div className={styles.upcomingCarouselWrapper}>
                 <div className={styles.carouselSlide}>
@@ -188,5 +196,6 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
                 </div>
             </div>
         </div>
+        </>
     );
 }

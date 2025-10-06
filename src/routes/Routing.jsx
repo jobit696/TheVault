@@ -19,6 +19,7 @@ import {
   getLayoutData
 } from "../functions/loaders";
 import LoginPage from "../pages/login/LoginPage";
+import ArcadePage from "../pages/arcadepage/ArcadePage";
 
 
 const router = createBrowserRouter([
@@ -72,11 +73,17 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <Errorpage />
-      }
+        Component: Errorpage 
+      },
+      {
+    path: '/arcade',
+    Component: ArcadePage 
+}
     ]
   }
 ]);
+
+
 
 
 export function Routing() {

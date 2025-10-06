@@ -74,7 +74,9 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
     }
 
     return (
-        <div className={`container-fluid ${styles.popularGamesCarouselWrapper} my-4`}>
+        <>
+        <h1 className={styles.pageTitle}>POPULAR GAMES</h1>
+        <div className={`container-fluid ${styles.popularGamesCarouselWrapper} mt-4`}>
             <div className={`${styles.gameListTitle} ${styles.parallelogram}`}>
                 {title}
             </div>
@@ -104,5 +106,6 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
                 ))}
             </Carousel>
         </div>
+        </>
     );
 }

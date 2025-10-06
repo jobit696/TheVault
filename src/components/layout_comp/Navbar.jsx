@@ -32,11 +32,9 @@ export default function Navbar() {
             const navbarCollapse = document.getElementById('navbarNav');
             const navbarToggler = document.querySelector('.navbar-toggler');
             
-            // Click fuori dalla navbar
             if (navbarRef.current && 
                 !navbarRef.current.contains(event.target)) {
                 
-                // Se il menu è aperto, chiude
                 if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                     navbarToggler?.click();
                 }
@@ -73,11 +71,18 @@ export default function Navbar() {
                 <Link className="custom-navbar-brand" to="/">V</Link>
                 <div className="container-fluid">
                     
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-    <i className="fas fa-bars"></i>
-</button>
+                    <button 
+                        className="navbar-toggler" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" 
+                        aria-expanded="false" 
+                        aria-label="Toggle navigation"
+                    >
+                        <i className="fas fa-bars"></i>
                     </button>
+
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav mx-auto">
                             <li className="nav-item">
@@ -108,6 +113,11 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/games">
                                     All
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/arcade">
+                                    Play!
                                 </Link>
                             </li>
                         </ul>

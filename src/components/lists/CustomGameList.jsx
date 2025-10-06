@@ -102,6 +102,8 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
     }
 
     return (
+        <>
+                <h1 className={styles.pageTitle}>OUR CHOICE</h1>
         <div className={`container-fluid ${styles.popularGamesCarouselWrapper} my-4`}>
             <div className={`${styles.gameListTitle2} ${styles.parallelogram}`}>
                 {title}
@@ -132,5 +134,6 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
                 ))}
             </Carousel>
         </div>
+        </>
     );
 }
