@@ -125,7 +125,7 @@ export default function ConsoleList({title = "- Browse by Platforms -"}) {
                 >
                     {chunkedConsoles.map((consoleGroup, slideIndex) => (
                         <Carousel.Item key={slideIndex}>
-                            <div className={`d-flex justify-content-center gap-3 ${styles.carouselCardsContainer} py-4`}>
+                            <div className={`d-flex justify-content-center gap-3 ${styles.carouselCardsContainer} my-4 py-4`}>
                                 {consoleGroup.map((consoleType) => (
                                     <div 
                                         key={consoleType} 

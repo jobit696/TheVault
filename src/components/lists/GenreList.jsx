@@ -64,7 +64,7 @@ export default function GenreList({ genres, games_number = 30, title = "Genres" 
             >
                 {chunkedGenres.map((gruppo, slideIndex) => (
                     <Carousel.Item key={slideIndex}>
-                        <div className={`d-flex justify-content-center ${styles.carouselCardsContainer} py-4`}>
+                        <div className={`d-flex justify-content-center ${styles.carouselCardsContainer} my-4 py-4`}>
                             {gruppo.map((genere) => (
                                 <div key={genere.id} className={styles.carouselCardItem}>
                                     <GenreImageCard 

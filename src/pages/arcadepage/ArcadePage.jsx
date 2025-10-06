@@ -4,6 +4,8 @@ import styles from '../../css/ArcadePage.module.css';
 import celeste_thumbnail from '../../assets/pico/celeste_classic.webp'
 import celeste2_thumbnail from '../../assets/pico/celeste2.webp'
 import soulswap_thumbnail from '../../assets/pico/soulswap.png'
+import danktomb_thumbnail from '../../assets/pico/dank_tomb.png'
+
 
 export default function ArcadePage() {
     const [selectedGame, setSelectedGame] = useState(null);
@@ -30,6 +32,8 @@ export default function ArcadePage() {
             thumbnail: soulswap_thumbnail,
             description: "A puzzle platformer with swapping mechanics"
         },
+    
+     
     ];
     
     return (
@@ -82,6 +86,7 @@ export default function ArcadePage() {
         )}
         </div>
         </div>
+        
         </div>
         
         <div className="col-12 col-lg-3 order-3 d-none d-lg-block">

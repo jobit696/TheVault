@@ -89,7 +89,7 @@ export default function PopularGameList({ games, title = 'senza titolo' }) {
             >
                 {chunkedGames.map((gruppo, slideIndex) => (
                     <Carousel.Item key={slideIndex}>
-                        <div className={`d-flex justify-content-center ${styles.carouselCardsContainer} py-4`}>
+                        <div className={`d-flex justify-content-center ${styles.carouselCardsContainer} py-4 my-4`}>
                             {gruppo.map((gioco, index) => (
                                 <div key={gioco.id} className={styles.carouselCardItem}>
                                     <InteractiveImageCard 
