@@ -3,7 +3,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import styles from '../../css/ElectricityEffect.module.css';
 
-
 // Leggi i colori direttamente dalle variabili CSS
 function getCSSVariable(variable) {
   return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
@@ -71,9 +70,17 @@ function LightningBolt({ start, end, intensity = 1, colorVar = '--lightning-prim
 
 function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
   const [bolts, setBolts] = useState([]);
+  const viewportSizeRef = useRef(viewportSize);
+
+  // Aggiorna il ref quando cambia viewportSize
+  useEffect(() => {
+    viewportSizeRef.current = viewportSize;
+  }, [viewportSize]);
 
   useEffect(() => {
     const updateBolts = () => {
+      const currentViewport = viewportSizeRef.current;
+      
       if (hoveredCard && mousePos) {
         const newBolts = Array.from({ length: 7 }, (_, i) => {
           const angle = (Math.PI * 2 * i) / 7 + Math.random() * 0.3;
@@ -94,9 +101,10 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
         
         setBolts(newBolts);
       } else {
+        // Usa il ref invece dello state direttamente
         const newBolts = Array.from({ length: 4 }, () => {
-          const startX = (Math.random() - 0.5) * viewportSize.width * 0.8;
-          const startY = viewportSize.height / 2;
+          const startX = (Math.random() - 0.5) * currentViewport.width * 0.8;
+          const startY = currentViewport.height / 2;
           const length = 5 + Math.random() * 8;
           const angle = Math.PI / 2 + (Math.random() - 0.5) * 0.8;
           
@@ -120,7 +128,7 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
     const interval = setInterval(updateBolts, 150);
     
     return () => clearInterval(interval);
-  }, [mousePos?.x, mousePos?.y, hoveredCard, viewportSize]);
+  }, [mousePos, hoveredCard]); // Rimuovi viewportSize dalle dipendenze
 
   return (
     <>
@@ -142,7 +150,6 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
           colorVar={bolt.colorVar}
         />
       ))}
- 
     </>
   );
 }
@@ -152,11 +159,13 @@ export default function ElectricityEffect() {
   const [hoveredCard, setHoveredCard] = useState(false);
   const [viewportSize, setViewportSize] = useState({ width: 10, height: 10 });
   const [isMounted, setIsMounted] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
+    setIsDesktop(window.innerWidth > 1024);
   }, []);
 
   useEffect(() => {
@@ -172,10 +181,15 @@ export default function ElectricityEffect() {
       setViewportSize({ width, height });
     };
 
+    const handleResize = () => {
+      updateViewportSize();
+      setIsDesktop(window.innerWidth > 1024);
+    };
+
     updateViewportSize();
-    window.addEventListener('resize', updateViewportSize);
+    window.addEventListener('resize', handleResize);
     
-    return () => window.removeEventListener('resize', updateViewportSize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -212,7 +226,7 @@ export default function ElectricityEffect() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [viewportSize]);
 
-  if (!isMounted) return null;
+  if (!isMounted || !isDesktop) return null;
 
   return (
     <div 
