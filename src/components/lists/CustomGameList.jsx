@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import InteractiveImageCard from '../cards/InteractiveImageCard.jsx';
-import styles from '../../css/PopularGameList.module.css';
+import styles from '../../css/NewGameList.module.css';
 
 export default function CustomGameList({ title = 'Featured Games', gameIds = [] }) {
     const [cardsPerSlide, setCardsPerSlide] = useState(5);

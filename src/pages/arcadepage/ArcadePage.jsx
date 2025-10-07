@@ -37,7 +37,7 @@ export default function ArcadePage() {
     return (
         <div className={styles.arcadePage}>
              <div className={styles.headerSection}>
-                    <h1 className={styles.pageTitle}>Arcade Player</h1>
+                    <h1 className={styles.pageTitle}>PICO-8 PLAYER</h1>
                     <p className={styles.pageSubtitle}>Play retro Pico-8 games directly in your browser</p>
                 </div>
             <div className="container">
@@ -137,9 +137,7 @@ export default function ArcadePage() {
                                     </ul>
                                 </section>
                                 
-                                <div className={styles.proTip}>
-                                    <strong>💡 Pro Tip:</strong> Use fullscreen mode for the best experience!
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

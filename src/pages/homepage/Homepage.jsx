@@ -1,7 +1,7 @@
 import ConsoleList from "../../components/lists/ConsoleList";
 import CustomGameList from "../../components/lists/CustomGameList";
 import GenreList from "../../components/lists/GenreList";
-import PopularGameList from "../../components/lists/PopularGameList";
+import NewGameList from "../../components/lists/NewGameList";
 import UpcomingGamesCarousel from "../../components/lists/UpcomingGamesCarousel";
 import { useLoaderData } from 'react-router';
 
@@ -20,7 +20,7 @@ function Homepage() {
         <>
 
 
-            <PopularGameList games={popularGames} title="- Top 10 -" />
+            <NewGameList games={popularGames} title="- Top 10 -" />
             <GenreList genres={genres} title="- Browse by Genres -" />
             <ConsoleList />
             <CustomGameList 

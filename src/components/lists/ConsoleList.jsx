@@ -92,6 +92,7 @@ export default function ConsoleList({title = "- Browse by Platforms -"}) {
                     <div className={styles.skeletonLoaderVideo}></div>
                 </div>
             )}
+            
             <video 
                 ref={videoRef}
                 autoPlay 

@@ -3,7 +3,7 @@ import styles from '../../css/GameStats.module.css';
 
 export default function GamesStats() {
     const finalStats = {
-        games: 319500,
+        games: 894500,
         ratings: 26300000,
         reviews: 8110000,
         added: 44200000

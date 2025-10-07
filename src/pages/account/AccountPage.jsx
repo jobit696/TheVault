@@ -29,33 +29,32 @@ export default function AccountPage() {
     newestFavorite: favoriteGames[0]?.game_name || 'N/A'
   };
 
-  const calculateFavoriteGenres = (games) => {
-    if (games.length === 0) {
-      setFavoriteGenres([]);
-      return;
-    }
+const calculateFavoriteGenres = (games) => {
+  if (games.length === 0) {
+    setFavoriteGenres([]);
+    return;
+  }
 
-    const genreCount = {};
-    
-    games.forEach(game => {
-      if (game.genres) {
-        const genres = game.genres.split(',').map(g => g.trim());
-        
-        genres.forEach(genre => {
-          if (genre) {
-            genreCount[genre] = (genreCount[genre] || 0) + 1;
-          }
-        });
+  const genreCount = {};
+
+  games.forEach(game => {
+    if (game.genres) {
+      // Prendi solo il primo genere
+      const firstGenre = game.genres.split(',')[0]?.trim();
+      if (firstGenre) {
+        genreCount[firstGenre] = (genreCount[firstGenre] || 0) + 1;
       }
-    });
+    }
+  });
 
-    const sortedGenres = Object.entries(genreCount)
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
+  const sortedGenres = Object.entries(genreCount)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
 
-    setFavoriteGenres(sortedGenres);
-  };
+  setFavoriteGenres(sortedGenres);
+};
+
 
   useEffect(() => {
     let ignore = false;

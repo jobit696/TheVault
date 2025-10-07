@@ -10,11 +10,18 @@ async function fetchFromAPI(url) {
     return response.json();
 }
 
-// Giochi popolari
+// Giochi popolari (ultimi 30 giorni)
 export async function getPopularGames() {
-    const url = `${BASE_URL}/games?key=${API_KEY}&ordering=-rating&page_size=10`;
+    const today = new Date();
+    const past30Days = new Date();
+    past30Days.setDate(today.getDate() - 30);
+    const formatDate = (date) => date.toISOString().split('T')[0];
+    const startDate = formatDate(past30Days);
+    const endDate = formatDate(today);
+    const url = `${BASE_URL}/games?key=${API_KEY}&dates=${startDate},${endDate}&ordering=-released,-rating&page_size=10`;
     return fetchFromAPI(url);
 }
+
 
 // Tutti i giochi 
 export async function getAllGames({ request }) {

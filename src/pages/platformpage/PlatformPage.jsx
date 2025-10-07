@@ -14,11 +14,11 @@ export default function PlatformPage() {
 
     const platformNames = {
         4: 'PC',
-        187: 'PlayStation 5',
+        187: 'PLAYSTATION 5',
         186: 'Xbox Series X/S',
         18: 'PlayStation 4',
-        1: 'Xbox One',
-        7: 'Nintendo Switch',
+        1: 'XBOX',
+        7: 'NINTENDO SWITCH',
         3: 'Xbox 360',
         16: 'PlayStation 3'
     };
@@ -31,7 +31,7 @@ export default function PlatformPage() {
     return (
         <div className={styles.platformPage}>
             <h2 className={`${styles.platformTitle} ${styles.pageTitle}`}>
-                        {platformNames[platformId] || 'Platform'} Games
+                        {platformNames[platformId] || 'Platform'} GAMES
                     </h2>
             <div className="container">
                 <div className={styles.platformHeader}>

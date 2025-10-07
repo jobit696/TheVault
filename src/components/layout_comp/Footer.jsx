@@ -36,12 +36,12 @@ export default function Footer() {
 
                     <div className="col-lg-2 col-md-6 col-sm-6 mb-4">
                         <div className="footer-section">
-                            <h4>Community</h4>
+                            <h4>Interactivity</h4>
                             <ul className="list-unstyled">
-                                <li><a href="#">Reviews</a></li>
-                                <li><a href="#">Ratings</a></li>
+                                <li><Link to="/arcade">Pico-8 player</Link></li>
+                                {/* <li><a href="#">Ratings</a></li>
                                 <li><a href="#">Forums</a></li>
-                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Blog</a></li> */}
                             </ul>
                         </div>
                     </div>
@@ -50,10 +50,10 @@ export default function Footer() {
                         <div className="footer-section">
                             <h4>Support</h4>
                             <ul className="list-unstyled">
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">FAQ</a></li>
+                               <li><Link to="/contact">Contact Us</Link></li>
+                                {/* <li><a href="#">FAQ</a></li>
                                 <li><a href="#">Privacy</a></li>
-                                <li><a href="#">Terms</a></li>
+                                <li><a href="#">Terms</a></li> */}
                             </ul>
                         </div>
                     </div>
@@ -62,18 +62,18 @@ export default function Footer() {
                         <div className="footer-section">
                             <h4>Follow Us</h4>
                             <div className="social-icons d-flex flex-wrap gap-3">
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-twitter"></i>
-                                </a>
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-discord"></i>
-                                </a>
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-twitch"></i>
-                                </a>
-                                <a href="#" className="social-icon">
-                                    <i className="fab fa-youtube"></i>
-                                </a>
+                               <a href="https://twitter.com/" className="social-icon" target="_blank" rel="noopener noreferrer">
+    <i className="fab fa-twitter"></i>
+</a>
+<a href="https://discord.gg/" className="social-icon" target="_blank" rel="noopener noreferrer">
+    <i className="fab fa-discord"></i>
+</a>
+<a href="https://twitch.tv/" className="social-icon" target="_blank" rel="noopener noreferrer">
+    <i className="fab fa-twitch"></i>
+</a>
+<a href="https://youtube.com/" className="social-icon" target="_blank" rel="noopener noreferrer">
+    <i className="fab fa-youtube"></i>
+</a>
                             </div>
                         </div>
                     </div>

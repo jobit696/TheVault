@@ -81,6 +81,11 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
     const updateBolts = () => {
       const currentViewport = viewportSizeRef.current;
       
+      // Non generare fulmini se la viewport non è stata ancora calcolata
+      if (currentViewport.width === 0 || currentViewport.height === 0) {
+        return;
+      }
+      
       if (hoveredCard && mousePos) {
         const newBolts = Array.from({ length: 7 }, (_, i) => {
           const angle = (Math.PI * 2 * i) / 7 + Math.random() * 0.3;
@@ -101,26 +106,7 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
         
         setBolts(newBolts);
       } else {
-        // Usa il ref invece dello state direttamente
-        const newBolts = Array.from({ length: 4 }, () => {
-          const startX = (Math.random() - 0.5) * currentViewport.width * 0.8;
-          const startY = currentViewport.height / 2;
-          const length = 5 + Math.random() * 8;
-          const angle = Math.PI / 2 + (Math.random() - 0.5) * 0.8;
-          
-          const endX = startX + Math.cos(angle) * length;
-          const endY = startY - Math.sin(angle) * length;
-          
-          return {
-            id: Math.random(),
-            start: { x: startX, y: startY, z: -1 },
-            end: { x: endX, y: endY, z: -1 },
-            intensity: Math.random() * 0.4 + 0.3,
-            colorVar: '--lightning-ambient'
-          };
-        });
-        
-        setBolts(newBolts);
+        setBolts([]);
       }
     };
 
@@ -128,7 +114,7 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
     const interval = setInterval(updateBolts, 150);
     
     return () => clearInterval(interval);
-  }, [mousePos, hoveredCard]); // Rimuovi viewportSize dalle dipendenze
+  }, [mousePos, hoveredCard, viewportSize]);
 
   return (
     <>
@@ -157,7 +143,7 @@ function ElectricityScene({ mousePos, hoveredCard, viewportSize }) {
 export default function ElectricityEffect() {
   const [mousePos, setMousePos] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(false);
-  const [viewportSize, setViewportSize] = useState({ width: 10, height: 10 });
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
   const [isMounted, setIsMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const containerRef = useRef(null);
@@ -186,11 +172,13 @@ export default function ElectricityEffect() {
       setIsDesktop(window.innerWidth > 1024);
     };
 
+    // Calcola subito al mount
     updateViewportSize();
+    
     window.addEventListener('resize', handleResize);
     
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {

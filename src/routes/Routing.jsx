@@ -84,8 +84,6 @@ const router = createBrowserRouter([
 ]);
 
 
-
-
 export function Routing() {
   return <RouterProvider router={router} />;
 }

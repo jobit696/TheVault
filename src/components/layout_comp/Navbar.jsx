@@ -117,7 +117,7 @@ export default function Navbar() {
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/arcade">
-                                    Play!
+                                    Pico-8
                                 </Link>
                             </li>
                         </ul>
