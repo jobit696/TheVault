@@ -1,4 +1,4 @@
-import useFetchSolution from '../components/hook/useFetchSolution'; // Importa il custom hook
+import useFetchSolution from '../../components/hook/useFetchSolution'; // Importa il custom hook
 
 const API_KEY = import.meta.env.VITE_RAW_G_KEY;
 const BASE_URL = import.meta.env.VITE_RAW_G_URL;
