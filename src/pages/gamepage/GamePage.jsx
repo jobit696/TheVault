@@ -7,7 +7,7 @@ import styles from "../../css/GamePage.module.css";
 import Chatbox from "../../components/chat/Chatbox";
 import InteractiveImageCard from "../../components/cards/InteractiveImageCard";
 import PlatformPageCard from "../../components/cards/PlatformPageCard";
-import gamepadImage from "../../assets/images/platform_images/GamePad.png";
+import gamepadImage from "../../assets/images/Gamepad.png";
 
 export default function GamePage() {
     const { game, screenshots, dlcs, similarGames } = useLoaderData();
