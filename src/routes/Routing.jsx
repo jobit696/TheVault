@@ -20,6 +20,7 @@ import {
 } from "../functions/loaders";
 import LoginPage from "../pages/login/LoginPage";
 import ArcadePage from "../pages/arcadepage/ArcadePage";
+import CommunityGamePage from "../pages/communitygamepage/CommunityGamePage";
 
 
 const router = createBrowserRouter([
@@ -79,9 +80,15 @@ const router = createBrowserRouter([
     path: '/arcade',
     Component: ArcadePage 
 }
+,
+      {
+    path: '/communitygamepage',
+    Component: CommunityGamePage 
+}
     ]
   }
 ]);
+
 
 
 export function Routing() {

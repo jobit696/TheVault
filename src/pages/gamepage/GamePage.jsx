@@ -5,9 +5,12 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import ToggleFavorite from "../../components/ui/ToggleFavorite";
 import styles from "../../css/GamePage.module.css";
 import Chatbox from "../../components/chat/Chatbox";
+import InteractiveImageCard from "../../components/cards/InteractiveImageCard";
+import PlatformPageCard from "../../components/cards/PlatformPageCard";
+import gamepadImage from "../../assets/images/platform_images/GamePad.png";
 
 export default function GamePage() {
-    const { game, screenshots, videos } = useLoaderData();
+    const { game, screenshots, dlcs, similarGames } = useLoaderData();
     const [selectedImage, setSelectedImage] = useState(null);
 
     return (
@@ -34,12 +37,12 @@ export default function GamePage() {
 
                 <div className={`container pb-5 ${styles.heroContent}`}>
                     <div className="row">
-                        <div className="col-12 col-lg-7">
+                        <div className={`col-12 col-lg-7`}>
                             <h1 className={styles.gameTitle}>
                                 {game?.name}
                             </h1>
 
-                            <div className="mb-3">
+                            <div className={`mb-3 ${styles.heroInfo}`}>
                                 {game?.rating >= 4.2 && (
                                     <span className={`badge bg-danger me-2 ${styles.topRatedBadge}`}>
                                         TOP RATED
@@ -51,11 +54,12 @@ export default function GamePage() {
                                 <span className={styles.metadataText}>
                                     ⭐ {game?.rating}
                                 </span>
-                                {game?.playtime && (
-                                    <span className={styles.metadataText}>
-                                        {game.playtime}h
-                                    </span>
-                                )}
+                               {game?.playtime > 0 && (
+    <span className={`${styles.metadataText} ${styles.playtimeContainer}`}>
+        <img className={styles.playtimeImage} src={gamepadImage} alt="" />
+        <span className={styles.playtimeText}>{game.playtime}h</span>
+    </span>
+)}
                             </div>
 
                             <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
@@ -116,6 +120,10 @@ export default function GamePage() {
                                     {game.esrb_rating.name}
                                 </p>
                             )}
+                            <p>
+                                <span className={styles.infoLabel}>DLC: </span>
+                                {dlcs && dlcs.length > 0 ? `Yes (${dlcs.length})` : 'No'}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -123,13 +131,13 @@ export default function GamePage() {
 
             {/* Screenshots Section */}
             <div className="container mt-5 pb-5 text-sm-center">
-                <div className={styles.parallelogram}>
-                    <h2 className={styles.sectionTitle}>
-                    Screenshots
-                </h2>
-                </div>
+                
+                    <h2 className={styles.sectionTitleBan3}>
+                        Screenshots
+                    </h2>
+               
 
-                <div className="row g-5 ">
+                <div className="row g-5">
                     {screenshots.map((screenshot) => (
                         <div key={screenshot.id} className="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
                             <div 
@@ -167,6 +175,49 @@ export default function GamePage() {
                                 alt="Screenshot ingrandito"
                                 className={styles.modalImage}
                             />
+                        </div>
+                    </div>
+                )}
+
+                {/* DLC Section */}
+                {dlcs && dlcs.length > 0 && (
+                    <div className="mt-5">
+                      
+                            <h2 className={styles.sectionTitleBan1}>
+                                DLC
+                            </h2>
+                       
+
+                        <div className="row g-4 mt-3">
+                            {dlcs.map((dlc) => (
+                                <div key={dlc.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <InteractiveImageCard
+                                        url={dlc.background_image}
+                                        title={dlc.name}
+                                        show_number={false}
+                                        gioco={dlc}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Similar Games Section */}
+                {similarGames && similarGames.length > 0 && (
+                    <div className="mt-5">
+                        
+                            <h2 className={styles.sectionTitleBan2}>
+                                Similar Games
+                            </h2>
+                        
+
+                        <div className="row g-4 mt-3">
+                            {similarGames.slice(0, 8).map((similar) => (
+                                <div key={similar.id} className="col-12 col-sm-6 col-lg-4 col-xl-3">
+                                    <PlatformPageCard game={similar} />
+                                </div>
+                            ))}
                         </div>
                     </div>
                 )}

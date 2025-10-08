@@ -7,7 +7,6 @@ import xboxLogo from '../../assets/logos/xboxLogo.svg';
 import playstationLogo from '../../assets/logos/playstationLogo.svg';
 import switchLogo from '../../assets/logos/switchLogo.svg';
 import pcLogo from '../../assets/logos/winLogo.svg';
-import { div } from 'three/tsl';
 
 function CardGame({ game }) {
     // Funzione per verificare se una piattaforma è disponibile
@@ -80,7 +79,7 @@ function CardGame({ game }) {
                     </div>
                     {game.genres && game.genres.length > 0 && (
                         <div className={styles.cardGameGenres}>
-                            {game.genres.map((genre) => (
+                            {game.genres.slice(0, 3).map((genre) => (
                                 <span key={genre.id} className={styles.genreTag}>
                                     {genre.name}
                                 </span>

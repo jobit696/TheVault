@@ -40,22 +40,36 @@ export async function getGamesByPlatform({ params, request }) {
     return fetchFromAPI(apiUrl);
 }
 
-// Dettagli gioco
 export async function getGameDetails({ params }) {
     const { id } = params;
     const gameUrl = `${BASE_URL}/games/${id}?key=${API_KEY}`;
     const screenshotsUrl = `${BASE_URL}/games/${id}/screenshots?key=${API_KEY}`;
-    const videosUrl = `${BASE_URL}/games/${id}/movies?key=${API_KEY}`;
+    const dlcUrl = `${BASE_URL}/games/${id}/additions?key=${API_KEY}`;
+    const similarUrl = `${BASE_URL}/games/${id}/game-series?key=${API_KEY}`;
     
-    const [game, screenshots, videos] = await Promise.all([
+    const safeFetch = async (url) => {
+        try {
+            return await fetchFromAPI(url);
+        } catch (error) {
+            console.warn(`Failed to fetch ${url}:`, error);
+            return { results: [] };
+        }
+    };
+    
+    const [game, screenshots, dlcs, similarGames] = await Promise.all([
         fetchFromAPI(gameUrl),
         fetchFromAPI(screenshotsUrl),
-        fetchFromAPI(videosUrl)
+        safeFetch(dlcUrl),
+        safeFetch(similarUrl)
     ]);
     
-    return { game, screenshots: screenshots.results, videos: videos.results };
+    return { 
+        game, 
+        screenshots: screenshots.results || [], 
+        dlcs: dlcs.results || [],
+        similarGames: similarGames.results || []
+    };
 }
-
 // Loader per generi
 export async function getGenres() {
     const url = `${BASE_URL}/genres?key=${API_KEY}`;

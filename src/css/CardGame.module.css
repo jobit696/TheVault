@@ -29,6 +29,7 @@
     padding-bottom: 56.25%; 
     overflow: hidden;
     background: #1a1a1a;
+    flex-shrink: 0; 
 }
 
 .cardGameImage {
@@ -53,6 +54,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0; 
 }
 
 .cardGameTitle {
@@ -67,7 +69,8 @@
     -webkit-line-clamp: 2; 
     -webkit-box-orient: vertical;
     line-height: 1.4;
-    min-height: 2.8em; 
+    height: 2.8em; 
+    flex-shrink: 0; 
 }
 
 .cardGameInfo {
@@ -77,6 +80,7 @@
     margin-bottom: 12px;
     color: #868686;
     font-size: 13px;
+    flex-shrink: 0; 
 }
 
 .cardGameRating {
@@ -94,6 +98,7 @@
     flex-wrap: wrap;
     gap: 6px;
     margin-top: auto; 
+    min-height: 28px; 
 }
 
 .genreTag {
@@ -139,7 +144,6 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    
 }
 
 .cardPlatformItemImg {
@@ -152,6 +156,7 @@
 @media (max-width: 767px) {
     .cardGameTitle {
         font-size: 14px;
+        height: 2.8em; 
     }
     
     .cardGameContent {
