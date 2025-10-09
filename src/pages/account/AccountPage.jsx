@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import supabase from '../../supabase/supabase-client';
 import SessionContext from '../../context/SessionContext';
 import Avatar from '../../components/ui/Avatar';
+import YoutubeChannelSettings from '../../components/youtube/YoutubeChannelSettings';
 import { Link } from 'react-router';
 import styles from '../../css/AccountPage.module.css';
 import dayjs from 'dayjs';
@@ -29,32 +30,30 @@ export default function AccountPage() {
     newestFavorite: favoriteGames[0]?.game_name || 'N/A'
   };
 
-const calculateFavoriteGenres = (games) => {
-  if (games.length === 0) {
-    setFavoriteGenres([]);
-    return;
-  }
-
-  const genreCount = {};
-
-  games.forEach(game => {
-    if (game.genres) {
-      // Prendi solo il primo genere
-      const firstGenre = game.genres.split(',')[0]?.trim();
-      if (firstGenre) {
-        genreCount[firstGenre] = (genreCount[firstGenre] || 0) + 1;
-      }
+  const calculateFavoriteGenres = (games) => {
+    if (games.length === 0) {
+      setFavoriteGenres([]);
+      return;
     }
-  });
 
-  const sortedGenres = Object.entries(genreCount)
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
+    const genreCount = {};
 
-  setFavoriteGenres(sortedGenres);
-};
+    games.forEach(game => {
+      if (game.genres) {
+        const firstGenre = game.genres.split(',')[0]?.trim();
+        if (firstGenre) {
+          genreCount[firstGenre] = (genreCount[firstGenre] || 0) + 1;
+        }
+      }
+    });
 
+    const sortedGenres = Object.entries(genreCount)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    setFavoriteGenres(sortedGenres);
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -171,10 +170,9 @@ const calculateFavoriteGenres = (games) => {
 
   return (
     <div className={styles.container}>
-     <div className={styles.pageHeader}>
-  <i className="fas fa-cog"></i>
-  
-</div>
+      <div className={styles.pageHeader}>
+        <i className="fas fa-cog"></i>
+      </div>
 
       <div className={styles.mainGrid}>
         <div className={styles.leftColumn}>
@@ -244,7 +242,7 @@ const calculateFavoriteGenres = (games) => {
 
         <div className={styles.rightColumn}>
           <div className={styles.statsGrid}>
-            <div className={`${styles.statCard}` }>
+            <div className={styles.statCard}>
               <div className={styles.statNumber}>{gameStats.totalGames}</div>
               <div className={styles.statLabel}>Favorite Games</div>
             </div>
@@ -267,7 +265,7 @@ const calculateFavoriteGenres = (games) => {
           </div>
 
           <div className={styles.sectionWidget}>
-            <h3 className={styles.sectionTitle}>Favorite Genres</h3>
+            <h3 className={styles.sectionTitle}>- Favorite Genres</h3>
             {favoriteGenres.length === 0 ? (
               <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
                 Add favorite games to see your favorite genres!
@@ -295,10 +293,13 @@ const calculateFavoriteGenres = (games) => {
         </div>
       </div>
 
+      {/* NUOVO: Impostazioni YouTube Channel */}
+      <YoutubeChannelSettings />
+
       {/* Last Message Widget */}
       {lastMessage && (
         <div className={styles.lastMessageWidget}>
-          <h3 className={styles.lastMessageTitle}>Latest Chat Activity</h3>
+          <h3 className={styles.lastMessageTitle}>- Latest Chat Activity</h3>
           <div className={styles.lastMessageCard}>
             <div className={styles.lastMessageHeader}>
               <span className={styles.lastMessageGameName}>
@@ -322,7 +323,7 @@ const calculateFavoriteGenres = (games) => {
       )}
 
       <div className={styles.sectionWidget}>
-        <h3 className={styles.sectionTitle}>Favorite Games ({favoriteGames.length})</h3>
+        <h3 className={styles.sectionTitle}>- Favorite Games ({favoriteGames.length})</h3>
         {favoriteGames.length === 0 ? (
           <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
             No favorite games yet. Start adding games to your favorites!
@@ -338,7 +339,7 @@ const calculateFavoriteGenres = (games) => {
                 >
                   ×
                 </button>
-               <Link to={`/games/${game.game_slug}/${game.game_id}`}>
+                <Link to={`/games/${game.game_slug}/${game.game_id}`}>
                   <div 
                     className={styles.gameImagePlaceholder}
                     style={{

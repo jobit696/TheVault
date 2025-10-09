@@ -5,13 +5,16 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import ToggleFavorite from "../../components/ui/ToggleFavorite";
 import styles from "../../css/GamePage.module.css";
 import Chatbox from "../../components/chat/Chatbox";
+import { useYoutubeChannel } from "../../context/YoutubeChannelContext";
 import InteractiveImageCard from "../../components/cards/InteractiveImageCard";
 import PlatformPageCard from "../../components/cards/PlatformPageCard";
 import gamepadImage from "../../assets/images/Gamepad.png";
+import YouTubeGameVideo from "../../components/youtube/YoutubeGameVideo";
 
 export default function GamePage() {
     const { game, screenshots, dlcs, similarGames } = useLoaderData();
     const [selectedImage, setSelectedImage] = useState(null);
+    const { channelId } = useYoutubeChannel();
 
     return (
         <div className={styles.gamePage}>
@@ -55,11 +58,11 @@ export default function GamePage() {
                                     ⭐ {game?.rating}
                                 </span>
                                {game?.playtime > 0 && (
-    <span className={`${styles.metadataText} ${styles.playtimeContainer}`}>
-        <img className={styles.playtimeImage} src={gamepadImage} alt="" />
-        <span className={styles.playtimeText}>{game.playtime}h</span>
-    </span>
-)}
+                                    <span className={`${styles.metadataText} ${styles.playtimeContainer}`}>
+                                        <img className={styles.playtimeImage} src={gamepadImage} alt="" />
+                                        <span className={styles.playtimeText}>{game.playtime}h</span>
+                                    </span>
+                                )}
                             </div>
 
                             <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
@@ -131,11 +134,9 @@ export default function GamePage() {
 
             {/* Screenshots Section */}
             <div className="container mt-5 pb-5 text-sm-center">
-                
-                    <h2 className={styles.sectionTitleBan3}>
-                        Screenshots
-                    </h2>
-               
+                <h2 className={styles.sectionTitleBan3}>
+                    Screenshots
+                </h2>
 
                 <div className="row g-5">
                     {screenshots.map((screenshot) => (
@@ -179,14 +180,18 @@ export default function GamePage() {
                     </div>
                 )}
 
+                {/* VIDEO CANALE SCELTO */}
+                <YouTubeGameVideo 
+                    gameName={game?.name} 
+                    channelId={channelId} 
+                />
+
                 {/* DLC Section */}
                 {dlcs && dlcs.length > 0 && (
                     <div className="mt-5">
-                      
-                            <h2 className={styles.sectionTitleBan1}>
-                                DLC
-                            </h2>
-                       
+                        <h2 className={styles.sectionTitleBan1}>
+                            DLC
+                        </h2>
 
                         <div className="row g-4 mt-3">
                             {dlcs.map((dlc) => (
@@ -206,11 +211,9 @@ export default function GamePage() {
                 {/* Similar Games Section */}
                 {similarGames && similarGames.length > 0 && (
                     <div className="mt-5">
-                        
-                            <h2 className={styles.sectionTitleBan2}>
-                                Similar Games
-                            </h2>
-                        
+                        <h2 className={styles.sectionTitleBan2}>
+                            Similar Games
+                        </h2>
 
                         <div className="row g-4 mt-3">
                             {similarGames.slice(0, 8).map((similar) => (

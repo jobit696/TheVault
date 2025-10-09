@@ -1,0 +1,286 @@
+/* ========== YOUTUBE CHANNEL SETTINGS ========== */
+.container {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    padding: 30px;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        margin-bottom: 35px;
+}
+
+.title {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 5px rgba(209, 29, 4, 0.3);
+}
+
+.description {
+    color: #868686;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* ========== LOADING STATE ========== */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #868686;
+    font-size: 1rem;
+}
+
+/* ========== MESSAGE FEEDBACK ========== */
+.message {
+    background: rgba(209, 29, 4, 0.1);
+    border: 1px solid rgba(209, 29, 4, 0.3);
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== CHANNELS LIST ========== */
+.channelsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.channelCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.channelCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(209, 29, 4, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(209, 29, 4, 0.2);
+}
+
+.channelCard.active {
+    background: rgba(209, 29, 4, 0.15);
+    border-color: #d11d04;
+    box-shadow: 0 5px 15px rgba(209, 29, 4, 0.3);
+}
+
+.channelInfo {
+    flex: 1;
+}
+
+.channelInfo h4 {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+}
+
+.channelInfo p {
+    color: #868686;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.badge {
+    display: inline-block;
+    background: linear-gradient(145deg, #d11d04, #b81903);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+    box-shadow: 0 2px 8px rgba(209, 29, 4, 0.4);
+}
+
+.checkmark {
+    color: #d11d04;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(209, 29, 4, 0.5);
+}
+
+/* ========== CUSTOM CHANNEL SECTION ========== */
+.customSection {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.addCustomButton {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed rgba(209, 29, 4, 0.4);
+    border-radius: 10px;
+    padding: 15px;
+    color: #d11d04;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.addCustomButton:hover {
+    background: rgba(209, 29, 4, 0.1);
+    border-color: #d11d04;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(209, 29, 4, 0.2);
+}
+
+/* ========== CUSTOM INPUT ========== */
+.customInput {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #d11d04;
+    box-shadow: 0 0 0 3px rgba(209, 29, 4, 0.1);
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.customButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.saveButton,
+.cancelButton {
+    flex: 1;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.saveButton {
+    background: linear-gradient(145deg, #d11d04, #b81903);
+    color: white;
+    box-shadow: 
+        0 4px 12px rgba(209, 29, 4, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.saveButton:hover:not(:disabled) {
+    background: linear-gradient(145deg, #fa260a, #d11d04);
+    box-shadow: 
+        0 6px 20px rgba(209, 29, 4, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.saveButton:disabled {
+    background: linear-gradient(145deg, #555, #444);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.cancelButton {
+    background: rgba(255, 255, 255, 0.05);
+    color: #868686;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cancelButton:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ========== HELP TEXT ========== */
+.helpText {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255, 166, 2, 0.1);
+    border: 1px solid rgba(255, 166, 2, 0.3);
+    border-radius: 10px;
+}
+
+.helpText p {
+    color: #ffa602;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.helpText ol {
+    color: #e0e0e0;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    margin: 0;
+    padding-left: 20px;
+}
+
+.helpText ol li {
+    margin-bottom: 5px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .channelsList {
+        grid-template-columns: 1fr;
+    }
+
+    .customButtons {
+        flex-direction: column;
+    }
+
+    .title {
+        font-size: 1.1rem;
+    }
+}
