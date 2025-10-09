@@ -42,7 +42,7 @@ useEffect(() => {
       }
 
       // Rimuovi sottotitoli e caratteri speciali dalla query
-      const cleanGameName = gameName.split(':')[0].trim(); // Prende solo la parte prima dei ":"
+      const cleanGameName = gameName.split(':')[0].trim(); 
       
       const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&q=${encodeURIComponent(cleanGameName)}&key=${apiKey}&maxResults=5&order=relevance&type=video`;
 
@@ -60,7 +60,7 @@ useEffect(() => {
       const data = await response.json();
 
       if (data.items && data.items.length > 0) {
-        // Normalizza testo (rimuove caratteri speciali)
+        // rimuove caratteri speciali
         const normalizeText = (text) => {
           return text
             .toLowerCase()
@@ -70,7 +70,7 @@ useEffect(() => {
             .trim();
         };
 
-        // Prendi la parola principale del gioco (di solito la prima)
+        // Parola principale del gioco 
         const mainWord = normalizeText(cleanGameName).split(' ')[0];
 
         // Filtra video che contengono almeno la parola principale
@@ -79,7 +79,7 @@ useEffect(() => {
           return titleNormalized.includes(mainWord);
         });
 
-        // Usa video filtrati se ci sono, altrimenti i primi 3
+        // Usa video filtrati se ci sono oppure primi 3
         const videosToUse = filteredVideos.length > 0 
           ? filteredVideos.slice(0, 3)
           : data.items.slice(0, 3);
@@ -123,7 +123,7 @@ useEffect(() => {
     return null;
   }
 
-  // Dividi i video in gruppi per slide
+  // Video in gruppi per slide
   const chunkedVideos = [];
   for (let i = 0; i < videos.length; i += videosPerSlide) {
     chunkedVideos.push(videos.slice(i, i + videosPerSlide));
@@ -153,8 +153,8 @@ return (
 
     <Carousel 
       interval={null} 
-      indicators={videos.length > 1} // ← Mostra indicatori solo se più di 1 video
-      controls={videos.length > 1}   // ← Mostra frecce solo se più di 1 video
+      indicators={videos.length > 1} 
+      controls={videos.length > 1}   
       prevIcon={prevIcon}
       nextIcon={nextIcon}
     >
