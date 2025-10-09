@@ -24,7 +24,7 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
- useEffect(() => {
+useEffect(() => {
   const fetchVideos = async () => {
     if (!gameName || !channelId) {
       setLoading(false);
@@ -41,35 +41,48 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
         throw new Error('YouTube API key non configurata');
       }
 
-      const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&q="${encodeURIComponent(gameName)} gameplay"&key=${apiKey}&maxResults=3&order=relevance&type=video`;
+      // Rimuovi sottotitoli e caratteri speciali dalla query
+      const cleanGameName = gameName.split(':')[0].trim(); // Prende solo la parte prima dei ":"
+      
+      const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&q=${encodeURIComponent(cleanGameName)}&key=${apiKey}&maxResults=5&order=relevance&type=video`;
 
       const response = await fetch(searchUrl);
       
-      // Aggiungi più dettagli sull'errore
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
-        
         if (response.status === 403) {
           throw new Error('Quota API esaurita o chiave non valida');
         } else if (response.status === 429) {
           throw new Error('Troppe richieste. Riprova tra qualche minuto');
         }
-        
         throw new Error(`Errore API: ${response.status}`);
       }
 
       const data = await response.json();
 
       if (data.items && data.items.length > 0) {
-        const gameLower = gameName.toLowerCase();
-        
+        // Normalizza testo (rimuove caratteri speciali)
+        const normalizeText = (text) => {
+          return text
+            .toLowerCase()
+            .replace(/[:\-–—()]/g, ' ')
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+        };
+
+        // Prendi la parola principale del gioco (di solito la prima)
+        const mainWord = normalizeText(cleanGameName).split(' ')[0];
+
+        // Filtra video che contengono almeno la parola principale
         const filteredVideos = data.items.filter(item => {
-          const title = item.snippet.title.toLowerCase();
-          return title.includes(gameLower);
+          const titleNormalized = normalizeText(item.snippet.title);
+          return titleNormalized.includes(mainWord);
         });
 
-        const videosToUse = filteredVideos.length > 0 ? filteredVideos : data.items;
+        // Usa video filtrati se ci sono, altrimenti i primi 3
+        const videosToUse = filteredVideos.length > 0 
+          ? filteredVideos.slice(0, 3)
+          : data.items.slice(0, 3);
 
         const videoList = videosToUse.map(item => ({
           videoId: item.id.videoId,
@@ -83,7 +96,6 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
         setVideos([]);
       }
     } catch (err) {
-      
       setError(err.message);
       setVideos([]);
     } finally {
@@ -133,48 +145,48 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
     </span>
   );
 
-  return (
-    <div className={`container-fluid ${styles.videoCarouselWrapper} mt-5`}>
-      <h2 className={styles.sectionTitleBan4}>
-        Related videos
-      </h2>
+return (
+  <div className={`container-fluid ${styles.videoCarouselWrapper} mt-5`}>
+    <h2 className={styles.sectionTitleBan4}>
+      Related videos
+    </h2>
 
-      <Carousel 
-        interval={null} 
-        indicators={true}
-        controls={true}
-        prevIcon={prevIcon}
-        nextIcon={nextIcon}
-      >
-        {chunkedVideos.map((gruppo, slideIndex) => (
-          <Carousel.Item key={slideIndex}>
-            <div className={`d-flex justify-content-center ${styles.carouselVideosContainer} my-4 py-4`}>
-              {gruppo.map((video) => (
-                <div key={video.videoId} className={styles.carouselVideoItem}>
-                  <div className={styles.videoCard}>
-                    <div className={styles.videoWrapper}>
-                      <iframe
-                        src={`https://www.youtube.com/embed/${video.videoId}`}
-                        title={video.title}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className={styles.videoFrame}
-                      ></iframe>
-                    </div>
-                    <div className={styles.videoInfo}>
-                      <h4 className={styles.videoTitle}>{video.title}</h4>
-                      <p className={styles.channelName}>{video.channelTitle}</p>
-                    </div>
+    <Carousel 
+      interval={null} 
+      indicators={videos.length > 1} // ← Mostra indicatori solo se più di 1 video
+      controls={videos.length > 1}   // ← Mostra frecce solo se più di 1 video
+      prevIcon={prevIcon}
+      nextIcon={nextIcon}
+    >
+      {chunkedVideos.map((gruppo, slideIndex) => (
+        <Carousel.Item key={slideIndex}>
+          <div className={`d-flex justify-content-center ${styles.carouselVideosContainer} my-4 py-4`}>
+            {gruppo.map((video) => (
+              <div key={video.videoId} className={styles.carouselVideoItem}>
+                <div className={styles.videoCard}>
+                  <div className={styles.videoWrapper}>
+                    <iframe
+                      src={`https://www.youtube.com/embed/${video.videoId}`}
+                      title={video.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className={styles.videoFrame}
+                    ></iframe>
+                  </div>
+                  <div className={styles.videoInfo}>
+                    <h4 className={styles.videoTitle}>{video.title}</h4>
+                    <p className={styles.channelName}>{video.channelTitle}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
-    </div>
-  );
+              </div>
+            ))}
+          </div>
+        </Carousel.Item>
+      ))}
+    </Carousel>
+  </div>
+);
 };
 
 export default YouTubeGameVideo;
