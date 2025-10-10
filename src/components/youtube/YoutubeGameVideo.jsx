@@ -39,34 +39,33 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
       setError(null);
 
       try {
-        // Crea chiave univoca per la cache
         const cacheKey = `youtube_${channelId}_${gameName}`;
         
-        // Controlla se esistono dati in cache
         const cached = cache.get(cacheKey);
         if (cached) {
-          console.log('✅ YouTube cache hit:', cacheKey);
           setVideos(cached);
           setLoading(false);
           return;
         }
 
-        console.log(`🌐 YouTube API call (key #${retries + 1}/${maxRetries}):`, cacheKey);
-
+   
         const apiKey = getCurrentYoutubeApiKey();
         
         if (!apiKey) {
           throw new Error('YouTube API key non configurata');
         }
 
-        // Rimuovi sottotitoli e caratteri speciali dalla query
-        const cleanGameName = gameName.split(':')[0].trim(); 
+        // Pulisci il nome: rimuovi sottotitoli dopo ":" e caratteri speciali
+        const cleanGameName = gameName
+          .split(':')[0]
+          .split('-')[0]
+          .trim()
+          .replace(/[™®©]/g, ''); // Rimuovi simboli trademark
         
-        const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&q=${encodeURIComponent(cleanGameName)}&key=${apiKey}&maxResults=5&order=relevance&type=video`;
+        const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&q=${encodeURIComponent(cleanGameName)}&key=${apiKey}&maxResults=8&order=relevance&type=video`;
 
         const response = await fetch(searchUrl);
         
-        // Se errore 403 (quota esaurita), prova la chiave successiva
         if (response.status === 403 && retries < maxRetries - 1) {
           console.warn(`⚠️ YouTube key #${retries + 1} esaurita, provo la successiva...`);
           rotateYoutubeApiKey();
@@ -85,46 +84,72 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
-          // rimuove caratteri speciali
+          // Normalizza testo
           const normalizeText = (text) => {
             return text
               .toLowerCase()
-              .replace(/[:\-–—()]/g, ' ')
+              .replace(/[:\-–—()™®©]/g, ' ')
               .replace(/[^a-z0-9\s]/g, '')
               .replace(/\s+/g, ' ')
               .trim();
           };
 
-          // Parola principale del gioco 
-          const mainWord = normalizeText(cleanGameName).split(' ')[0];
+          // Estrai parole chiave significative (lunghezza > 2)
+          const gameNormalized = normalizeText(cleanGameName);
+          const gameWords = gameNormalized.split(' ').filter(w => w.length > 2);
 
-          // Filtra video che contengono almeno la parola principale
-          const filteredVideos = data.items.filter(item => {
+          // Sistema di scoring per ogni video
+          const scoredVideos = data.items.map(item => {
             const titleNormalized = normalizeText(item.snippet.title);
-            return titleNormalized.includes(mainWord);
+            
+            // Conta quante parole del gioco sono nel titolo
+            const matchingWords = gameWords.filter(word => 
+              titleNormalized.includes(word)
+            );
+            
+            // Calcola score (percentuale di match)
+            const score = gameWords.length > 0 
+              ? matchingWords.length / gameWords.length 
+              : 0;
+            
+            return {
+              ...item,
+              score,
+              matchingWords: matchingWords.length
+            };
           });
 
-          // Usa video filtrati se ci sono oppure primi 3
-          const videosToUse = filteredVideos.length > 0 
-            ? filteredVideos.slice(0, 3)
-            : data.items.slice(0, 3);
+          // Ordina per score decrescente
+          scoredVideos.sort((a, b) => b.score - a.score);
 
-          const videoList = videosToUse.map(item => ({
+          // Prendi solo video con almeno 50% di match
+          // Per giochi con 1 parola 100% match
+          const minScore = gameWords.length === 1 ? 1.0 : 0.5;
+          const goodMatches = scoredVideos.filter(v => v.score >= minScore);
+
+          // Se non ci sono match decenti, non mostrare nulla
+          if (goodMatches.length === 0) {
+            
+            setVideos([]);
+            setLoading(false);
+            return;
+          }
+
+          // Prendi i migliori 3
+          const videoList = goodMatches.slice(0, 3).map(item => ({
             videoId: item.id.videoId,
             title: item.snippet.title,
             thumbnail: item.snippet.thumbnails.high.url,
             channelTitle: item.snippet.channelTitle
           }));
 
-          // Salva nella cache
           cache.set(cacheKey, videoList);
-
           setVideos(videoList);
         } else {
           setVideos([]);
         }
       } catch (err) {
-        console.error('❌ Errore YouTube:', err);
+        console.error('Errore YouTube:', err);
         setError(err.message);
         setVideos([]);
       } finally {
@@ -152,7 +177,6 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
     return null;
   }
 
-  // Video in gruppi per slide
   const chunkedVideos = [];
   for (let i = 0; i < videos.length; i += videosPerSlide) {
     chunkedVideos.push(videos.slice(i, i + videosPerSlide));
