@@ -56,6 +56,10 @@ export default function AccountPage() {
   };
 
   useEffect(() => {
+    if (!session || !session.user) {
+      return;
+    }
+
     let ignore = false;
     const getProfile = async () => {
       setLoading(true);
@@ -167,6 +171,18 @@ export default function AccountPage() {
       calculateFavoriteGenres(updatedFavorites);
     }
   };
+
+  // Check session DOPO tutti gli hooks
+  if (!session || !session.user) {
+    return (
+      <div className={styles.container}>
+        <div className="page-loader">
+          <div className="loader-spinner-large"></div>
+          <p className="loader-text">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -293,7 +309,7 @@ export default function AccountPage() {
         </div>
       </div>
 
-      {/* NUOVO: Impostazioni YouTube Channel */}
+      {/* Impostazioni YouTube Channel */}
       <YoutubeChannelSettings />
 
       {/* Last Message Widget */}

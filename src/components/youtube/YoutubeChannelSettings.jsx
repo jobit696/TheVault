@@ -76,7 +76,7 @@ const YoutubeChannelSettings = () => {
         {YOUTUBE_CHANNELS.map((channel) => (
           <div
             key={channel.id}
-            className={`${styles.channelCard} ${channelId === channel.id ? styles.active : ''}`}
+            className={`${styles.channelCard} hasElectricity ${channelId === channel.id ? styles.active : ''}`}
             onClick={() => !saving && handleSelectChannel(channel.id)}
           >
             <div className={styles.channelInfo}>
