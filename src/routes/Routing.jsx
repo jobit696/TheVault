@@ -9,6 +9,7 @@ import SearchPage from "../pages/searchpage/SearchPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import AllGamesPage from "../pages/allgamespage/AllGamesPage";
 import AccountPage from "../pages/account/AccountPage";
+import ScrollToTop from "../components/layout_comp/ScrollToTop";
 import {
   getAllGames,
   getGamesByPlatform,
@@ -26,14 +27,19 @@ import CommunityGamePage from "../pages/communitygamepage/CommunityGamePage";
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: Layout,
+    element: ( // ← CAMBIATO da Component a element
+      <>
+        <ScrollToTop /> {/* ← AGGIUNTO */}
+        <Layout />
+      </>
+    ),
     loader: getLayoutData, 
     errorElement: <Errorpage />,
     children: [
       {
-       path: "/",
-  Component: Homepage,
-  loader: getHomepageData
+        path: "/",
+        Component: Homepage,
+        loader: getHomepageData
       },
       {
         path: "/games",
@@ -73,23 +79,20 @@ const router = createBrowserRouter([
         Component: AccountPage
       },
       {
-        path: "*",
-        Component: Errorpage 
+        path: "/arcade",
+        Component: ArcadePage 
       },
       {
-    path: '/arcade',
-    Component: ArcadePage 
-}
-,
+        path: '/communitygamepage',
+        Component: CommunityGamePage 
+      },
       {
-    path: '/communitygamepage',
-    Component: CommunityGamePage 
-}
+        path: "*",
+        Component: Errorpage 
+      }
     ]
   }
 ]);
-
-
 
 export function Routing() {
   return <RouterProvider router={router} />;

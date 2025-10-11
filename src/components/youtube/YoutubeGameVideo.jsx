@@ -48,19 +48,17 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
           return;
         }
 
-   
         const apiKey = getCurrentYoutubeApiKey();
         
         if (!apiKey) {
           throw new Error('YouTube API key non configurata');
         }
 
-        // Pulisci il nome: rimuovi sottotitoli dopo ":" e caratteri speciali
         const cleanGameName = gameName
           .split(':')[0]
           .split('-')[0]
           .trim()
-          .replace(/[™®©]/g, ''); // Rimuovi simboli trademark
+          .replace(/[™®©]/g, '');
         
         const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&q=${encodeURIComponent(cleanGameName)}&key=${apiKey}&maxResults=8&order=relevance&type=video`;
 
@@ -84,7 +82,6 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
-          // Normalizza testo
           const normalizeText = (text) => {
             return text
               .toLowerCase()
@@ -94,20 +91,16 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
               .trim();
           };
 
-          // Estrai parole chiave significative (lunghezza > 2)
           const gameNormalized = normalizeText(cleanGameName);
           const gameWords = gameNormalized.split(' ').filter(w => w.length > 2);
 
-          // Sistema di scoring per ogni video
           const scoredVideos = data.items.map(item => {
             const titleNormalized = normalizeText(item.snippet.title);
             
-            // Conta quante parole del gioco sono nel titolo
             const matchingWords = gameWords.filter(word => 
               titleNormalized.includes(word)
             );
             
-            // Calcola score (percentuale di match)
             const score = gameWords.length > 0 
               ? matchingWords.length / gameWords.length 
               : 0;
@@ -119,23 +112,17 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
             };
           });
 
-          // Ordina per score decrescente
           scoredVideos.sort((a, b) => b.score - a.score);
 
-          // Prendi solo video con almeno 50% di match
-          // Per giochi con 1 parola 100% match
           const minScore = gameWords.length === 1 ? 1.0 : 0.5;
           const goodMatches = scoredVideos.filter(v => v.score >= minScore);
 
-          // Se non ci sono match decenti, non mostrare nulla
           if (goodMatches.length === 0) {
-            
             setVideos([]);
             setLoading(false);
             return;
           }
 
-          // Prendi i migliori 3
           const videoList = goodMatches.slice(0, 3).map(item => ({
             videoId: item.id.videoId,
             title: item.snippet.title,
@@ -211,32 +198,37 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
         prevIcon={prevIcon}
         nextIcon={nextIcon}
       >
-        {chunkedVideos.map((gruppo, slideIndex) => (
-          <Carousel.Item key={slideIndex}>
-            <div className={`d-flex justify-content-center ${styles.carouselVideosContainer} my-4 py-4`}>
-              {gruppo.map((video) => (
-                <div key={video.videoId} className={styles.carouselVideoItem}>
-                  <div className={styles.videoCard}>
-                    <div className={styles.videoWrapper}>
-                      <iframe
-                        src={`https://www.youtube.com/embed/${video.videoId}`}
-                        title={video.title}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className={styles.videoFrame}
-                      ></iframe>
-                    </div>
-                    <div className={styles.videoInfo}>
-                      <h4 className={styles.videoTitle}>{video.title}</h4>
-                      <p className={styles.channelName}>{video.channelTitle}</p>
+        {chunkedVideos.map((gruppo, slideIndex) => {
+          // ✅ CREA UNA KEY UNICA BASATA SUI VIDEO CONTENUTI
+          const slideKey = gruppo.map(v => v.videoId).join('-');
+          
+          return (
+            <Carousel.Item key={slideKey}> {/* ← MODIFICATO: usa slideKey invece di slideIndex */}
+              <div className={`d-flex justify-content-center ${styles.carouselVideosContainer} my-4 py-4`}>
+                {gruppo.map((video) => (
+                  <div key={video.videoId} className={styles.carouselVideoItem}>
+                    <div className={styles.videoCard}>
+                      <div className={styles.videoWrapper}>
+                        <iframe
+                          src={`https://www.youtube.com/embed/${video.videoId}`}
+                          title={video.title}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className={styles.videoFrame}
+                        ></iframe>
+                      </div>
+                      <div className={styles.videoInfo}>
+                        <h4 className={styles.videoTitle}>{video.title}</h4>
+                        <p className={styles.channelName}>{video.channelTitle}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </Carousel.Item>
-        ))}
+                ))}
+              </div>
+            </Carousel.Item>
+          );
+        })}
       </Carousel>
     </div>
   );

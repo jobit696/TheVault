@@ -132,6 +132,28 @@ export default function GamePage() {
                 </div>
             </div>
 
+            {/* Description Section */}
+            <div className="container mt-5 pb-5">
+                <h2 className={styles.sectionTitleBan4}>
+                    Description
+                </h2>
+                
+                <div className="row mt-4">
+                    <div className="col-12">
+                        {game?.description ? (
+                            <div 
+                                className={styles.gameDescription}
+                                dangerouslySetInnerHTML={{ __html: game.description }}
+                            />
+                        ) : (
+                            <p className={styles.fullDescription}>
+                                {game?.description_raw}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </div>
+
             {/* Screenshots Section */}
             <div className="container mt-5 pb-5 text-sm-center">
                 <h2 className={styles.sectionTitleBan3}>

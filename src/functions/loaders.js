@@ -1,30 +1,47 @@
 import { cache } from '../utils/cache';
 import { getCurrentRawgApiKey, rotateRawgApiKey, getTotalRawgKeys } from '../utils/apiKeyRotation';
+import { getGameDetails as getGameDetailsFromDB } from '../services/gameCacheService';
 
 const BASE_URL = import.meta.env.VITE_RAW_G_URL;
+const FETCH_TIMEOUT = 10000; // 10 secondi timeout
+
+// Helper con timeout
+async function fetchWithTimeout(url, timeout = FETCH_TIMEOUT) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    
+    try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        return response;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+            throw new Error('Request timeout');
+        }
+        throw error;
+    }
+}
 
 // Helper function per fetch CON CACHE e ROTAZIONE KEY
 async function fetchFromAPI(url, cacheKey, retries = 0) {
-    const maxRetries = getTotalRawgKeys(); // Prova tutte le key RAWG disponibili
+    const maxRetries = getTotalRawgKeys();
 
-    // Prova a recuperare dalla cache
+    // Prova a recuperare dalla cache in-memory
     const cached = cache.get(cacheKey);
     if (cached) {
+        console.log(`⚡ Cache hit: ${cacheKey}`);
         return cached;
     }
 
-    // Costruisci URL con la chiave corrente
     const API_KEY = getCurrentRawgApiKey();
     const urlWithKey = url.includes('?') 
         ? `${url}&key=${API_KEY}` 
         : `${url}?key=${API_KEY}`;
 
-   
-
     try {
-        const response = await fetch(urlWithKey);
+        const response = await fetchWithTimeout(urlWithKey);
         
-        // Se errore 429 o 403 (quota esaurita), prova la chiave successiva
         if ((response.status === 429 || response.status === 403) && retries < maxRetries - 1) {
             console.warn(`⚠️ RAWG Key #${retries + 1} esaurita, provo la successiva...`);
             rotateRawgApiKey();
@@ -36,19 +53,15 @@ async function fetchFromAPI(url, cacheKey, retries = 0) {
         }
         
         const data = await response.json();
-        
-        // Salva nella cache
         cache.set(cacheKey, data);
         
         return data;
     } catch (error) {
-        // Se errore di rete e ci sono altre chiavi, prova la successiva
-        if (retries < maxRetries - 1) {
+        if (retries < maxRetries - 1 && error.message !== 'Request timeout') {
             console.warn(`⚠️ Errore con RAWG key #${retries + 1}, provo la successiva...`);
             rotateRawgApiKey();
             return fetchFromAPI(url, cacheKey, retries + 1);
         }
-        
         throw error;
     }
 }
@@ -82,36 +95,57 @@ export async function getGamesByPlatform({ params, request }) {
     return fetchFromAPI(apiUrl, `platform_${platformId}_page_${page}`);
 }
 
+// ========== OTTIMIZZATO: USA SUPABASE CACHE ==========
 export async function getGameDetails({ params }) {
     const { id } = params;
-    const gameUrl = `${BASE_URL}/games/${id}`;
-    const screenshotsUrl = `${BASE_URL}/games/${id}/screenshots`;
-    const dlcUrl = `${BASE_URL}/games/${id}/additions`;
-    const similarUrl = `${BASE_URL}/games/${id}/game-series`;
     
-    const safeFetch = async (url, cacheKey) => {
-        try {
-            return await fetchFromAPI(url, cacheKey);
-        } catch (error) {
-            console.warn(`Failed to fetch ${url}:`, error);
-            return { results: [] };
+    // Controlla prima la cache in-memory
+    const memoryCacheKey = `game_full_${id}`;
+    const memoryCache = cache.get(memoryCacheKey);
+    if (memoryCache) {
+        console.log(`⚡ Gioco #${id} da cache in-memory`);
+        return memoryCache;
+    }
+    
+    try {
+        console.time(`⏱️ Caricamento gioco #${id}`);
+        
+        // Usa il service con Supabase (controlla DB prima, poi RAWG)
+        const data = await getGameDetailsFromDB(id);
+        
+        console.timeEnd(`⏱️ Caricamento gioco #${id}`);
+        
+        // Log per debug
+        if (data.fromCache) {
+            console.log(`💾 Gioco #${id} caricato da Supabase`);
+        } else {
+            console.log(`🌐 Gioco #${id} caricato da RAWG e salvato in Supabase`);
         }
-    };
-    
-    const [game, screenshots, dlcs, similarGames] = await Promise.all([
-        fetchFromAPI(gameUrl, `game_${id}`),
-        fetchFromAPI(screenshotsUrl, `screenshots_${id}`),
-        safeFetch(dlcUrl, `dlc_${id}`),
-        safeFetch(similarUrl, `similar_${id}`)
-    ]);
-    
-    return { 
-        game, 
-        screenshots: screenshots.results || [], 
-        dlcs: dlcs.results || [],
-        similarGames: similarGames.results || []
-    };
+        
+        const result = {
+            game: data.game,
+            screenshots: data.screenshots || [],
+            dlcs: data.dlcs || [],
+            similarGames: data.similarGames || [],
+            clips: data.clips || [],
+            fromCache: data.fromCache
+        };
+        
+        // Salva anche in cache in-memory per accesso ultra-rapido
+        cache.set(memoryCacheKey, result, 3600000); // 1 ora
+        
+        return result;
+        
+    } catch (error) {
+        console.error(`❌ Errore caricamento gioco #${id}:`, error);
+        console.timeEnd(`⏱️ Caricamento gioco #${id}`);
+        
+        // NON fare fallback completo - è troppo lento
+        // Meglio mostrare errore all'utente
+        throw new Error(`Impossibile caricare il gioco. Riprova tra poco.`);
+    }
 }
+// ========== FINE MODIFICA ==========
 
 // Loader per generi
 export async function getGenres() {
