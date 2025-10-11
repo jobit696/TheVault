@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import InteractiveImageCard from '../cards/InteractiveImageCard.jsx';
 import styles from '../../css/NewGameList.module.css';
+import { getFeaturedGames } from '../../services/featuredGamesServices.js';
 
-export default function CustomGameList({ title = 'Featured Games', gameIds = [] }) {
+export default function CustomGameList({ title = 'Featured Games' }) {
     const [cardsPerSlide, setCardsPerSlide] = useState(5);
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,17 +31,23 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Carica i giochi featured dal DB
     useEffect(() => {
         const fetchGames = async () => {
-            if (gameIds.length === 0) {
-                setLoading(false);
-                return;
-            }
-
             setLoading(true);
             try {
-                const promises = gameIds.map(id => 
-                    fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`)
+                // 1. Ottieni i game_id dal DB
+                const featuredGames = await getFeaturedGames();
+                
+                if (featuredGames.length === 0) {
+                    setGames([]);
+                    setLoading(false);
+                    return;
+                }
+
+                // 2. Fetch dettagli da RAWG per ogni game_id
+                const promises = featuredGames.map(featured => 
+                    fetch(`${BASE_URL}/games/${featured.game_id}?key=${API_KEY}`)
                         .then(res => res.json())
                 );
                 
@@ -48,6 +55,7 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
                 setGames(results);
                 setError(null);
             } catch (err) {
+                console.error('Errore caricamento featured games:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -55,7 +63,33 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
         };
 
         fetchGames();
-    }, [gameIds]);
+    }, []);
+
+    // Funzione per ricaricare i giochi dopo add/remove
+    const reloadGames = async () => {
+        setLoading(true);
+        try {
+            const featuredGames = await getFeaturedGames();
+            
+            if (featuredGames.length === 0) {
+                setGames([]);
+                setLoading(false);
+                return;
+            }
+
+            const promises = featuredGames.map(featured => 
+                fetch(`${BASE_URL}/games/${featured.game_id}?key=${API_KEY}`)
+                    .then(res => res.json())
+            );
+            
+            const results = await Promise.all(promises);
+            setGames(results);
+        } catch (err) {
+            console.error('Errore ricaricamento:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const chunkedGames = [];
     for (let i = 0; i < games.length; i += cardsPerSlide) {
@@ -103,37 +137,38 @@ export default function CustomGameList({ title = 'Featured Games', gameIds = [] 
 
     return (
         <>
-                <h1 className={styles.pageTitle}>OUR CHOICE</h1>
-        <div className={`container-fluid ${styles.popularGamesCarouselWrapper} my-4`}>
-            <div className={`${styles.gameListTitle2} ${styles.parallelogram}`}>
-                {title}
+            <h1 className={styles.pageTitle}>OUR CHOICE</h1>
+            <div className={`container-fluid ${styles.popularGamesCarouselWrapper} my-4`}>
+                <div className={`${styles.gameListTitle2} ${styles.parallelogram}`}>
+                    {title}
+                </div>
+                <Carousel 
+                    interval={null} 
+                    indicators={true}
+                    controls={true}
+                    prevIcon={prevIcon}
+                    nextIcon={nextIcon}
+                >
+                    {chunkedGames.map((gruppo, slideIndex) => (
+                        <Carousel.Item key={slideIndex}>
+                            <div className={`d-flex justify-content-center ${styles.carouselCardsContainer} py-4 my-4`}>
+                                {gruppo.map((gioco, index) => (
+                                    <div key={gioco.id} className={styles.carouselCardItem}>
+                                        <InteractiveImageCard 
+                                            url={gioco.background_image} 
+                                            title={gioco.name}
+                                            number={slideIndex * cardsPerSlide + index + 1}
+                                            show_number={true}
+                                            gioco={gioco}
+                                            onFeaturedChange={reloadGames} // ← AGGIUNTO
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </Carousel.Item>
+                    ))}
+                </Carousel>
             </div>
-            <Carousel 
-                interval={null} 
-                indicators={true}
-                controls={true}
-                prevIcon={prevIcon}
-                nextIcon={nextIcon}
-            >
-                {chunkedGames.map((gruppo, slideIndex) => (
-                    <Carousel.Item key={slideIndex}>
-                        <div className={`d-flex justify-content-center ${styles.carouselCardsContainer} py-4 my-4`}>
-                            {gruppo.map((gioco, index) => (
-                                <div key={gioco.id} className={styles.carouselCardItem}>
-                                    <InteractiveImageCard 
-                                        url={gioco.background_image} 
-                                        title={gioco.name}
-                                        number={slideIndex * cardsPerSlide + index + 1}
-                                        show_number={true}
-                                        gioco={gioco}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </Carousel.Item>
-                ))}
-            </Carousel>
-        </div>
         </>
     );
 }

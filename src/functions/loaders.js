@@ -79,20 +79,56 @@ export async function getPopularGames() {
 }
 
 // Tutti i giochi 
+// export async function getAllGames({ request }) {
+//     const url = new URL(request.url);
+//     const page = url.searchParams.get('page') || 1;
+//     const apiUrl = `${BASE_URL}/games?page=${page}&page_size=20`;
+//     return fetchFromAPI(apiUrl, `all_games_page_${page}`);
+// }
+
 export async function getAllGames({ request }) {
     const url = new URL(request.url);
     const page = url.searchParams.get('page') || 1;
-    const apiUrl = `${BASE_URL}/games?page=${page}&page_size=20`;
-    return fetchFromAPI(apiUrl, `all_games_page_${page}`);
+    const platform = url.searchParams.get('platform') || '';
+    const genre = url.searchParams.get('genre') || '';
+    const ordering = url.searchParams.get('ordering') || '-rating';
+    const minRating = url.searchParams.get('minRating') || '';
+    
+    // Costruisci URL con filtri
+    let apiUrl = `${BASE_URL}/games?page=${page}&page_size=20&ordering=${ordering}`;
+    
+    if (platform) apiUrl += `&platforms=${platform}`;
+    if (genre) apiUrl += `&genres=${genre}`;
+    if (minRating) apiUrl += `&metacritic=${minRating},100`;
+    
+    return fetchFromAPI(apiUrl, `all_games_${page}_${platform}_${genre}_${ordering}_${minRating}`);
 }
 
 // Giochi per piattaforma
+// export async function getGamesByPlatform({ params, request }) {
+//     const { platformId } = params;
+//     const url = new URL(request.url);
+//     const page = url.searchParams.get('page') || 1;
+//     const apiUrl = `${BASE_URL}/games?platforms=${platformId}&page=${page}&page_size=20`;
+//     return fetchFromAPI(apiUrl, `platform_${platformId}_page_${page}`);
+// }
+
+// Giochi per piattaforma con filtri
 export async function getGamesByPlatform({ params, request }) {
     const { platformId } = params;
     const url = new URL(request.url);
     const page = url.searchParams.get('page') || 1;
-    const apiUrl = `${BASE_URL}/games?platforms=${platformId}&page=${page}&page_size=20`;
-    return fetchFromAPI(apiUrl, `platform_${platformId}_page_${page}`);
+    const genre = url.searchParams.get('genre') || '';
+    const ordering = url.searchParams.get('ordering') || '-rating';
+    const minRating = url.searchParams.get('minRating') || '';
+    
+    // Costruisci URL con filtri
+    let apiUrl = `${BASE_URL}/games?platforms=${platformId}&page=${page}&page_size=20&ordering=${ordering}`;
+    
+    if (genre) apiUrl += `&genres=${genre}`;
+    if (minRating) apiUrl += `&metacritic=${minRating},100`;
+    
+    return fetchFromAPI(apiUrl, `platform_${platformId}_${page}_${genre}_${ordering}_${minRating}`);
 }
 
 // ========== OTTIMIZZATO: USA SUPABASE CACHE ==========

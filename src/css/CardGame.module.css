@@ -9,6 +9,7 @@
         0 10px 30px rgba(0, 0, 0, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
     height: 100%;
+    min-height: 400px; /* ← AGGIUNTO: altezza minima fissa */
     display: flex;
     flex-direction: column;
     will-change: transform;
@@ -51,7 +52,7 @@
 
 .cardGameContent {
     padding: 15px;
-    flex: 1;
+    flex: 1; /* ← Questo fa espandere il contenuto per riempire lo spazio */
     display: flex;
     flex-direction: column;
     min-height: 0; 
@@ -69,7 +70,7 @@
     -webkit-line-clamp: 2; 
     -webkit-box-orient: vertical;
     line-height: 1.4;
-    height: 2.8em; 
+    min-height: 2.8em; /* ← MODIFICATO: min-height invece di height */
     flex-shrink: 0; 
 }
 
@@ -97,7 +98,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: auto; 
+    margin-top: auto; /* ← Questo spinge i generi in fondo */
     min-height: 28px; 
 }
 
@@ -152,11 +153,86 @@
     object-fit: contain;
 }
 
+/* ========== BOTTONE FEATURED ADMIN ========== */
+.featuredButton {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #ffa500;
+    color: #ffa500;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.featuredButton:hover {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: #ffb733;
+    transform: scale(1.15);
+    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+}
+
+.featuredButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+.featuredButtonActive {
+    background: rgba(255, 165, 0, 0.9);
+    border-color: #ffb733;
+    color: #fff;
+    box-shadow: 
+        0 0 15px rgba(255, 165, 0, 0.6),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.featuredButtonActive:hover {
+    background: rgba(255, 140, 0, 1);
+    box-shadow: 
+        0 0 25px rgba(255, 165, 0, 0.8),
+        0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 15px rgba(255, 165, 0, 0.6),
+            0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 
+            0 0 25px rgba(255, 165, 0, 0.9),
+            0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+}
+
 /* Responsive */
+@media (max-width: 1024px) {
+    .cardGame {
+        min-height: 380px; 
+    }
+}
+
 @media (max-width: 767px) {
+    .cardGame {
+        min-height: 360px; 
+    }
+    
     .cardGameTitle {
         font-size: 14px;
-        height: 2.8em; 
+        min-height: 2.8em; 
     }
     
     .cardGameContent {
@@ -170,5 +246,11 @@
     .genreTag {
         font-size: 10px;
         padding: 3px 8px;
+    }
+    
+    .featuredButton {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
     }
 }

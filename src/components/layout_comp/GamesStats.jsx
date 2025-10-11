@@ -23,7 +23,6 @@ export default function GamesStats() {
 
     const [progress, setProgress] = useState(0);
 
-    // ← AGGIUNTO: Carica le visite dal DB
     useEffect(() => {
         async function loadStats() {
             const stats = await getSiteStats();
@@ -62,7 +61,7 @@ export default function GamesStats() {
         { key: 'ratings', label: 'Ratings', color: colors.ratings },
         { key: 'reviews', label: 'Reviews', color: colors.reviews },
         { key: 'added', label: 'Played', color: colors.added },
-        { key: 'visits', label: 'Visits', color: colors.visits } 
+        { key: 'visits', label: 'Visits', color: colors.visits, hideOnMobile: true } 
     ];
 
     return (
@@ -70,7 +69,10 @@ export default function GamesStats() {
             <div className="container-md">
                 <div className="row text-center justify-content-center">
                     {stats.map(stat => (
-                        <div key={stat.key} className="col-3 col-md-2 mb-1 mt-4 d-flex flex-column align-items-center"> 
+                        <div 
+                            key={stat.key} 
+                            className={`col-3 col-md-2 mb-1 mt-4 d-flex flex-column align-items-center ${stat.hideOnMobile ? styles.hideOnMobile : ''}`} 
+                        > 
                             <div className={styles.statCard}>
                                 <span className={styles.statLabel}>
                                     <span 

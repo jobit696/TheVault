@@ -35,3 +35,14 @@
     pointer-events: none;
     text-align: center;
 }
+
+/* Nascondi visite su mobile */
+.hideOnMobile {
+    display: flex !important;
+}
+
+@media (max-width: 767px) {
+    .hideOnMobile {
+        display: none !important;
+    }
+}

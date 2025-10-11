@@ -1,15 +1,28 @@
-import { memo } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import ToggleFavorite from '../ui/ToggleFavorite';
+import { useAdmin } from '../../context/AdminContext'; // ← AGGIUNTO
+import { addFeaturedGame, removeFeaturedGame, isFeaturedGame } from '../../services/featuredGamesServices'; 
 import styles from '../../css/InteractiveImageCard.module.css';
 import xboxLogo from '../../assets/logos/xboxLogo.svg';
 import playstationLogo from '../../assets/logos/playstationLogo.svg';
 import switchLogo from '../../assets/logos/switchLogo.svg';
 import pcLogo from '../../assets/logos/winLogo.svg';
 
-function InteractiveImageCard({url, title, number, show_number, gioco}) {
+function InteractiveImageCard({ 
+    url, 
+    title, 
+    number, 
+    show_number, 
+    gioco,
+    onFeaturedChange //  callback per ricaricare lista
+}) {
+    const { isAdmin, showAdminOptions } = useAdmin(); 
+    const [isFeatured, setIsFeatured] = useState(false); 
+    const [loading, setLoading] = useState(false); 
+
     const primaryGenre = gioco?.genres?.[0]?.name;
     
     // Funzione per verificare se una piattaforma è disponibile
@@ -27,78 +40,130 @@ function InteractiveImageCard({url, title, number, show_number, gioco}) {
         pc: hasPlatform('pc')
     };
 
+    // Controlla se il gioco è già featured
+    useEffect(() => {
+        async function checkFeatured() {
+            if (gioco?.id && isAdmin) {
+                const featured = await isFeaturedGame(gioco.id);
+                setIsFeatured(featured);
+            }
+        }
+        checkFeatured();
+    }, [gioco?.id, isAdmin]);
+
+    // Toggle featured
+    const handleToggleFeatured = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!gioco) return;
+        
+        setLoading(true);
+        try {
+            if (isFeatured) {
+                await removeFeaturedGame(gioco.id);
+                setIsFeatured(false);
+            } else {
+                await addFeaturedGame(gioco);
+                setIsFeatured(true);
+            }
+            
+            // Ricarica la lista se necessario
+            if (onFeaturedChange) {
+                onFeaturedChange();
+            }
+        } catch (error) {
+            console.error('Errore toggle featured:', error);
+            alert('Errore: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="hasElectricity">
-        <Link to={`/games/${gioco.slug}/${gioco.id}`} style={{ textDecoration: 'none' }}>
-            <div className={styles.cardFlipContainer}>
-                {show_number && (
-                    <div className={styles.gameNumber}>
-                        {number}<span className={styles.degreeSymbol}>°</span>
-                    </div>
-                )}
-                
-                {primaryGenre && (
-                    <div className={styles.genreBadge}>
-                        {primaryGenre}
-                    </div>
-                )}
-
-                <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
-                    <ToggleFavorite data={gioco} />
-                </div>
-
-                <div className={styles.cardFlipInner}>
-                    {/* Fronte */}
-                    <div className={`${styles.cardFlipFront} ${styles.customInteractiveImageCard}`}>
-                        <div className={`${styles.cardPlatformContainer}`}>
-                            {platforms.xbox && (
-                                <div className={`${styles.cardPlatformItem}`}>
-                                    <img className={`${styles.cardPlatformItemImg}`} src={xboxLogo} alt="Xbox" />
-                                </div>
-                            )}
-                            {platforms.playstation && (
-                                <div className={`${styles.cardPlatformItem}`}>
-                                    <img className={`${styles.cardPlatformItemImg}`} src={playstationLogo} alt="PlayStation" />
-                                </div>
-                            )}
-                            {platforms.nintendo && (
-                                <div className={`${styles.cardPlatformItem}`}>
-                                    <img className={`${styles.cardPlatformItemImg}`} src={switchLogo} alt="Switch" />
-                                </div>
-                            )}
-                            {platforms.pc && (
-                                <div className={`${styles.cardPlatformItem}`}>
-                                    <img className={`${styles.cardPlatformItemImg}`} src={pcLogo} alt="PC" />
-                                </div>
-                            )}
+            <Link to={`/games/${gioco.slug}/${gioco.id}`} style={{ textDecoration: 'none' }}>
+                <div className={styles.cardFlipContainer}>
+                    {show_number && (
+                        <div className={styles.gameNumber}>
+                            {number}<span className={styles.degreeSymbol}>°</span>
                         </div>
-                        <LazyLoadImage
-                            src={url}
-                            alt={title}
-                            className={styles.interactiveCardImg}
-                            effect="blur"
-                            threshold={400}
-                            wrapperProps={{
-                                style: {
-                                    width: '100%',
-                                    height: '100%',
-                                    display: 'block'
-                                }
-                            }}
-                            onError={(e) => {
-                                e.target.src = 'https://via.placeholder.com/300x400?text=No+Image';
-                            }}
-                        />
+                    )}
+                    
+                    {primaryGenre && (
+                        <div className={styles.genreBadge}>
+                            {primaryGenre}
+                        </div>
+                    )}
+
+                    {/* Bottone Featured per Admin */}
+                    {isAdmin && showAdminOptions && (
+                        <button
+                            onClick={handleToggleFeatured}
+                            disabled={loading}
+                            className={`${styles.featuredButton} ${isFeatured ? styles.featuredButtonActive : ''}`}
+                            title={isFeatured ? 'Remove from featured' : 'Add to featured'}
+                        >
+                            {loading ? '⏳' : isFeatured ? '⭐' : '☆'}
+                        </button>
+                    )}
+
+                    <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
+                        <ToggleFavorite data={gioco} />
                     </div>
-                    {/* Retro */}
-                    <div className={`${styles.cardFlipBack} ${styles.customInteractiveImageCard}`}>
-                        <div className={styles.cardBackContent}>
-                            <h5>{title}</h5>
+
+                    <div className={styles.cardFlipInner}>
+                        {/* Fronte */}
+                        <div className={`${styles.cardFlipFront} ${styles.customInteractiveImageCard}`}>
+                            <div className={`${styles.cardPlatformContainer}`}>
+                                {platforms.xbox && (
+                                    <div className={`${styles.cardPlatformItem}`}>
+                                        <img className={`${styles.cardPlatformItemImg}`} src={xboxLogo} alt="Xbox" />
+                                    </div>
+                                )}
+                                {platforms.playstation && (
+                                    <div className={`${styles.cardPlatformItem}`}>
+                                        <img className={`${styles.cardPlatformItemImg}`} src={playstationLogo} alt="PlayStation" />
+                                    </div>
+                                )}
+                                {platforms.nintendo && (
+                                    <div className={`${styles.cardPlatformItem}`}>
+                                        <img className={`${styles.cardPlatformItemImg}`} src={switchLogo} alt="Switch" />
+                                    </div>
+                                )}
+                                {platforms.pc && (
+                                    <div className={`${styles.cardPlatformItem}`}>
+                                        <img className={`${styles.cardPlatformItemImg}`} src={pcLogo} alt="PC" />
+                                    </div>
+                                )}
+                            </div>
+                            <LazyLoadImage
+                                src={url}
+                                alt={title}
+                                className={styles.interactiveCardImg}
+                                effect="blur"
+                                threshold={400}
+                                wrapperProps={{
+                                    style: {
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'block'
+                                    }
+                                }}
+                                onError={(e) => {
+                                    e.target.src = 'https://via.placeholder.com/300x400?text=No+Image';
+                                }}
+                            />
+                        </div>
+                        {/* Retro */}
+                        <div className={`${styles.cardFlipBack} ${styles.customInteractiveImageCard}`}>
+                            <div className={styles.cardBackContent}>
+                                <h5>{title}</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </Link>
+            </Link>
         </div>
     );
 }

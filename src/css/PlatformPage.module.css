@@ -5,7 +5,7 @@
 
 .platformHeader {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .platformTitle {
@@ -35,6 +35,109 @@
     margin: 0;
 }
 
+/* ========== FILTRI ========== */
+.filtersContainer {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 3rem;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.filtersRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filterLabel {
+    color: #868686;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filterLabel i {
+    color: #d11d04;
+    font-size: 14px;
+}
+
+.filterSelect {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 35px;
+}
+
+.filterSelect:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #d11d04;
+}
+
+.filterSelect:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #d11d04;
+    box-shadow: 0 0 0 3px rgba(209, 29, 4, 0.1);
+}
+
+.filterSelect option {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 10px;
+}
+
+.clearFiltersContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.clearFiltersBtn {
+    background: linear-gradient(145deg, rgba(209, 29, 4, 0.2), rgba(176, 24, 3, 0.2));
+    color: #d11d04;
+    border: 1px solid rgba(209, 29, 4, 0.3);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.clearFiltersBtn:hover {
+    background: linear-gradient(145deg, rgba(209, 29, 4, 0.3), rgba(176, 24, 3, 0.3));
+    border-color: #d11d04;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(209, 29, 4, 0.3);
+}
+
+/* ========== GRID GIOCHI ========== */
 .gridGamesList {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -42,7 +145,7 @@
     margin-bottom: 2rem;
 }
 
-/* Pagination Buttons */
+/* ========== PAGINATION ========== */
 .pagination {
     background: linear-gradient(145deg, #d11d04, #b01803) !important;
     color: white !important;
@@ -97,8 +200,23 @@
     border-radius: 8px;
 }
 
-/* Responsive */
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .filtersRow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 767px) {
+    .filtersContainer {
+        padding: 20px;
+    }
+
+    .filtersRow {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
     .gridGamesList {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 1.5rem;
@@ -118,5 +236,10 @@
         font-size: 1rem;
         min-width: 70px;
         padding: 6px 12px;
+    }
+
+    .clearFiltersBtn {
+        width: 100%;
+        justify-content: center;
     }
 }

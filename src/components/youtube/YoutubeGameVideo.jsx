@@ -2,13 +2,20 @@ import { useState, useEffect } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { cache } from '../../utils/cache';
 import { getCurrentYoutubeApiKey, rotateYoutubeApiKey, getTotalYoutubeKeys } from '../../utils/apiKeyRotation';
+import { useAdmin } from '../../context/AdminContext'; 
 import styles from '../../css/YouTubeGameVideo.module.css';
 
 const YouTubeGameVideo = ({ gameName, channelId }) => {
+  const { disableRelatedVideos } = useAdmin(); 
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [videosPerSlide, setVideosPerSlide] = useState(1);
+
+  // Se i video sono disabilitati, non mostrare nulla
+  if (disableRelatedVideos) {
+    return null;
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -199,11 +206,10 @@ const YouTubeGameVideo = ({ gameName, channelId }) => {
         nextIcon={nextIcon}
       >
         {chunkedVideos.map((gruppo, slideIndex) => {
-          // ✅ CREA UNA KEY UNICA BASATA SUI VIDEO CONTENUTI
           const slideKey = gruppo.map(v => v.videoId).join('-');
           
           return (
-            <Carousel.Item key={slideKey}> {/* ← MODIFICATO: usa slideKey invece di slideIndex */}
+            <Carousel.Item key={slideKey}>
               <div className={`d-flex justify-content-center ${styles.carouselVideosContainer} my-4 py-4`}>
                 {gruppo.map((video) => (
                   <div key={video.videoId} className={styles.carouselVideoItem}>
