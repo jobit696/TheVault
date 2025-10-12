@@ -190,16 +190,45 @@ export async function getGenres() {
 }
 
 // Giochi per genere
+// export async function getGamesByGenre({ params, request }) {
+//     const { genre } = params;
+//     const url = new URL(request.url);
+//     const page = url.searchParams.get('page') || 1;
+    
+//     const gamesUrl = `${BASE_URL}/games?genres=${genre}&page=${page}&page_size=20`;
+//     const genreUrl = `${BASE_URL}/genres/${genre}`;
+    
+//     const [gamesData, genreData] = await Promise.all([
+//         fetchFromAPI(gamesUrl, `genre_${genre}_page_${page}`),
+//         fetchFromAPI(genreUrl, `genre_details_${genre}`)
+//     ]);
+    
+//     return { 
+//         results: gamesData.results, 
+//         count: gamesData.count,
+//         genreName: genreData.name 
+//     };
+// }
+
+// Giochi per genere con filtri
 export async function getGamesByGenre({ params, request }) {
     const { genre } = params;
     const url = new URL(request.url);
     const page = url.searchParams.get('page') || 1;
+    const platform = url.searchParams.get('platform') || '';
+    const ordering = url.searchParams.get('ordering') || '-rating';
+    const minRating = url.searchParams.get('minRating') || '';
     
-    const gamesUrl = `${BASE_URL}/games?genres=${genre}&page=${page}&page_size=20`;
+    // Costruisci URL con filtri
+    let gamesUrl = `${BASE_URL}/games?genres=${genre}&page=${page}&page_size=20&ordering=${ordering}`;
+    
+    if (platform) gamesUrl += `&platforms=${platform}`;
+    if (minRating) gamesUrl += `&metacritic=${minRating},100`;
+    
     const genreUrl = `${BASE_URL}/genres/${genre}`;
     
     const [gamesData, genreData] = await Promise.all([
-        fetchFromAPI(gamesUrl, `genre_${genre}_page_${page}`),
+        fetchFromAPI(gamesUrl, `genre_${genre}_${page}_${platform}_${ordering}_${minRating}`),
         fetchFromAPI(genreUrl, `genre_details_${genre}`)
     ]);
     

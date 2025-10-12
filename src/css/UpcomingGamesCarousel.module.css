@@ -41,16 +41,41 @@
      border-bottom: none;
 }
 
+.gameLink {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.gameLink:hover {
+    opacity: 0.95;
+}
+
+.gameLink:hover .slideOverlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.85) 100%);
+}
+
+.gameLink:hover .gameTitle {
+    color: #d11d04;
+    transition: color 0.3s ease;
+}
+
 .carouselSlide {
     position: relative;
     width: 100%;
     height: 100%;
+     cursor: pointer;
 }
 
 .slideImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     display: block;
 }
 
@@ -108,40 +133,57 @@
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
+/* =========COUNTDOWN========== */
+
 .countdown {
     display: flex;
-    gap: 2rem;
+    gap: 1rem; /* ← Ridotto da 2rem */
     margin-bottom: 2rem;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* ← Impedisce il wrap */
+    align-items: center;
 }
 
 .countdownItem {
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 0.5rem; /* ← Padding simmetrico */
     border-radius: 10px;
     border: 2px solid rgba(209, 29, 4, 0.5);
-    min-width: 80px;
+    min-width: 75px; /* ← Aumentato leggermente per numeri a 3 cifre */
+    max-width: 75px;
+    width: 75px;
     backdrop-filter: blur(10px);
+    flex-shrink: 0;
+    display: flex; /* ← Aggiunto */
+    flex-direction: column; /* ← Aggiunto */
+    align-items: center; /* ← Aggiunto per centratura perfetta */
+    justify-content: center; /* ← Aggiunto */
 }
 
 .countdownNumber {
     display: block;
-    font-size: 2.8rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #d11d04;
     text-shadow: 0 0 20px rgba(209, 29, 4, 0.7);
     line-height: 1;
+    width: 100%; /* ← Aggiunto */
+    text-align: center; /* ← Assicura centratura */
+    margin: 0; /* ← Rimuove margini */
+    padding: 0; /* ← Rimuove padding */
 }
 
 .countdownLabel {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: #ccc;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 0.5rem;
+    width: 100%; /* ← Aggiunto */
+    text-align: center; /* ← Assicura centratura */
+    padding: 0; /* ← Rimuove padding */
 }
 
 .genres {
@@ -237,26 +279,32 @@
 
     .slideOverlay {
         padding-bottom: 4rem;
+        padding-left: 1rem; 
+        padding-right: 1rem;
+
     }
     
-    .countdown {
-        gap: 1rem;
+      .countdown {
+        gap: 0.5rem; 
+        flex-wrap: nowrap; 
     }
     
-    .countdownItem {
-        padding: 0.75rem 1rem;
-        min-width: 60px;
+       .countdownItem {
+        padding: 0.5rem 0.4rem; 
+        min-width: 65px; 
+        max-width: 65px;
+        width: 65px;
     }
     
     .countdownNumber {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
     
     .countdownLabel {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
     }
-    
-    .gameTitle {
+
+     .gameTitle {
         font-size: 2rem;
     }
     
@@ -281,4 +329,27 @@
     .carouselIndicators {
         bottom: 10px;
     }
+}
+
+/* ← AGGIUNTO: Extra small screens */
+@media (max-width: 480px) {
+        .countdown {
+        gap: 0.3rem; /* ← Ridotto per fare spazio */
+    }
+    
+    .countdownItem {
+        padding: 0.4rem 0.3rem; /* ← Padding simmetrico */
+        min-width: 58px; /* ← Aumentato leggermente */
+        max-width: 58px;
+        width: 58px;
+    }
+    
+    .countdownNumber {
+        font-size: 1.3rem;
+    }
+    
+    .countdownLabel {
+        font-size: 0.6rem;
+    }
+
 }

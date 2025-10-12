@@ -1,39 +1,49 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router';
+import { getUpcomingGames } from '../../services/upcomingGamesService'; 
 import styles from '../../css/UpcomingGamesCarousel.module.css';
 
-export default function UpcomingGamesCarousel({ customGames = [] }) {
+export default function UpcomingGamesCarousel() { 
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const API_KEY = import.meta.env.VITE_RAW_G_KEY;
-const BASE_URL = import.meta.env.VITE_RAW_G_URL;
+    const BASE_URL = import.meta.env.VITE_RAW_G_URL;
 
     useEffect(() => {
         const fetchGames = async () => {
-            if (customGames.length === 0) {
-                setLoading(false);
-                return;
-            }
-
             try {
-                const promises = customGames.map(async ({ id, releaseDate }) => {
-                    const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`);
+                // Carica giochi dal database
+                const upcomingGamesFromDB = await getUpcomingGames();
+                
+                if (upcomingGamesFromDB.length === 0) {
+                    setLoading(false);
+                    return;
+                }
+
+                // Fetch dettagli dei giochi da RAWG API
+                const promises = upcomingGamesFromDB.map(async (upcomingGame) => {
+                    const response = await fetch(`${BASE_URL}/games/${upcomingGame.game_id}?key=${API_KEY}`);
                     const gameData = await response.json();
-                    return { ...gameData, customReleaseDate: releaseDate };
+                    return { 
+                        ...gameData, 
+                        customReleaseDate: upcomingGame.release_date 
+                    };
                 });
 
                 const results = await Promise.all(promises);
                 setGames(results);
             } catch (error) {
-                console.error('Error fetching games:', error);
+                console.error('Error fetching upcoming games:', error);
+                setGames([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchGames();
-    }, [customGames]);
+    }, []); 
 
     // Auto-play carousel
     useEffect(() => {
@@ -72,9 +82,6 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
         }, [releaseDate]);
 
         return (
-            <>
-             
-             
             <div className={styles.countdown}>
                 <div className={styles.countdownItem}>
                     <span className={styles.countdownNumber}>{String(timeLeft.days).padStart(2, '0')}</span>
@@ -93,7 +100,6 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
                     <span className={styles.countdownLabel}>Sec</span>
                 </div>
             </div>
-            </>
         );
     };
 
@@ -111,7 +117,6 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
 
     if (loading) {
         return (
-            
             <div className={styles.upcomingCarouselWrapper}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <div style={{ textAlign: 'center' }}>
@@ -120,7 +125,6 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
                     </div>
                 </div>
             </div>
-            
         );
     }
 
@@ -130,72 +134,92 @@ const BASE_URL = import.meta.env.VITE_RAW_G_URL;
 
     return (
         <>
-                   <h1 className={styles.pageTitle}>MOST ANTICIPATED</h1>
-        <div style={{ width: '100%'}}>
-          
-            <div className={styles.upcomingCarouselWrapper}>
-                <div className={styles.carouselSlide}>
-                    <img
-                        src={currentGame.background_image || 'https://via.placeholder.com/1920x500'}
-                        alt={currentGame.name}
-                        className={styles.slideImage}
-                    />
-                    <div className={styles.slideOverlay}>
-                        <div className={styles.slideContent}>
-                            <span className={styles.comingSoonBadge}>Coming Soon</span>
-                            
-                            <h2 className={styles.gameTitle}>{currentGame.name}</h2>
-                            
-                            {currentGame.customReleaseDate && (
-                                <>
-                                    <p className={styles.releaseDate}>
-                                        Release Date: {new Date(currentGame.customReleaseDate).toLocaleDateString('en-US', { 
-                                            year: 'numeric', 
-                                            month: 'long', 
-                                            day: 'numeric' 
-                                        })}
-                                    </p>
-                                    <Countdown releaseDate={currentGame.customReleaseDate} />
-                                </>
-                            )}
+            <h1 className={styles.pageTitle}>MOST ANTICIPATED</h1>
+            <div style={{ width: '100%'}}>
+                <div className={styles.upcomingCarouselWrapper}>
+                    <Link 
+                        to={`/games/${currentGame.slug}/${currentGame.id}`} 
+                        className={styles.gameLink}
+                    >
+                        <div className={styles.carouselSlide}>
+                            <img
+                                src={currentGame.background_image || 'https://via.placeholder.com/1920x500'}
+                                alt={currentGame.name}
+                                className={styles.slideImage}
+                            />
+                            <div className={styles.slideOverlay}>
+                                <div className={styles.slideContent}>
+                                    <span className={styles.comingSoonBadge}>Coming Soon</span>
+                                    
+                                    <h2 className={styles.gameTitle}>{currentGame.name}</h2>
+                                    
+                                    {currentGame.customReleaseDate && (
+                                        <>
+                                            <p className={styles.releaseDate}>
+                                                Release Date: {new Date(currentGame.customReleaseDate).toLocaleDateString('en-US', { 
+                                                    year: 'numeric', 
+                                                    month: 'long', 
+                                                    day: 'numeric' 
+                                                })}
+                                            </p>
+                                            <Countdown releaseDate={currentGame.customReleaseDate} />
+                                        </>
+                                    )}
 
-                            {currentGame.genres && currentGame.genres.length > 0 && (
-                                <div className={styles.genres}>
-                                    {currentGame.genres.slice(0, 3).map((genre) => (
-                                        <span key={genre.id} className={styles.genreTag}>
-                                            {genre.name}
-                                        </span>
-                                    ))}
+                                    {currentGame.genres && currentGame.genres.length > 0 && (
+                                        <div className={styles.genres}>
+                                            {currentGame.genres.slice(0, 3).map((genre) => (
+                                                <span key={genre.id} className={styles.genreTag}>
+                                                    {genre.name}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
                         </div>
+                    </Link>
+
+                    <button 
+                        className={`${styles.carouselControl} ${styles.prev}`} 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            goToPrevious();
+                        }}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button 
+                        className={`${styles.carouselControl} ${styles.next}`} 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            goToNext();
+                        }}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <div className={styles.carouselIndicators}>
+                        {games.map((_, index) => (
+                            <button
+                                key={index}
+                                className={`${styles.indicator} ${index === currentIndex ? styles.active : ''}`}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    goToSlide(index);
+                                }}
+                            />
+                        ))}
                     </div>
                 </div>
-
-                {/* Navigation Arrows */}
-                <button className={`${styles.carouselControl} ${styles.prev}`} onClick={goToPrevious}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button className={`${styles.carouselControl} ${styles.next}`} onClick={goToNext}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-
-                {/* Indicators */}
-                <div className={styles.carouselIndicators}>
-                    {games.map((_, index) => (
-                        <button
-                            key={index}
-                            className={`${styles.indicator} ${index === currentIndex ? styles.active : ''}`}
-                            onClick={() => goToSlide(index)}
-                        />
-                    ))}
-                </div>
             </div>
-        </div>
         </>
     );
 }

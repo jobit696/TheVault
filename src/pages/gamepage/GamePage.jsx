@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { useLoaderData } from "react-router";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -10,11 +10,52 @@ import InteractiveImageCard from "../../components/cards/InteractiveImageCard";
 import PlatformPageCard from "../../components/cards/PlatformPageCard";
 import gamepadImage from "../../assets/images/Gamepad.png";
 import YouTubeGameVideo from "../../components/youtube/YoutubeGameVideo";
+import { useAdmin } from '../../context/AdminContext'; 
+import { isUpcomingGame, removeUpcomingGame } from '../../services/upcomingGamesService'; 
+import AddToUpcomingModal from '../../components/modals/AddToUpcomingModal'; 
 
 export default function GamePage() {
     const { game, screenshots, dlcs, similarGames } = useLoaderData();
     const [selectedImage, setSelectedImage] = useState(null);
     const { channelId } = useYoutubeChannel();
+    const { isAdmin, showAdminOptions } = useAdmin(); 
+
+    // Stati per upcoming games
+    const [isUpcoming, setIsUpcoming] = useState(false);
+    const [showUpcomingModal, setShowUpcomingModal] = useState(false);
+    const [loadingUpcoming, setLoadingUpcoming] = useState(false);
+
+    // Controlla se il gioco è già upcoming
+    useEffect(() => {
+        async function checkUpcoming() {
+            if (game?.id && isAdmin) {
+                const upcoming = await isUpcomingGame(game.id);
+                setIsUpcoming(upcoming);
+            }
+        }
+        checkUpcoming();
+    }, [game?.id, isAdmin]);
+
+    // Rimuovi da upcoming
+    const handleRemoveUpcoming = async () => {
+        if (!confirm('Remove from Most Anticipated?')) return;
+        
+        setLoadingUpcoming(true);
+        try {
+            await removeUpcomingGame(game.id);
+            setIsUpcoming(false);
+            alert('✅ Removed from Most Anticipated');
+        } catch (error) {
+            alert('❌ Error: ' + error.message);
+        } finally {
+            setLoadingUpcoming(false);
+        }
+    };
+
+    // Callback dopo aggiunta
+    const handleUpcomingSuccess = () => {
+        setIsUpcoming(true);
+    };
 
     return (
         <div className={styles.gamePage}>
@@ -252,6 +293,38 @@ export default function GamePage() {
                     <Chatbox data={game} />
                 </div>
             </div>
+
+            {/* ========== BOTTONE ADMIN MOST ANTICIPATED ========== */}
+            {isAdmin && showAdminOptions && (
+                <div className={styles.adminUpcomingButton}>
+                    {isUpcoming ? (
+                        <button
+                            onClick={handleRemoveUpcoming}
+                            disabled={loadingUpcoming}
+                            className={`${styles.upcomingBtn} ${styles.upcomingBtnRemove}`}
+                            title="Remove from Most Anticipated"
+                        >
+                            {loadingUpcoming ? <i class="fa-regular fa-hourglass"></i> : <i class="fa-regular fa-trash-can"></i>}
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => setShowUpcomingModal(true)}
+                            className={`${styles.upcomingBtn} ${styles.upcomingBtnAdd}`}
+                            title="Add to Most Anticipated"
+                        >
+                            <i class="fa-regular fa-calendar-plus"></i>
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {/* Modal per aggiungere data */}
+            <AddToUpcomingModal
+                show={showUpcomingModal}
+                onHide={() => setShowUpcomingModal(false)}
+                game={game}
+                onSuccess={handleUpcomingSuccess}
+            />
         </div>
     );
 }

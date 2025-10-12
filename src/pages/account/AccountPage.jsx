@@ -9,7 +9,7 @@ import styles from '../../css/AccountPage.module.css';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useAdmin } from '../../context/AdminContext';
-import { updateSiteSettings } from '../../services/siteSettingsService'; // ← AGGIUNTO
+import { updateSiteSettings } from '../../services/siteSettingsService'; 
 
 dayjs.extend(relativeTime);
 
@@ -176,7 +176,7 @@ export default function AccountPage() {
     }
   };
 
-  // ← AGGIUNTO: Handler per disabilitare video
+  // Handler per disabilitare video
   const handleToggleRelatedVideos = async (e) => {
     const newValue = e.target.checked;
     
@@ -349,7 +349,7 @@ export default function AccountPage() {
               </label>
             </div>
 
-            {/* ← AGGIUNTO: Checkbox per disabilitare video */}
+            {/* Checkbox per disabilitare video */}
             <div className={styles.adminCheckboxGroup}>
               <label className={styles.adminCheckboxLabel}>
                 <input
@@ -368,6 +368,9 @@ export default function AccountPage() {
               <div className={styles.adminOptionsPanel}>
                 <p className={styles.adminOptionsText}>
                   - Admin options are now visible on cards
+                </p>
+                <p className={styles.adminOptionsText}>
+                  - "Add to Most Anticipated" button (bottom-right corner of Game Page)
                 </p>
               </div>
             )}

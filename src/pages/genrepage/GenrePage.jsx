@@ -1,6 +1,7 @@
 import { useParams, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import GenreGameCard from "../../components/cards/GenreGameCard";
 import styles from "../../css/GenrePage.module.css";
+import { useState } from "react";
 
 export default function GenrePage() {
     const { genre } = useParams();
@@ -13,22 +14,137 @@ export default function GenrePage() {
     const totalCount = data?.count || 0;
     const page = parseInt(searchParams.get('page') || '1');
 
+    // Stati per i filtri
+    const [filters, setFilters] = useState({
+        platform: searchParams.get('platform') || '',
+        ordering: searchParams.get('ordering') || '-rating',
+        minRating: searchParams.get('minRating') || ''
+    });
+
     const handlePageChange = (newPage) => {
-        navigate(`/genre/${genre}?page=${newPage}`);
+        const params = new URLSearchParams(searchParams);
+        params.set('page', newPage);
+        navigate(`/genre/${genre}?${params.toString()}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    const handleFilterChange = (filterName, value) => {
+        const newFilters = { ...filters, [filterName]: value };
+        setFilters(newFilters);
+        
+        // Costruisci URL con i nuovi filtri
+        const params = new URLSearchParams();
+        params.set('page', '1'); // Reset alla pagina 1 quando cambi filtri
+        
+        Object.entries(newFilters).forEach(([key, val]) => {
+            if (val) params.set(key, val);
+        });
+        
+        navigate(`/genre/${genre}?${params.toString()}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const clearFilters = () => {
+        setFilters({
+            platform: '',
+            ordering: '-rating',
+            minRating: ''
+        });
+        navigate(`/genre/${genre}?page=1`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const hasActiveFilters = filters.platform || filters.minRating || filters.ordering !== '-rating';
+
     return (
         <div className={styles.genrePage}>
-             <h2 className={`${styles.genreTitle} ${styles.pageTitle}`}>
-                        {genreName} Games
-                    </h2>
+            <h2 className={`${styles.genreTitle} ${styles.pageTitle}`}>
+                {genreName} Games
+            </h2>
+            
             <div className="container">
                 <div className={styles.genreHeader}>
-                   
                     <p className={styles.genreCount}>
                         {totalCount.toLocaleString()} games found
                     </p>
+                </div>
+
+                {/* Filtri */}
+                <div className={styles.filtersContainer}>
+                    <div className={styles.filtersRow}>
+                        {/* Piattaforma */}
+                        <div className={styles.filterGroup}>
+                            <label className={styles.filterLabel}>
+                                <i className="fas fa-gamepad"></i> Platform
+                            </label>
+                            <select 
+                                className={styles.filterSelect}
+                                value={filters.platform}
+                                onChange={(e) => handleFilterChange('platform', e.target.value)}
+                            >
+                                <option value="">All Platforms</option>
+                                <option value="4">PC</option>
+                                <option value="187">PlayStation 5</option>
+                                <option value="18">PlayStation 4</option>
+                                <option value="1">Xbox One</option>
+                                <option value="186">Xbox Series X/S</option>
+                                <option value="7">Nintendo Switch</option>
+                                <option value="3">Xbox 360</option>
+                                <option value="16">PlayStation 3</option>
+                            </select>
+                        </div>
+
+                        {/* Ordinamento */}
+                        <div className={styles.filterGroup}>
+                            <label className={styles.filterLabel}>
+                                <i className="fas fa-sort"></i> Sort By
+                            </label>
+                            <select 
+                                className={styles.filterSelect}
+                                value={filters.ordering}
+                                onChange={(e) => handleFilterChange('ordering', e.target.value)}
+                            >
+                                <option value="-rating">Top Rated</option>
+                                <option value="-released">Newest First</option>
+                                <option value="released">Oldest First</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="-name">Name (Z-A)</option>
+                                <option value="-metacritic">Metacritic Score</option>
+                                <option value="-added">Most Popular</option>
+                            </select>
+                        </div>
+
+                        {/* Rating Minimo */}
+                        <div className={styles.filterGroup}>
+                            <label className={styles.filterLabel}>
+                                <i className="fas fa-star"></i> Min Rating
+                            </label>
+                            <select 
+                                className={styles.filterSelect}
+                                value={filters.minRating}
+                                onChange={(e) => handleFilterChange('minRating', e.target.value)}
+                            >
+                                <option value="">Any Rating</option>
+                                <option value="90">90+ (Masterpiece)</option>
+                                <option value="80">80+ (Great)</option>
+                                <option value="70">70+ (Good)</option>
+                                <option value="60">60+ (Decent)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Pulsante Clear Filters */}
+                    {hasActiveFilters && (
+                        <div className={styles.clearFiltersContainer}>
+                            <button 
+                                className={styles.clearFiltersBtn}
+                                onClick={clearFilters}
+                            >
+                                <i className="fas fa-times-circle me-2"></i>
+                                Clear All Filters
+                            </button>
+                        </div>
+                    )}
                 </div>
                 
                 <div className={styles.gridGamesList}>

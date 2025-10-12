@@ -9,12 +9,7 @@ function Homepage() {
   const { popularGames, genres } = useLoaderData();
 
 
-   const upcomingGames = [
-        { id: 997551, releaseDate: '2026-03-20' },  // Saros
-        { id: 552927, releaseDate: '2026-11-15' }, // Ill
-        { id: 1004511, releaseDate: '2026-02-27' }, // RE Requiem
-        { id: 1010940, releaseDate: '2026-2-06' }  // NiOh 3
-    ];
+  
 
     return (
         <>
@@ -27,7 +22,7 @@ function Homepage() {
     title="- Top 10 -" 
     gameIds={[326243, 2551, 452639, 47234, 836449, 9767, 5192, 29143, 10141, 3144]} 
 />
-<UpcomingGamesCarousel customGames={upcomingGames} />
+            <UpcomingGamesCarousel />
         </>
     );
 }

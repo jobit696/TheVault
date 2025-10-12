@@ -36,7 +36,7 @@ export default function CustomGameList({ title = 'Featured Games' }) {
         const fetchGames = async () => {
             setLoading(true);
             try {
-                // 1. Ottieni i game_id dal DB
+                // Ottieni i game_id dal DB
                 const featuredGames = await getFeaturedGames();
                 
                 if (featuredGames.length === 0) {
@@ -45,7 +45,7 @@ export default function CustomGameList({ title = 'Featured Games' }) {
                     return;
                 }
 
-                // 2. Fetch dettagli da RAWG per ogni game_id
+                // Fetch dettagli da RAWG per ogni game_id
                 const promises = featuredGames.map(featured => 
                     fetch(`${BASE_URL}/games/${featured.game_id}?key=${API_KEY}`)
                         .then(res => res.json())
