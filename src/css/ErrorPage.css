@@ -39,13 +39,24 @@
 }
 
 .error-message {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 500px;
+    display: flex;             
+    justify-content: flex-start !important;
+    align-items: flex-start !important;    
+    max-width: 100%;
     margin: 2rem auto;
-    line-height: 1.6;
 }
+
+.error-message-text {
+    width: 100%;
+    position: relative;
+    color: red;
+    align-self: auto;          
+    text-align: left !important; 
+    margin: 0;               
+    padding: 0;                
+    display: block;            
+}
+
 
 .error-button {
     

@@ -160,7 +160,7 @@ export default function CustomGameList({ title = 'Featured Games' }) {
                                             number={slideIndex * cardsPerSlide + index + 1}
                                             show_number={true}
                                             gioco={gioco}
-                                            onFeaturedChange={reloadGames} // ← AGGIUNTO
+                                            onFeaturedChange={reloadGames} 
                                         />
                                     </div>
                                 ))}

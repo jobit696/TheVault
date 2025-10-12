@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useAdmin } from '../../context/AdminContext';
 import { updateSiteSettings } from '../../services/siteSettingsService'; 
+import UserManagement from '../../components/admin/UserManagement';
 
 dayjs.extend(relativeTime);
 
@@ -327,65 +328,67 @@ export default function AccountPage() {
       {/* Impostazioni YouTube Channel */}
       <YoutubeChannelSettings />
 
-      {/* ========== SEZIONE ADMIN ========== */}
-      {isAdmin && (
-        <div className={styles.adminSection}>
-          <h3 className={styles.adminTitle}>
-            <i className="fas fa-shield-alt"></i> Administration
-          </h3>
-          
-          <div className={styles.adminPanel}>
-            <div className={styles.adminCheckboxGroup}>
-              <label className={styles.adminCheckboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={showAdminOptions}
-                  onChange={(e) => setShowAdminOptions(e.target.checked)}
-                  className={styles.adminCheckbox}
-                />
-                <span className={styles.adminCheckboxText}>
-                  Show admin's options
-                </span>
-              </label>
-            </div>
 
-            {/* Checkbox per disabilitare video */}
-            <div className={styles.adminCheckboxGroup}>
-              <label className={styles.adminCheckboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={disableRelatedVideos}
-                  onChange={handleToggleRelatedVideos}
-                  className={styles.adminCheckbox}
-                />
-                <span className={styles.adminCheckboxText}>
-                  Disable related videos
-                </span>
-              </label>
-            </div>
+{/* ========== SEZIONE ADMIN ========== */}
+{isAdmin && (
+  <div className={styles.adminSection}>
+    <h3 className={styles.adminTitle}>
+      <i className="fas fa-shield-alt"></i> Administration
+    </h3>
+    
+    <div className={styles.adminPanel}>
+      <div className={styles.adminCheckboxGroup}>
+        <label className={styles.adminCheckboxLabel}>
+          <input
+            type="checkbox"
+            checked={showAdminOptions}
+            onChange={(e) => setShowAdminOptions(e.target.checked)}
+            className={styles.adminCheckbox}
+          />
+          <span className={styles.adminCheckboxText}>
+            Show admin's options
+          </span>
+        </label>
+      </div>
 
-            {showAdminOptions && (
-              <div className={styles.adminOptionsPanel}>
-                <p className={styles.adminOptionsText}>
-                  - Admin options are now visible on cards
-                </p>
-                <p className={styles.adminOptionsText}>
-                  - "Add to Most Anticipated" button (bottom-right corner of Game Page)
-                </p>
-              </div>
-            )}
+      <div className={styles.adminCheckboxGroup}>
+        <label className={styles.adminCheckboxLabel}>
+          <input
+            type="checkbox"
+            checked={disableRelatedVideos}
+            onChange={handleToggleRelatedVideos}
+            className={styles.adminCheckbox}
+          />
+          <span className={styles.adminCheckboxText}>
+            Disable related videos
+          </span>
+        </label>
+      </div>
 
-            {/* Info quando video sono disabilitati */}
-            {disableRelatedVideos && (
-              <div className={styles.adminOptionsPanel} style={{ marginTop: '15px', borderColor: 'rgba(230, 57, 70, 0.3)', background: 'rgba(230, 57, 70, 0.1)' }}>
-                <p className={styles.adminOptionsText}>
-                  - Related videos are disabled for all users
-                </p>
-              </div>
-            )}
-          </div>
+      {showAdminOptions && (
+        <div className={styles.adminOptionsPanel}>
+          <p className={styles.adminOptionsText}>
+            - Admin options are now visible on cards
+          </p>
+          <p className={styles.adminOptionsText}>
+            - "Add to Most Anticipated" button (bottom-right corner of Game Page)
+          </p>
         </div>
       )}
+
+      {disableRelatedVideos && (
+        <div className={styles.adminOptionsPanel} style={{ marginTop: '15px', borderColor: 'rgba(230, 57, 70, 0.3)', background: 'rgba(230, 57, 70, 0.1)' }}>
+          <p className={styles.adminOptionsText}>
+            - Related videos are disabled for all users
+          </p>
+        </div>
+      )}
+    </div>
+
+    {/* User Management */}
+    <UserManagement />
+  </div>
+)}
 
       {/* Last Message Widget */}
       {lastMessage && (

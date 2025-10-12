@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import supabase from "../../supabase/supabase-client";
 import { useNavigate } from "react-router";
+import { isUserBanned } from "../../services/userManagementService";
 
 export default function LoginPage() {
   const [formState, setFormState] = useState({
@@ -10,23 +11,86 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false); // ← Default false
   const navigate = useNavigate();
+
+  // Carica credenziali salvate all'avvio
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('remembered_email');
+    const savedPassword = localStorage.getItem('remembered_password');
+    const wasRemembered = localStorage.getItem('remember_me') === 'true';
+
+    if (wasRemembered && savedEmail && savedPassword) {
+      setFormState({
+        email: savedEmail,
+        password: savedPassword,
+      });
+      setRememberMe(true);
+    }
+  }, []);
+
+  // Salva/rimuovi credenziali quando checkbox cambia
+  const handleRememberMeChange = (e) => {
+    const checked = e.target.checked;
+    setRememberMe(checked);
+
+    if (!checked) {
+      // Se deselezionato, cancella le credenziali salvate
+      localStorage.removeItem('remembered_email');
+      localStorage.removeItem('remembered_password');
+      localStorage.removeItem('remember_me');
+    }
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
     setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: formState.email,
-      password: formState.password,
-    });
+    try {
+      // Login
+      const { data, error: loginError } = await supabase.auth.signInWithPassword({
+        email: formState.email,
+        password: formState.password,
+      });
 
-    if (error) {
-      setError(error.message);
+      if (loginError) {
+        setError(loginError.message);
+        setLoading(false);
+        return;
+      }
+
+      // Controlla se bannato
+      if (data?.user) {
+        const banned = await isUserBanned(data.user.id);
+        
+        if (banned) {
+          await supabase.auth.signOut();
+          setError("Your account has been banned. Please contact support.");
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Salva credenziali se Remember Me è attivo
+      if (rememberMe) {
+        localStorage.setItem('remembered_email', formState.email);
+        localStorage.setItem('remembered_password', formState.password);
+        localStorage.setItem('remember_me', 'true');
+      } else {
+        // Se non selezionato, rimuovi credenziali salvate
+        localStorage.removeItem('remembered_email');
+        localStorage.removeItem('remembered_password');
+        localStorage.removeItem('remember_me');
+      }
+
+      // Login OK, vai ad account
+      navigate("/account");
+      
+    } catch (err) {
+      
+      setError("An unexpected error occurred. Please try again.");
       setLoading(false);
-    } else {
-      navigate("/");
     }
   };
 
@@ -62,7 +126,6 @@ export default function LoginPage() {
                   </div>
 
                   <div className="field full-width password-field">
-                   
                     <input
                       className="register-input"
                       type={showPassword ? "text" : "password"}
@@ -83,11 +146,23 @@ export default function LoginPage() {
                       <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                     </button>
                   </div>
+
+                  <div className="field full-width remember-me-field">
+                    <label className="remember-me-label">
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={handleRememberMeChange}
+                        className="remember-me-checkbox"
+                      />
+                      <span className="remember-me-text">Remember me</span>
+                    </label>
+                  </div>
                 </div>
 
                 {error && (
                   <div className="error-message">
-                    <small style={{ color: 'red' }}>{error}</small>
+                    <p className="error-message-text">{error}</p>
                   </div>
                 )}
 

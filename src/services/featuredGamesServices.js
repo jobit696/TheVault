@@ -11,7 +11,7 @@ export async function getFeaturedGames() {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    console.error('Errore caricamento featured games:', error);
+    
     return [];
   }
 }
@@ -41,10 +41,10 @@ export async function addFeaturedGame(game) {
       .single();
 
     if (error) throw error;
-    console.log('✅ Gioco aggiunto ai featured');
+    
     return data;
   } catch (error) {
-    console.error('❌ Errore aggiunta featured game:', error);
+    
     throw error;
   }
 }
@@ -58,10 +58,10 @@ export async function removeFeaturedGame(gameId) {
       .eq('game_id', gameId);
 
     if (error) throw error;
-    console.log('✅ Gioco rimosso dai featured');
+  
     return true;
   } catch (error) {
-    console.error('❌ Errore rimozione featured game:', error);
+  
     throw error;
   }
 }
@@ -78,7 +78,7 @@ export async function isFeaturedGame(gameId) {
     if (error && error.code !== 'PGRST116') throw error;
     return !!data;
   } catch (error) {
-    console.error('Errore controllo featured:', error);
+
     return false;
   }
 }

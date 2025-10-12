@@ -82,7 +82,7 @@ export default function RealtimeChat({ data }) {
       )}
       {error && <div className={styles.error}>{error}</div>}
       {messages.length === 0 && !loadingInitial && (
-        <div className={styles.emptyState}>No messages yet. Be the first to chat!</div>
+        <div className={styles.emptyState}>No comments yet. Be the first!</div>
       )}
       {messages.map((message) => (
         <div key={message.id} className={styles.messageCard}>

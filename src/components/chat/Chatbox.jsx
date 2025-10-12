@@ -49,14 +49,14 @@ export default function Chatbox({ data }) {
 
   return (
     <div className={styles.chatWrapper}>
-      <h4 className={styles.chatTitle}>Gamers chat</h4>
+      <h4 className={styles.chatTitle}>Fast comments</h4>
       <RealtimeChat data={data} />
       <form onSubmit={handleMessageSubmit} className={styles.chatForm}>
         <div className={styles.inputWrapper}>
           <input 
             type="text" 
             name="message" 
-            placeholder="Chat..." 
+            placeholder="Your comment..." 
             className={styles.chatInput}
           />
           <button type="submit" className={styles.sendButton}>
@@ -64,6 +64,9 @@ export default function Chatbox({ data }) {
           </button>
         </div>
       </form>
+      <div>
+        <p className="lead ban-advice">Write appropriate comments, and be clean and respectful. Any suspicious behavior or offense will result in a ban for an unspecified period, at the discretion of the admin...</p>
+      </div>
     </div>
   );
 }
