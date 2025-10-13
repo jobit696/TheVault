@@ -103,9 +103,9 @@ export default function ArcadePage() {
                                     </>
                                 ) : (
                                     <div className={styles.placeholderContent}>
-                                        <div className={styles.placeholderIcon}>🎮</div>
+                                        <div className={styles.placeholderIcon}><i class="fa-solid fa-gamepad"></i></div>
                                         <p className={styles.placeholderTitle}>Select a game to start playing</p>
-                                        <p className={styles.placeholderSubtitle}>Choose from the games on the left</p>
+                                        <p className={styles.placeholderSubtitle}>Choose from the games list</p>
                                     </div>
                                 )}
                             </div>

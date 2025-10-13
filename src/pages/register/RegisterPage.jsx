@@ -6,6 +6,7 @@ import {
 } from '../../lib/validationForm';
 import supabase from "../../supabase/supabase-client";
 import { Link, useNavigate } from "react-router";
+import avatarandomizer from '../../functions/avatarRandomizer'; 
 
 export default function RegisterPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -18,18 +19,29 @@ export default function RegisterPage() {
     lastName: "",
     username: "",
     password: "",
+    sex: "",
   });
   const navigate = useNavigate();
 
   const onSubmit = async (event) => {
     event.preventDefault();
     setFormSubmitted(true);
+
+    // Validazione sex
+    if (!formState.sex) {
+      setFormErrors(prev => ({ ...prev, sex: 'Please select your gender' }));
+      return;
+    }
+
     const { error, data } = ConfirmSchema.safeParse(formState);
     if (error) {
       const errors = getErrors(error);
       setFormErrors(errors);
       console.log(errors);
     } else {
+      // ← AGGIUNTO: Genera avatar in base al sesso
+      const randomAvatar = avatarandomizer(formState.sex);
+
       let { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -37,7 +49,9 @@ export default function RegisterPage() {
           data: {
             first_name: data.firstName,
             last_name: data.lastName,
-            username: data.username
+            username: data.username,
+            sex: formState.sex,
+            avatar_url: randomAvatar // ← AGGIUNTO: Avatar casuale
           }
         }
       });
@@ -80,7 +94,7 @@ export default function RegisterPage() {
               <div className="text">REGISTER</div>
               <form onSubmit={onSubmit} noValidate>
                 <div className="form-fields-grid">
-                  {/* Email e First Name */}
+                  {/* Email */}
                   <div className="field">
                     <div className="fas fa-envelope custom-input-icon"></div>
                     <input
@@ -99,6 +113,7 @@ export default function RegisterPage() {
                     {formErrors.email && <small>{formErrors.email}</small>}
                   </div>
 
+                  {/* First Name */}
                   <div className="field">
                     <div className="fas fa-user custom-input-icon"></div>
                     <input
@@ -116,7 +131,7 @@ export default function RegisterPage() {
                     {formErrors.firstName && <small>{formErrors.firstName}</small>}
                   </div>
 
-                  {/* Last Name e Username */}
+                  {/* Last Name */}
                   <div className="field">
                     <div className="fas fa-user custom-input-icon"></div>
                     <input
@@ -134,6 +149,7 @@ export default function RegisterPage() {
                     {formErrors.lastName && <small>{formErrors.lastName}</small>}
                   </div>
 
+                  {/* Username */}
                   <div className="field">
                     <div className="fas fa-user custom-input-icon"></div>
                     <input
@@ -152,9 +168,42 @@ export default function RegisterPage() {
                     {formErrors.username && <small>{formErrors.username}</small>}
                   </div>
 
-                  {/* Password  */}
+                  {/* Gender Selection */}
+                  <div className="field full-width">
+                    <div className="gender-selection">
+                      <label className="gender-label">
+                        <input
+                          type="radio"
+                          name="sex"
+                          value="M"
+                          checked={formState.sex === 'M'}
+                          onChange={setField("sex")}
+                          className="gender-radio"
+                        />
+                        <span className="gender-text">
+                          <i className="fas fa-mars"></i> Male
+                        </span>
+                      </label>
+                      
+                      <label className="gender-label">
+                        <input
+                          type="radio"
+                          name="sex"
+                          value="F"
+                          checked={formState.sex === 'F'}
+                          onChange={setField("sex")}
+                          className="gender-radio"
+                        />
+                        <span className="gender-text">
+                          <i className="fas fa-venus"></i> Female
+                        </span>
+                      </label>
+                    </div>
+                    {formErrors.sex && <small style={{ color: 'red', display: 'block', textAlign: 'center', marginTop: '5px' }}>{formErrors.sex}</small>}
+                  </div>
+
+                  {/* Password */}
                   <div className="field full-width password-field">
-                    
                     <input
                       className="register-input"
                       type={showPassword ? "text" : "password"}
@@ -183,8 +232,8 @@ export default function RegisterPage() {
                 <button className="register-button" type="submit">REGISTER</button>
 
                 <div className="link">
-  Already a member? <Link to="/login">Login now</Link>
-</div>
+                  Already a member? <Link to="/login">Login now</Link>
+                </div>
 
               </form>
             </div>

@@ -119,14 +119,15 @@ export default function UserProfilePage() {
   const totalGames = favorites.length;
   const genresMap = {};
 
-  favorites.forEach((fav) => {
-    if (fav.genres) {
-      const genres = fav.genres.split(',').map((g) => g.trim());
-      genres.forEach((genre) => {
-        genresMap[genre] = (genresMap[genre] || 0) + 1;
-      });
+favorites.forEach((fav) => {
+  if (fav.genres) {
+    const genres = fav.genres.split(',').map((g) => g.trim());
+    const firstGenre = genres[0];
+    if (firstGenre) {
+      genresMap[firstGenre] = (genresMap[firstGenre] || 0) + 1;
     }
-  });
+  }
+});
 
   const genresArray = Object.entries(genresMap)
     .sort((a, b) => b[1] - a[1])
@@ -154,27 +155,30 @@ export default function UserProfilePage() {
           </div>
 
           <div style={{ textAlign: 'center' }}>
-            <h2 style={{ color: '#fff', marginBottom: '5px', fontSize: '1.5rem' }}>
-              {profile.username || 'Anonymous User'}
-            </h2>
-            {profile.first_name && profile.last_name && (
-              <p style={{ color: '#868686', margin: 0 }}>
-                {profile.first_name} {profile.last_name}
-              </p>
-            )}
+  <h2 style={{ color: '#fff', marginBottom: '5px', fontSize: '1.5rem' }}>
+    {profile.username || 'Anonymous User'}
+  </h2>
+  {profile.first_name && profile.last_name && (
+    <p style={{ color: '#868686', margin: 0 }}>
+      {profile.first_name} {profile.last_name}
+    </p>
+  )}
 
-            <div
-              style={{
-                marginTop: '10px',
-                display: 'flex',
-                gap: '10px',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              {profile.is_admin && <span className="badge bg-danger">ADMIN</span>}
-              {isBanned && <span className="badge bg-warning text-dark">BANNED</span>}
-            </div>
+  {/* STATUS*/}
+
+
+  <div
+    style={{
+      marginTop: '10px',
+      display: 'flex',
+      gap: '10px',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+    }}
+  >
+    {profile.is_admin && <span className="badge bg-danger">ADMIN</span>}
+    {isBanned && <span className="badge bg-warning text-dark">BANNED</span>}
+  </div>
 
             {/* ===== BOTTONI BAN/UNBAN ===== */}
             {isAdmin && !profile.is_admin && (

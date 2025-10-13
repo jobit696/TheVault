@@ -131,10 +131,11 @@
 }
 
 .placeholderIcon {
-    font-size: 5rem;
+    font-size: 6rem;
     margin-bottom: 1.5rem;
     opacity: 0.3;
     animation: float 3s ease-in-out infinite;
+    color: #d11d04;
 }
 
 @keyframes float {

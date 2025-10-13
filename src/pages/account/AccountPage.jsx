@@ -16,12 +16,13 @@ dayjs.extend(relativeTime);
 
 export default function AccountPage() {
   const { session } = useContext(SessionContext);
-  const { isAdmin, showAdminOptions, setShowAdminOptions, disableRelatedVideos, setDisableRelatedVideos } = useAdmin(); // ← MODIFICATO
+  const { isAdmin, showAdminOptions, setShowAdminOptions, disableRelatedVideos, setDisableRelatedVideos } = useAdmin();
 
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [first_name, setFirstName] = useState(null);
   const [last_name, setLastName] = useState(null);
+  const [sex, setSex] = useState(null); // ← AGGIUNTO
   const [avatar_url, setAvatarUrl] = useState(null);
   const [favoriteGames, setFavoriteGames] = useState([]);
   const [favoriteGenres, setFavoriteGenres] = useState([]);
@@ -72,7 +73,7 @@ export default function AccountPage() {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('username, first_name, last_name, avatar_url')
+        .select('username, first_name, last_name, sex, avatar_url') // ← AGGIUNTO sex
         .eq('id', user.id)
         .single();
 
@@ -83,6 +84,7 @@ export default function AccountPage() {
           setUsername(data.username);
           setFirstName(data.first_name);
           setLastName(data.last_name);
+          setSex(data.sex); // ← AGGIUNTO
           setAvatarUrl(data.avatar_url);
         }
       }
@@ -147,6 +149,7 @@ export default function AccountPage() {
       username,
       first_name,
       last_name,
+      sex, // ← AGGIUNTO
       avatar_url: avatarUrl,
       updated_at: new Date(),
     };
@@ -177,7 +180,6 @@ export default function AccountPage() {
     }
   };
 
-  // Handler per disabilitare video
   const handleToggleRelatedVideos = async (e) => {
     const newValue = e.target.checked;
     
@@ -262,6 +264,49 @@ export default function AccountPage() {
               />
             </div>
 
+     {/* Gender */}
+<div className={styles.formField}>
+  <label className={styles.formLabel}>Gender</label>
+  <div style={{ 
+    display: 'flex', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    padding: '15px',
+    background: 'rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '8px',
+    marginTop: '10px'
+  }}>
+    {sex === 'M' ? (
+      <span style={{ 
+        color: '#d11d04', 
+        fontWeight: 700, 
+        fontSize: '1rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+       
+      }}>
+        <i className="fas fa-mars" style={{ fontSize: '1.3rem' }}></i> Male
+      </span>
+    ) : sex === 'F' ? (
+      <span style={{ 
+          color: '#d11d04', 
+        fontWeight: 700, 
+        fontSize: '1rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+       
+      }}>
+        <i className="fas fa-venus" style={{ fontSize: '1.3rem' }}></i> Female
+      </span>
+    ) : (
+      <span style={{ color: '#868686' }}>Not specified</span>
+    )}
+  </div>
+</div>
+
             <button
               type="submit"
               disabled={loading}
@@ -325,72 +370,67 @@ export default function AccountPage() {
         </div>
       </div>
 
-      {/* Impostazioni YouTube Channel */}
       <YoutubeChannelSettings />
 
+      {isAdmin && (
+        <div className={styles.adminSection}>
+          <h3 className={styles.adminTitle}>
+            <i className="fas fa-shield-alt"></i> Administration
+          </h3>
+          
+          <div className={styles.adminPanel}>
+            <div className={styles.adminCheckboxGroup}>
+              <label className={styles.adminCheckboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={showAdminOptions}
+                  onChange={(e) => setShowAdminOptions(e.target.checked)}
+                  className={styles.adminCheckbox}
+                />
+                <span className={styles.adminCheckboxText}>
+                  Show admin's options
+                </span>
+              </label>
+            </div>
 
-{/* ========== SEZIONE ADMIN ========== */}
-{isAdmin && (
-  <div className={styles.adminSection}>
-    <h3 className={styles.adminTitle}>
-      <i className="fas fa-shield-alt"></i> Administration
-    </h3>
-    
-    <div className={styles.adminPanel}>
-      <div className={styles.adminCheckboxGroup}>
-        <label className={styles.adminCheckboxLabel}>
-          <input
-            type="checkbox"
-            checked={showAdminOptions}
-            onChange={(e) => setShowAdminOptions(e.target.checked)}
-            className={styles.adminCheckbox}
-          />
-          <span className={styles.adminCheckboxText}>
-            Show admin's options
-          </span>
-        </label>
-      </div>
+            <div className={styles.adminCheckboxGroup}>
+              <label className={styles.adminCheckboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={disableRelatedVideos}
+                  onChange={handleToggleRelatedVideos}
+                  className={styles.adminCheckbox}
+                />
+                <span className={styles.adminCheckboxText}>
+                  Disable related videos
+                </span>
+              </label>
+            </div>
 
-      <div className={styles.adminCheckboxGroup}>
-        <label className={styles.adminCheckboxLabel}>
-          <input
-            type="checkbox"
-            checked={disableRelatedVideos}
-            onChange={handleToggleRelatedVideos}
-            className={styles.adminCheckbox}
-          />
-          <span className={styles.adminCheckboxText}>
-            Disable related videos
-          </span>
-        </label>
-      </div>
+            {showAdminOptions && (
+              <div className={styles.adminOptionsPanel}>
+                <p className={styles.adminOptionsText}>
+                  - Admin options are now visible on cards
+                </p>
+                <p className={styles.adminOptionsText}>
+                  - "Add to Most Anticipated" button (bottom-right corner of Game Page)
+                </p>
+              </div>
+            )}
 
-      {showAdminOptions && (
-        <div className={styles.adminOptionsPanel}>
-          <p className={styles.adminOptionsText}>
-            - Admin options are now visible on cards
-          </p>
-          <p className={styles.adminOptionsText}>
-            - "Add to Most Anticipated" button (bottom-right corner of Game Page)
-          </p>
+            {disableRelatedVideos && (
+              <div className={styles.adminOptionsPanel} style={{ marginTop: '15px', borderColor: 'rgba(230, 57, 70, 0.3)', background: 'rgba(230, 57, 70, 0.1)' }}>
+                <p className={styles.adminOptionsText}>
+                  - Related videos are disabled for all users
+                </p>
+              </div>
+            )}
+          </div>
+
+          <UserManagement />
         </div>
       )}
 
-      {disableRelatedVideos && (
-        <div className={styles.adminOptionsPanel} style={{ marginTop: '15px', borderColor: 'rgba(230, 57, 70, 0.3)', background: 'rgba(230, 57, 70, 0.1)' }}>
-          <p className={styles.adminOptionsText}>
-            - Related videos are disabled for all users
-          </p>
-        </div>
-      )}
-    </div>
-
-    {/* User Management */}
-    <UserManagement />
-  </div>
-)}
-
-      {/* Last Message Widget */}
       {lastMessage && (
         <div className={styles.lastMessageWidget}>
           <h3 className={styles.lastMessageTitle}>- Latest Chat Activity</h3>
