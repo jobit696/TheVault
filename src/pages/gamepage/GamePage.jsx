@@ -44,9 +44,9 @@ export default function GamePage() {
         try {
             await removeUpcomingGame(game.id);
             setIsUpcoming(false);
-            alert('✅ Removed from Most Anticipated');
+            alert('Removed from Most Anticipated');
         } catch (error) {
-            alert('❌ Error: ' + error.message);
+            alert('Error: ' + error.message);
         } finally {
             setLoadingUpcoming(false);
         }

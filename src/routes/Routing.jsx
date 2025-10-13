@@ -10,6 +10,7 @@ import RegisterPage from "../pages/register/RegisterPage";
 import AllGamesPage from "../pages/allgamespage/AllGamesPage";
 import AccountPage from "../pages/account/AccountPage";
 import ScrollToTop from "../components/layout_comp/ScrollToTop";
+import UserProfilePage from '../pages/account/UserProfilePage';
 import {
   getAllGames,
   getGamesByPlatform,
@@ -81,6 +82,11 @@ const router = createBrowserRouter([
       {
         path: "/arcade",
         Component: ArcadePage 
+      },
+      {
+path: "/user/:userId",
+Component: UserProfilePage
+
       },
       {
         path: '/communitygamepage',

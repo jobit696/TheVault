@@ -595,6 +595,11 @@
     }
 }
 
+.customMb
+{
+    margin-bottom: 35px !important;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
     .mainGrid {

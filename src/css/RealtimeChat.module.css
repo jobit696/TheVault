@@ -60,11 +60,70 @@
   }
 }
 
+/* ========== MESSAGE HEADER CON DELETE BUTTON ========== */
 .messageHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 10px;
+}
+
+.messageHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+/* ========== DELETE BUTTON ========== */
+.deleteButton {
+    background: transparent;
+    border: none;
+    color: #868686;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+}
+
+.deleteButton:hover {
+    background: rgba(209, 29, 4, 0.15);
+    color: #d11d04;
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.deleteButton:active {
+    transform: scale(0.95);
+}
+
+.deleteButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.deleteButton i {
+    font-size: 0.85rem;
+}
+
+/* Animation per spinner */
+.deleteButton .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .username {
@@ -111,4 +170,38 @@
   padding: 60px 20px;
   font-size: 15px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* ========== USERNAME LINK ========== */
+.usernameLink {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.usernameLink:hover .username {
+    color: #d11d04;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.username {
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.usernameLink:hover {
+    transform: scale(1.05);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 767px) {
+    .messageHeader {
+        flex-wrap: wrap;
+    }
+
+    .deleteButton {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+    }
 }

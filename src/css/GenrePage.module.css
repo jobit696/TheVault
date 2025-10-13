@@ -199,8 +199,29 @@
     box-shadow: 0 4px 15px rgba(209, 29, 4, 0.3);
 }
 
+@media (max-width: 1024px) {
+    .filtersRow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 /* Responsive */
 @media (max-width: 767px) {
+
+ .filtersContainer {
+        padding: 20px;
+    }
+
+    .filtersRow {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .clearFiltersBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
     .gridGamesList {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 1.5rem;

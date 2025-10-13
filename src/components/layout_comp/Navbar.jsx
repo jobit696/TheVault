@@ -120,11 +120,11 @@ export default function Navbar() {
                                     Pico-8
                                 </Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item"> 
                                 <Link className="nav-link" to="/communitygamepage">
                                     Community Showcase
                                 </Link>
-                            </li>
+                            </li>*/}
                         </ul>
                         
                         {!session ? (

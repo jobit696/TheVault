@@ -56,17 +56,7 @@ export default function Avatar({ url, size, onUpload }) {
         {avatarUrl ? (
           <img src={avatarUrl} alt="Avatar" />
         ) : (
-          <div style={{ 
-            width: '100%', 
-            height: '100%', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            color: '#666',
-            fontSize: '14px'
-          }}>
-            No image
-          </div>
+          <img src="../images/default-avatar.png" alt="Default-avatar" />
         )}
       </div>
       <div className={styles.fileInputWrapper}>
