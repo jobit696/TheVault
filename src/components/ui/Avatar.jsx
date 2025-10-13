@@ -6,8 +6,15 @@ export default function Avatar({ url, size, onUpload }) {
   const [avatarUrl, setAvatarUrl] = useState(null)
   const [uploading, setUploading] = useState(false)
 
+  // Immagine di default 
+  const defaultAvatar = '/images/default-avatar.png'
+
   useEffect(() => {
-    if (url) downloadImage(url)
+    if (url) {
+      downloadImage(url)
+    } else {
+      setAvatarUrl(null)
+    }
   }, [url])
 
   const downloadImage = async (path) => {
@@ -20,6 +27,8 @@ export default function Avatar({ url, size, onUpload }) {
       setAvatarUrl(url)
     } catch (error) {
       console.log('Error downloading image: ', error.message)
+      // In caso di errore, usa il default
+      setAvatarUrl(null)
     }
   }
 
@@ -53,11 +62,10 @@ export default function Avatar({ url, size, onUpload }) {
   return (
     <div className={styles.avatarSection}>
       <div className={styles.avatarCircle} style={{ width: size, height: size }}>
-        {avatarUrl ? (
-          <img src={avatarUrl} alt="Avatar" />
-        ) : (
-          <img src="../images/default-avatar.png" alt="Default-avatar" />
-        )}
+        <img 
+          src={avatarUrl || defaultAvatar} 
+          alt={avatarUrl ? "Avatar" : "Default Avatar"} 
+        />
       </div>
       <div className={styles.fileInputWrapper}>
         <input
@@ -69,7 +77,7 @@ export default function Avatar({ url, size, onUpload }) {
           className={styles.fileInput}
         />
         <label htmlFor="avatar" className={styles.fileInputLabel}>
-          {uploading ? 'Uploading...' : 'Choose File'}
+          {uploading ? 'Uploading...' : avatarUrl ? 'Change Avatar' : 'Upload Avatar'}
         </label>
       </div>
     </div>
