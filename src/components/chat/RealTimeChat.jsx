@@ -37,7 +37,10 @@ export default function RealtimeChat({ data }) {
     try {
       const { data: messages, error } = await supabase
         .from("messages")
-        .select('*')
+        .select(`
+          *,
+          profiles!inner(sex)
+        `)
         .eq("game_id", gameId)
         .order('created_at', { ascending: true });
       
@@ -128,47 +131,57 @@ export default function RealtimeChat({ data }) {
       {messages.length === 0 && !loadingInitial && !error && (
         <div className={styles.emptyState}>No comments yet. Be the first!</div>
       )}
-      {messages.map((message) => (
-        <div key={message.id} className={styles.messageCard}>
-          <div className={styles.messageHeader}>
-            <div className={styles.messageHeaderLeft}>
-              {message.profile_id ? (
-                <Link 
-                  to={`/user/${message.profile_id}`}
-                  className={styles.usernameLink}
-                >
+      {messages.map((message) => {
+        // Classe CSS in base al sesso
+        const userSex = message.profiles?.sex;
+        const cardClass = userSex === 'F' 
+          ? `${styles.messageCard} ${styles.female}` 
+          : userSex === 'M' 
+          ? `${styles.messageCard} ${styles.male}` 
+          : styles.messageCard;
+
+        return (
+          <div key={message.id} className={cardClass}>
+            <div className={styles.messageHeader}>
+              <div className={styles.messageHeaderLeft}>
+                {message.profile_id ? (
+                  <Link 
+                    to={`/user/${message.profile_id}`}
+                    className={styles.usernameLink}
+                  >
+                    <span className={styles.username}>
+                      {message.profile_username || 'Anonymous'}
+                    </span>
+                  </Link>
+                ) : (
                   <span className={styles.username}>
                     {message.profile_username || 'Anonymous'}
                   </span>
-                </Link>
-              ) : (
-                <span className={styles.username}>
-                  {message.profile_username || 'Anonymous'}
-                </span>
-              )}
-              <span className={styles.timestamp}>
-                {dayjs(message.created_at).fromNow()}
-              </span>
-            </div>
-            
-            {isAdmin && (
-              <button
-                onClick={() => handleDeleteMessage(message.id)}
-                disabled={deletingMessageId === message.id}
-                className={styles.deleteButton}
-                title="Delete message"
-              >
-                {deletingMessageId === message.id ? (
-                  <i className="fas fa-spinner fa-spin"></i>
-                ) : (
-                  <i className="fas fa-trash"></i>
                 )}
-              </button>
-            )}
+                <span className={styles.timestamp}>
+                  {dayjs(message.created_at).fromNow()}
+                </span>
+              </div>
+              
+              {isAdmin && (
+                <button
+                  onClick={() => handleDeleteMessage(message.id)}
+                  disabled={deletingMessageId === message.id}
+                  className={styles.deleteButton}
+                  title="Delete message"
+                >
+                  {deletingMessageId === message.id ? (
+                    <i className="fas fa-spinner fa-spin"></i>
+                  ) : (
+                    <i className="fas fa-trash"></i>
+                  )}
+                </button>
+              )}
+            </div>
+            <div className={styles.messageContent}>{message.content}</div>
           </div>
-          <div className={styles.messageContent}>{message.content}</div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

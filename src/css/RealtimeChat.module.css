@@ -194,6 +194,50 @@
     transform: scale(1.05);
 }
 
+/* ========== GENDER-BASED MESSAGE COLORS ========== */
+
+/* Messaggi utenti maschi - azzurrino */
+.messageCard.male {
+  background: linear-gradient(145deg, rgba(74, 158, 255, 0.12), rgba(64, 148, 245, 0.08));
+  border-left: 4px solid #4a9eff;
+  box-shadow: 
+    0 4px 10px rgba(74, 158, 255, 0.15),
+    inset 0 1px 0 rgba(74, 158, 255, 0.05);
+}
+
+.messageCard.male:hover {
+  background: linear-gradient(145deg, rgba(74, 158, 255, 0.15), rgba(64, 148, 245, 0.1));
+  box-shadow: 
+    0 6px 15px rgba(74, 158, 255, 0.2),
+    inset 0 1px 0 rgba(74, 158, 255, 0.08);
+}
+
+.messageCard.male .username {
+  color: #4a9eff;
+  text-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+}
+
+/* Messaggi utenti femmine - rosato */
+.messageCard.female {
+  background: linear-gradient(145deg, rgba(255, 105, 180, 0.12), rgba(245, 95, 170, 0.08));
+  border-left: 4px solid #ff69b4;
+  box-shadow: 
+    0 4px 10px rgba(255, 105, 180, 0.15),
+    inset 0 1px 0 rgba(255, 105, 180, 0.05);
+}
+
+.messageCard.female:hover {
+  background: linear-gradient(145deg, rgba(255, 105, 180, 0.15), rgba(245, 95, 170, 0.1));
+  box-shadow: 
+    0 6px 15px rgba(255, 105, 180, 0.2),
+    inset 0 1px 0 rgba(255, 105, 180, 0.08);
+}
+
+.messageCard.female .username {
+  color: #ff69b4;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 767px) {
     .messageHeader {
@@ -205,3 +249,4 @@
         font-size: 0.8rem;
     }
 }
+
