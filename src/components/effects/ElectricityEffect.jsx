@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import styles from '../../css/ElectricityEffect.module.css';
+import '../../css/ElectricityEffect.module.css';
+
 
 // Leggi i colori direttamente dalle variabili CSS
 function getCSSVariable(variable) {

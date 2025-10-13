@@ -2,7 +2,7 @@ import supabase from '../supabase/supabase-client';
 import { getCurrentRawgApiKey, rotateRawgApiKey, getTotalRawgKeys } from '../utils/apiKeyRotation';
 
 const BASE_URL = import.meta.env.VITE_RAW_G_URL;
-const FETCH_TIMEOUT = 8000; // 8 secondi
+const FETCH_TIMEOUT = 4000; // 8 secondi
 
 // Fetch con timeout e retry
 async function fetchFromRAWG(url, retries = 0) {

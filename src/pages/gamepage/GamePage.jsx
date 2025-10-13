@@ -130,13 +130,9 @@ export default function GamePage() {
             </div>
 
             {/* Info Section */}
-            <div className="container mt-4">
+            <div className="container mt-4 mb-1">
                 <div className="row">
-                    <div className="col-12 col-lg-8">
-                        <p className={styles.fullDescription}>
-                            {game?.description_raw}
-                        </p>
-                    </div>
+                  
                     
                     <div className="col-12 col-lg-4">
                         <div className={styles.infoText}>
@@ -170,11 +166,16 @@ export default function GamePage() {
                             </p>
                         </div>
                     </div>
+                      <div className="col-12 col-lg-8">
+                        {/* <p className={styles.fullDescription}>
+                            {game?.description_raw}
+                        </p> */}
+                    </div>
                 </div>
             </div>
 
             {/* Description Section */}
-            <div className="container mt-5 pb-5">
+            <div className="container mt-4 pb-5">
                 <h2 className={styles.sectionTitleBan4}>
                     Description
                 </h2>

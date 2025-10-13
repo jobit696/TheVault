@@ -1,23 +1,44 @@
-/* Colori dei fulmini */
 :root {
-  --lightning-primary: #00ffff;
-  --lightning-secondary: #ffffff;
-  --lightning-hover: #ffc400;
-  --lightning-ambient: #00e1ff;
+  /* ⚡ Colori principali dei fulmini */
+  --lightning-primary: #00ffff;       /* colore base azzurro */
+  --lightning-hover: #66ccff;         /* colore più chiaro quando si passa sopra una card */
+  --lightning-secondary: #ffaa00;     /* colore giallo/arancione secondario */
+
+  /* 🌫️ Opzioni di luce */
+  --lightning-glow: rgba(0, 255, 255, 0.25); /* alone luminoso */
+  --lightning-intensity: 0.8;                /* intensità generale */
 }
 
-.lightningPrimary {
-  color: var(--lightning-primary);
+/* Effetto opzionale di glow globale (se vuoi uno sfondo "elettrico") */
+
+
+/* Classi di utilità per elementi interattivi */
+.hasElectricity,
+.customInteractiveImageCard,
+.genreGameCard,
+.cardFlipContainer {
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.lightningSecondary {
-  color: var(--lightning-secondary);
+.hasElectricity:hover,
+.customInteractiveImageCard:hover,
+.genreGameCard:hover,
+.cardFlipContainer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px var(--lightning-glow);
 }
 
-.lightningHover {
-  color: var(--lightning-hover);
+/* (Facoltativo) se vuoi un effetto leggero di bagliore quando un fulmine è attivo */
+.electricityActive {
+  animation: electricityPulse 0.5s ease-in-out infinite alternate;
 }
 
-.lightningAmbient {
-  color: var(--lightning-ambient);
+@keyframes electricityPulse {
+  from {
+    filter: drop-shadow(0 0 4px var(--lightning-primary));
+  }
+  to {
+    filter: drop-shadow(0 0 10px var(--lightning-hover));
+  }
 }
