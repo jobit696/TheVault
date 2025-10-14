@@ -23,6 +23,14 @@
   margin-bottom: 30px;
 }
 
+.alternativeSectionTitle {
+    color: #fff;
+    font-size: clamp(1rem,4vw,1.3rem);
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 5px rgba(209, 29, 4, 0.3);
+}
+
 .pageHeader i {
   font-size: 2rem;
   color: #d11d04;

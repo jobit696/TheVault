@@ -30,6 +30,15 @@ export default function AccountPage() {
   const [lastMessage, setLastMessage] = useState(null);
   const [lastMessageGame, setLastMessageGame] = useState(null);
 
+  // Stati per tracciare le modifiche
+  const [initialValues, setInitialValues] = useState({
+    username: null,
+    first_name: null,
+    last_name: null,
+    sex: null,
+  });
+  const [hasChanges, setHasChanges] = useState(false);
+
   // Refs per scrollare alle sezioni
   const favoriteGamesRef = useRef(null);
   const genresRef = useRef(null);
@@ -93,6 +102,14 @@ export default function AccountPage() {
           setLastName(data.last_name);
           setSex(data.sex);
           setAvatarUrl(data.avatar_url);
+          
+          // Salva i valori iniziali
+          setInitialValues({
+            username: data.username,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            sex: data.sex,
+          });
         }
       }
 
@@ -145,6 +162,17 @@ export default function AccountPage() {
     };
   }, [session]);
 
+  // useEffect per verificare i cambiamenti
+  useEffect(() => {
+    const changed = 
+      username !== initialValues.username ||
+      first_name !== initialValues.first_name ||
+      last_name !== initialValues.last_name ||
+      sex !== initialValues.sex;
+    
+    setHasChanges(changed);
+  }, [username, first_name, last_name, sex, initialValues]);
+
   const updateProfile = async (event, avatarUrl) => {
     event.preventDefault();
 
@@ -157,7 +185,7 @@ export default function AccountPage() {
       first_name,
       last_name,
       sex,
-      avatar_url: avatarUrl,
+      avatar_url: avatarUrl || avatar_url,
       updated_at: new Date(),
     };
 
@@ -166,7 +194,18 @@ export default function AccountPage() {
     if (error) {
       alert(error.message);
     } else {
-      setAvatarUrl(avatarUrl);
+      if (avatarUrl) {
+        setAvatarUrl(avatarUrl);
+      }
+      
+      // Aggiorna i valori iniziali dopo il salvataggio
+      setInitialValues({
+        username,
+        first_name,
+        last_name,
+        sex,
+      });
+      setHasChanges(false);
     }
     setLoading(false);
   };
@@ -337,8 +376,12 @@ export default function AccountPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !hasChanges}
               className={styles.submitButton}
+              style={{ 
+                opacity: (!hasChanges && !loading) ? 0.5 : 1,
+                cursor: (!hasChanges && !loading) ? 'not-allowed' : 'pointer'
+              }}
             >
               {loading ? 'Loading ...' : 'Update'}
             </button>
@@ -398,7 +441,7 @@ export default function AccountPage() {
 
           {/* Sezione Favorite Genres con ref */}
           <div className={styles.sectionWidget} ref={genresRef}>
-            <h3 className={styles.sectionTitle}>- Favorite Genres</h3>
+            <h3 className={styles.alternativeSectionTitle}><i class="fa-solid fa-star"></i><span className='ms-3'>Favorite Genres</span></h3>
             {favoriteGenres.length === 0 ? (
               <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
                 Add favorite games to see your favorite genres!
@@ -489,7 +532,7 @@ export default function AccountPage() {
 
       {lastMessage && (
         <div className={styles.lastMessageWidget}>
-          <h3 className={styles.lastMessageTitle}>- Latest Chat Activity</h3>
+          <h3 className={styles.alternativeSectionTitle}><i class="fa-solid fa-message"></i><span className='ms-3'>Latest Chat Activity</span></h3>
           <div className={styles.lastMessageCard}>
             <div className={styles.lastMessageHeader}>
               <span className={styles.lastMessageGameName}>
@@ -514,7 +557,7 @@ export default function AccountPage() {
 
       {/* Sezione Favorite Games con ref */}
       <div className={styles.sectionWidget} ref={favoriteGamesRef}>
-        <h3 className={styles.sectionTitle}>- Favorite Games ({favoriteGames.length})</h3>
+        <h3 className={styles.alternativeSectionTitle}><i class="fa-solid fa-heart"></i><span className='ms-3'>Favorite games</span> ({favoriteGames.length})</h3>
         {favoriteGames.length === 0 ? (
           <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
             No favorite games yet. Start adding games to your favorites!

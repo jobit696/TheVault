@@ -61,7 +61,7 @@ const YoutubeChannelSettings = () => {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>- Youtube video preferences</h3>
+      <h3 className={styles.title}><i class="fa-brands fa-youtube"></i><span className='ms-3'>Youtube video preferences</span></h3>
       <p className={styles.description}>
         Select from which YouTube channel you want to see gameplay videos on the game pages
       </p>

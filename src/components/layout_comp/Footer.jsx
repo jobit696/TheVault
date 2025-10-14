@@ -39,7 +39,7 @@ export default function Footer() {
                             <h4>Interactivity</h4>
                             <ul className="list-unstyled">
                                 <li><Link to="/arcade">Pico-8 player</Link></li>
-                                <li><Link to="/communitygamepage">Community Showcase</Link></li>
+                                {/* <li><Link to="/communitygamepage">Community Showcase</Link></li> */}
                                 {/* <li><a href="#">Ratings</a></li>
                                 <li><a href="#">Forums</a></li>
                                 <li><a href="#">Blog</a></li> */}
