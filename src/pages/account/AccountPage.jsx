@@ -1,10 +1,10 @@
 /* @refresh reset */
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import supabase from '../../supabase/supabase-client';
 import SessionContext from '../../context/SessionContext';
 import Avatar from '../../components/ui/Avatar';
 import YoutubeChannelSettings from '../../components/youtube/YoutubeChannelSettings';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import styles from '../../css/AccountPage.module.css';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -17,23 +17,30 @@ dayjs.extend(relativeTime);
 export default function AccountPage() {
   const { session } = useContext(SessionContext);
   const { isAdmin, showAdminOptions, setShowAdminOptions, disableRelatedVideos, setDisableRelatedVideos } = useAdmin();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [first_name, setFirstName] = useState(null);
   const [last_name, setLastName] = useState(null);
-  const [sex, setSex] = useState(null); // ← AGGIUNTO
+  const [sex, setSex] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
   const [favoriteGames, setFavoriteGames] = useState([]);
   const [favoriteGenres, setFavoriteGenres] = useState([]);
   const [lastMessage, setLastMessage] = useState(null);
   const [lastMessageGame, setLastMessageGame] = useState(null);
 
+  // Refs per scrollare alle sezioni
+  const favoriteGamesRef = useRef(null);
+  const genresRef = useRef(null);
+
   const gameStats = {
     totalGames: favoriteGames.length,
     totalGenres: favoriteGenres.length,
     topGenre: favoriteGenres[0]?.name || 'N/A',
-    newestFavorite: favoriteGames[0]?.game_name || 'N/A'
+    newestFavorite: favoriteGames[0]?.game_name || 'N/A',
+    newestFavoriteSlug: favoriteGames[0]?.game_slug || null,
+    newestFavoriteId: favoriteGames[0]?.game_id || null
   };
 
   const calculateFavoriteGenres = (games) => {
@@ -73,7 +80,7 @@ export default function AccountPage() {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('username, first_name, last_name, sex, avatar_url') // ← AGGIUNTO sex
+        .select('username, first_name, last_name, sex, avatar_url')
         .eq('id', user.id)
         .single();
 
@@ -84,7 +91,7 @@ export default function AccountPage() {
           setUsername(data.username);
           setFirstName(data.first_name);
           setLastName(data.last_name);
-          setSex(data.sex); // ← AGGIUNTO
+          setSex(data.sex);
           setAvatarUrl(data.avatar_url);
         }
       }
@@ -149,7 +156,7 @@ export default function AccountPage() {
       username,
       first_name,
       last_name,
-      sex, // ← AGGIUNTO
+      sex,
       avatar_url: avatarUrl,
       updated_at: new Date(),
     };
@@ -188,6 +195,29 @@ export default function AccountPage() {
       setDisableRelatedVideos(newValue);
     } catch (error) {
       alert('Errore aggiornamento impostazioni: ' + error.message);
+    }
+  };
+
+  // Funzioni per gestire i click sulle stat cards
+  const handleTotalGamesClick = () => {
+    favoriteGamesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleGenresClick = () => {
+    genresRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleTopGenreClick = () => {
+    if (gameStats.topGenre !== 'N/A') {
+      // Converte il nome del genere in formato URL-friendly (lowercase, spazi con trattini)
+      const genreSlug = gameStats.topGenre.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/genre/${genreSlug}`);
+    }
+  };
+
+  const handleLatestFavoriteClick = () => {
+    if (gameStats.newestFavoriteSlug && gameStats.newestFavoriteId) {
+      navigate(`/games/${gameStats.newestFavoriteSlug}/${gameStats.newestFavoriteId}`);
     }
   };
 
@@ -264,48 +294,46 @@ export default function AccountPage() {
               />
             </div>
 
-     {/* Gender */}
-<div className={styles.formField}>
-  <label className={styles.formLabel}>Gender</label>
-  <div style={{ 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'center',
-    padding: '15px',
-    background: 'rgba(255, 255, 255, 0.05)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '8px',
-    marginTop: '10px'
-  }}>
-    {sex === 'M' ? (
-      <span style={{ 
-        color: '#d11d04', 
-        fontWeight: 700, 
-        fontSize: '1rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-       
-      }}>
-        <i className="fas fa-mars" style={{ fontSize: '1.3rem' }}></i> Male
-      </span>
-    ) : sex === 'F' ? (
-      <span style={{ 
-          color: '#d11d04', 
-        fontWeight: 700, 
-        fontSize: '1rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-       
-      }}>
-        <i className="fas fa-venus" style={{ fontSize: '1.3rem' }}></i> Female
-      </span>
-    ) : (
-      <span style={{ color: '#868686' }}>Not specified</span>
-    )}
-  </div>
-</div>
+            {/* Gender */}
+            <div className={styles.formField}>
+              <label className={styles.formLabel}>Gender</label>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                padding: '15px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                marginTop: '10px'
+              }}>
+                {sex === 'M' ? (
+                  <span style={{ 
+                    color: '#d11d04', 
+                    fontWeight: 700, 
+                    fontSize: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}>
+                    <i className="fas fa-mars" style={{ fontSize: '1.3rem' }}></i> Male
+                  </span>
+                ) : sex === 'F' ? (
+                  <span style={{ 
+                    color: '#d11d04', 
+                    fontWeight: 700, 
+                    fontSize: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}>
+                    <i className="fas fa-venus" style={{ fontSize: '1.3rem' }}></i> Female
+                  </span>
+                ) : (
+                  <span style={{ color: '#868686' }}>Not specified</span>
+                )}
+              </div>
+            </div>
 
             <button
               type="submit"
@@ -319,19 +347,46 @@ export default function AccountPage() {
 
         <div className={styles.rightColumn}>
           <div className={styles.statsGrid}>
-            <div className={styles.statCard}>
+            {/* Stat Card: Total Games */}
+            <div 
+              className={styles.statCard} 
+              onClick={handleTotalGamesClick}
+              style={{ cursor: 'pointer' }}
+              title="Click to view favorite games"
+            >
               <div className={styles.statNumber}>{gameStats.totalGames}</div>
               <div className={styles.statLabel}>Favorite Games</div>
             </div>
-            <div className={styles.statCard}>
+
+            {/* Stat Card: Genres  */}
+            <div 
+              className={styles.statCard}
+              onClick={handleGenresClick}
+              style={{ cursor: 'pointer' }}
+              title="Click to view favorite genres"
+            >
               <div className={styles.statNumber}>{gameStats.totalGenres}</div>
               <div className={styles.statLabel}>Genres</div>
             </div>
-            <div className={styles.statCard}>
+
+            {/* Stat Card: Top Genre */}
+            <div 
+              className={styles.statCard}
+              onClick={handleTopGenreClick}
+              style={{ cursor: gameStats.topGenre !== 'N/A' ? 'pointer' : 'default' }}
+              title={gameStats.topGenre !== 'N/A' ? `Click to view ${gameStats.topGenre} games` : ''}
+            >
               <div className={styles.statNumber}>{gameStats.topGenre}</div>
               <div className={styles.statLabel}>Top Genre</div>
             </div>
-            <div className={styles.statCard}>
+
+            {/* Stat Card: Latest Favorite */}
+            <div 
+              className={styles.statCard}
+              onClick={handleLatestFavoriteClick}
+              style={{ cursor: gameStats.newestFavoriteSlug ? 'pointer' : 'default' }}
+              title={gameStats.newestFavoriteSlug ? `Click to view ${gameStats.newestFavorite}` : ''}
+            >
               <div className={styles.statNumber} style={{ fontSize: '0.8rem' }}>
                 {gameStats.newestFavorite.length > 15 
                   ? gameStats.newestFavorite.substring(0, 15) + '...' 
@@ -341,7 +396,8 @@ export default function AccountPage() {
             </div>
           </div>
 
-          <div className={styles.sectionWidget}>
+          {/* Sezione Favorite Genres con ref */}
+          <div className={styles.sectionWidget} ref={genresRef}>
             <h3 className={styles.sectionTitle}>- Favorite Genres</h3>
             {favoriteGenres.length === 0 ? (
               <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
@@ -456,7 +512,8 @@ export default function AccountPage() {
         </div>
       )}
 
-      <div className={styles.sectionWidget}>
+      {/* Sezione Favorite Games con ref */}
+      <div className={styles.sectionWidget} ref={favoriteGamesRef}>
         <h3 className={styles.sectionTitle}>- Favorite Games ({favoriteGames.length})</h3>
         {favoriteGames.length === 0 ? (
           <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>

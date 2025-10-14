@@ -1,9 +1,9 @@
-let maleAvatar1 = '../images/default-male1.png';
-let maleAvatar2 = '../images/default-male2.png';
-let maleAvatar3 = '../images/default-male3.png';
-let femaleAvatar1 = '../images/default-female1.png';
-let femaleAvatar2 = '../images/default-female2.png';
-let femaleAvatar3 = '../images/default-female3.png';
+let maleAvatar1 = '/images/default-male1.png';
+let maleAvatar2 = '/images/default-male2.png';
+let maleAvatar3 = '/images/default-male3.png';
+let femaleAvatar1 = '/images/default-female1.png';
+let femaleAvatar2 = '/images/default-female2.png';
+let femaleAvatar3 = '/images/default-female3.png';
 
 export default function avatarandomizer(sex) {
   const randomNum = Math.random();

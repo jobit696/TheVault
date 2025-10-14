@@ -6,27 +6,54 @@ export default function Avatar({ url, size, onUpload }) {
   const [avatarUrl, setAvatarUrl] = useState(null)
   const [uploading, setUploading] = useState(false)
 
-  // Immagine di default 
-  const defaultAvatar = '/images/default-avatar.png'
+  // Immagine di default SVG inline
+  const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="%23282828" width="200" height="200"/%3E%3Cpath fill="%23868686" d="M100 100c16.569 0 30-13.431 30-30s-13.431-30-30-30-30 13.431-30 30 13.431 30 30 30zm0 15c-20.03 0-60 10.042-60 30v15h120v-15c0-19.958-39.97-30-60-30z"/%3E%3C/svg%3E'
 
   useEffect(() => {
     if (url) {
-      downloadImage(url)
+      loadAvatar(url)
     } else {
+      // Se non c'è URL, resetta l'avatar (mostrerà il default)
       setAvatarUrl(null)
     }
   }, [url])
 
-  const downloadImage = async (path) => {
+  const loadAvatar = async (path) => {
     try {
-      const { data, error } = await supabase.storage.from('avatars').download(path)
-      if (error) {
-        throw error
+      // Controlla se è un path locale (inizia con ../ o /)
+      if (path.startsWith('../') || path.startsWith('/images/') || path.startsWith('./')) {
+        // È un path locale, usalo direttamente
+        setAvatarUrl(path)
+        return
       }
-      const url = URL.createObjectURL(data)
-      setAvatarUrl(url)
+
+      // Controlla se è già un URL completo
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        setAvatarUrl(path)
+        return
+      }
+
+      // Altrimenti, prova a scaricarlo da Supabase Storage
+      const { data, error } = await supabase.storage.from('avatars').download(path)
+      
+      if (error) {
+        // Se fallisce il download, prova a ottenere l'URL pubblico
+        const { data: publicUrlData } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(path)
+        
+        if (publicUrlData?.publicUrl) {
+          setAvatarUrl(publicUrlData.publicUrl)
+        } else {
+          throw error
+        }
+      } else {
+        // Se il download ha successo, crea un URL dal blob
+        const url = URL.createObjectURL(data)
+        setAvatarUrl(url)
+      }
     } catch (error) {
-      console.log('Error downloading image: ', error.message)
+      console.log('Error loading avatar: ', error.message)
       // In caso di errore, usa il default
       setAvatarUrl(null)
     }
@@ -64,7 +91,12 @@ export default function Avatar({ url, size, onUpload }) {
       <div className={styles.avatarCircle} style={{ width: size, height: size }}>
         <img 
           src={avatarUrl || defaultAvatar} 
-          alt={avatarUrl ? "Avatar" : "Default Avatar"} 
+          alt={avatarUrl ? "Avatar" : "Default Avatar"}
+          onError={(e) => {
+            // Fallback se l'immagine non carica
+            console.log('Image failed to load:', e.target.src)
+            e.target.src = defaultAvatar
+          }}
         />
       </div>
       <div className={styles.fileInputWrapper}>

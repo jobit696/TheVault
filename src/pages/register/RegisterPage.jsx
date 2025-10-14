@@ -46,12 +46,13 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
         options: {
+          emailRedirectTo: `${window.location.origin}`,
           data: {
             first_name: data.firstName,
             last_name: data.lastName,
             username: data.username,
             sex: formState.sex,
-            avatar_url: randomAvatar // ← AGGIUNTO: Avatar casuale
+            avatar_url: randomAvatar 
           }
         }
       });

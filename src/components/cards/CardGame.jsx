@@ -2,6 +2,7 @@ import { memo, useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import ToggleFavorite from '../ui/ToggleFavorite';
 import { useAdmin } from '../../context/AdminContext'; 
 import { addFeaturedGame, removeFeaturedGame, isFeaturedGame } from '../../services/featuredGamesServices'; 
 import styles from '../../css/CardGame.module.css';
@@ -85,6 +86,11 @@ function CardGame({ game, onFeaturedChange }) {
                             {loading ? '⏳' : isFeatured ? '⭐' : '☆'}
                         </button>
                     )}
+
+                    {/* Bottone Favorite */}
+                    <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
+                        <ToggleFavorite data={game} />
+                    </div>
 
                     <div className={styles.cardGameImageWrapper}>
                         {/* Container piattaforme */}
