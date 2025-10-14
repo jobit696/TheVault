@@ -7,7 +7,7 @@ export default function Avatar({ url, size, onUpload }) {
   const [uploading, setUploading] = useState(false)
 
   // Immagine di default SVG inline
-  const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="%23282828" width="200" height="200"/%3E%3Cpath fill="%23868686" d="M100 100c16.569 0 30-13.431 30-30s-13.431-30-30-30-30 13.431-30 30 13.431 30 30 30zm0 15c-20.03 0-60 10.042-60 30v15h120v-15c0-19.958-39.97-30-60-30z"/%3E%3C/svg%3E'
+  const defaultAvatar = '/images/default-avatar.png';
 
   useEffect(() => {
     if (url) {
