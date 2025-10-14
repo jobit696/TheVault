@@ -81,9 +81,9 @@ function InteractiveImageCard({
     };
 
     return (
-        <div className="hasElectricity">
+        
             <Link to={`/games/${gioco.slug}/${gioco.id}`} style={{ textDecoration: 'none' }}>
-                <div className={styles.cardFlipContainer}>
+                <div className={`${styles.cardFlipContainer} hasElectricity`}>
                     {show_number && (
                         <div className={styles.gameNumber}>
                             {number}<span className={styles.degreeSymbol}>°</span>
@@ -164,7 +164,7 @@ function InteractiveImageCard({
                     </div>
                 </div>
             </Link>
-        </div>
+       
     );
 }
 
