@@ -153,7 +153,10 @@ export default function UserProfilePage() {
               alignItems: 'center',
               width: '100%'
             }}>
-              <div className={styles.avatarCircle} style={{ width: '150px', height: '150px' }}>
+              <div className={styles.avatarCircle} style={{ 
+                width: 'clamp(120px, 25vw, 150px)', 
+                height: 'clamp(120px, 25vw, 150px)' 
+              }}>
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 ) : (
@@ -162,11 +165,20 @@ export default function UserProfilePage() {
               </div>
 
               <div style={{ textAlign: 'center', marginTop: '20px', width: '100%' }}>
-                <h2 style={{ color: '#fff', marginBottom: '5px', fontSize: '1.5rem' }}>
+                <h2 style={{ 
+                  color: '#fff', 
+                  marginBottom: '5px', 
+                  fontSize: 'clamp(1.2rem, 4vw, 1.5rem)',
+                  wordBreak: 'break-word'
+                }}>
                   {profile.username || 'Anonymous User'}
                 </h2>
                 {profile.first_name && profile.last_name && (
-                  <p style={{ color: '#868686', margin: 0 }}>
+                  <p style={{ 
+                    color: '#868686', 
+                    margin: 0,
+                    fontSize: 'clamp(0.85rem, 3vw, 1rem)'
+                  }}>
                     {profile.first_name} {profile.last_name}
                   </p>
                 )}
@@ -178,7 +190,8 @@ export default function UserProfilePage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#868686'
+                    color: '#868686',
+                    fontSize: 'clamp(0.85rem, 3vw, 1rem)'
                   }}>
                     {profile.sex === 'M' ? (
                       <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -193,37 +206,37 @@ export default function UserProfilePage() {
                 )}
 
                 {/* YouTube Channel */}
-              {profile.youtube_channel && (
-  <div style={{ marginTop: '15px' }}>
-    <a
-      href={profile.youtube_channel}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '8px',
-        color: '#ff0000',
-        textDecoration: 'none',
-        padding: '8px 16px',
-        background: 'rgba(255, 0, 0, 0.1)',
-        borderRadius: '8px',
-        border: '1px solid rgba(255, 0, 0, 0.3)',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.background = 'rgba(255, 0, 0, 0.2)';
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.background = 'rgba(255, 0, 0, 0.1)';
-      }}
-    >
-      <i className="fab fa-youtube"></i>
-      YouTube Channel
-    </a>
-  </div>
-)}
-
+                {profile.youtube_channel && (
+                  <div style={{ marginTop: '15px' }}>
+                    <a
+                      href={profile.youtube_channel}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        color: '#ff0000',
+                        textDecoration: 'none',
+                        padding: '8px 16px',
+                        background: 'rgba(255, 0, 0, 0.1)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 0, 0, 0.3)',
+                        transition: 'all 0.3s ease',
+                        fontSize: 'clamp(0.85rem, 3vw, 1rem)'
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 0, 0, 0.2)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 0, 0, 0.1)';
+                      }}
+                    >
+                      <i className="fab fa-youtube"></i>
+                      YouTube Channel
+                    </a>
+                  </div>
+                )}
 
                 {/* STATUS */}
                 <div
@@ -274,8 +287,9 @@ export default function UserProfilePage() {
                               padding: '20px',
                               borderRadius: '10px',
                               border: '1px solid rgba(209, 29, 4, 0.3)',
-                              maxWidth: '400px',
-                              margin: '0 auto',
+                              maxWidth: '100%',
+                              width: '100%',
+                              boxSizing: 'border-box'
                             }}
                           >
                             <input
@@ -286,12 +300,12 @@ export default function UserProfilePage() {
                               className={styles.formInput}
                               style={{ marginBottom: '15px' }}
                             />
-                            <div style={{ display: 'flex', gap: '10px' }}>
+                            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                               <button
                                 onClick={handleBan}
                                 disabled={banLoading}
                                 className={styles.submitButton}
-                                style={{ flex: 1 }}
+                                style={{ flex: 1, minWidth: '120px' }}
                               >
                                 {banLoading ? '⏳' : 'Confirm Ban'}
                               </button>
@@ -303,6 +317,7 @@ export default function UserProfilePage() {
                                 className={styles.submitButton}
                                 style={{
                                   flex: 1,
+                                  minWidth: '120px',
                                   background: 'linear-gradient(145deg, #555, #444)',
                                 }}
                               >
@@ -344,12 +359,14 @@ export default function UserProfilePage() {
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>{topGenre}</div>
+              <div className={styles.statNumber} style={{ fontSize: 'clamp(1rem, 4vw, 2rem)' }}>
+                {topGenre}
+              </div>
               <div className={styles.statLabel}>Top Genre</div>
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>
+              <div className={styles.statNumber} style={{ fontSize: 'clamp(0.7rem, 3vw, 0.8rem)' }}>
                 {latestFavorite 
                   ? (latestFavorite.game_name?.length > 15
                       ? latestFavorite.game_name.substring(0, 15) + '...'
@@ -375,7 +392,9 @@ export default function UserProfilePage() {
                   background: 'rgba(255, 255, 255, 0.05)',
                   borderRadius: '8px',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
-                  margin: 0
+                  margin: 0,
+                  fontSize: 'clamp(0.85rem, 3vw, 0.95rem)',
+                  wordBreak: 'break-word'
                 }}>
                   {profile.about}
                 </p>
