@@ -58,6 +58,8 @@
     flex-direction: column;
 }
 
+
+
 .rightColumn {
     display: flex;
     flex-direction: column;
@@ -66,6 +68,20 @@
 
 /* ========== FORM WIDGET ========== */
 .formWidget {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
+    border-radius: 15px;
+    padding: 30px;
+    border: 2px solid #333;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    height: 100%;
+}
+
+.formWidgetPublic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.85));
     border-radius: 15px;
     padding: 30px;
@@ -193,6 +209,38 @@
     color: rgba(255, 255, 255, 0.3);
 }
 
+/* ========== TEXTAREA ========== */
+
+.aboutContainer {
+    padding: 5px;
+}
+
+.aboutTextarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    color: #fff;
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+    resize: none;
+    
+}
+
+.aboutTextarea:focus {
+   outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #d11d04;
+    box-shadow: 0 0 0 3px rgba(209, 29, 4, 0.1);
+}
+
+.aboutTextarea::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+}
+
 /* ========== SUBMIT BUTTON ========== */
 .submitButton {
     display: flex;
@@ -262,7 +310,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .statCard {

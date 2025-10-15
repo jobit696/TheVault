@@ -25,6 +25,8 @@ export default function AccountPage() {
   const [last_name, setLastName] = useState(null);
   const [sex, setSex] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
+  const [about, setAbout] = useState('');
+  const [youtube_channel, setYoutubeChannel] = useState('');
   const [favoriteGames, setFavoriteGames] = useState([]);
   const [favoriteGenres, setFavoriteGenres] = useState([]);
   const [lastMessage, setLastMessage] = useState(null);
@@ -36,6 +38,8 @@ export default function AccountPage() {
     first_name: null,
     last_name: null,
     sex: null,
+    about: '',
+    youtube_channel: '',
   });
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -89,7 +93,7 @@ export default function AccountPage() {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('username, first_name, last_name, sex, avatar_url')
+        .select('username, first_name, last_name, sex, avatar_url, about, youtube_channel')
         .eq('id', user.id)
         .single();
 
@@ -102,6 +106,8 @@ export default function AccountPage() {
           setLastName(data.last_name);
           setSex(data.sex);
           setAvatarUrl(data.avatar_url);
+          setAbout(data.about || '');
+          setYoutubeChannel(data.youtube_channel || '');
           
           // Salva i valori iniziali
           setInitialValues({
@@ -109,6 +115,8 @@ export default function AccountPage() {
             first_name: data.first_name,
             last_name: data.last_name,
             sex: data.sex,
+            about: data.about || '',
+            youtube_channel: data.youtube_channel || '',
           });
         }
       }
@@ -168,10 +176,12 @@ export default function AccountPage() {
       username !== initialValues.username ||
       first_name !== initialValues.first_name ||
       last_name !== initialValues.last_name ||
-      sex !== initialValues.sex;
+      sex !== initialValues.sex ||
+      about !== initialValues.about ||
+      youtube_channel !== initialValues.youtube_channel;
     
     setHasChanges(changed);
-  }, [username, first_name, last_name, sex, initialValues]);
+  }, [username, first_name, last_name, sex, about, youtube_channel, initialValues]);
 
   const updateProfile = async (event, avatarUrl) => {
     event.preventDefault();
@@ -186,6 +196,8 @@ export default function AccountPage() {
       last_name,
       sex,
       avatar_url: avatarUrl || avatar_url,
+      about,
+      youtube_channel,
       updated_at: new Date(),
     };
 
@@ -204,6 +216,8 @@ export default function AccountPage() {
         first_name,
         last_name,
         sex,
+        about,
+        youtube_channel,
       });
       setHasChanges(false);
     }
@@ -248,7 +262,6 @@ export default function AccountPage() {
 
   const handleTopGenreClick = () => {
     if (gameStats.topGenre !== 'N/A') {
-      // Converte il nome del genere in formato URL-friendly (lowercase, spazi con trattini)
       const genreSlug = gameStats.topGenre.toLowerCase().replace(/\s+/g, '-');
       navigate(`/genre/${genreSlug}`);
     }
@@ -277,197 +290,238 @@ export default function AccountPage() {
         <i className="fas fa-cog"></i>
       </div>
 
-      <div className={styles.mainGrid}>
-        <div className={styles.leftColumn}>
-          <form onSubmit={updateProfile} className={styles.formWidget}>
-            <Avatar
-              url={avatar_url}
-              size={150}
-              onUpload={(event, url) => {
-                updateProfile(event, url);
-              }}
-            />
-            
-            <div className={styles.formField}>
-              <label htmlFor="email" className={styles.formLabel}>Email</label>
-              <input 
-                id="email" 
-                type="text" 
-                value={session.user.email} 
-                disabled 
-                className={styles.formInput}
-              />
-            </div>
-            
-            <div className={styles.formField}>
-              <label htmlFor="username" className={styles.formLabel}>Username</label>
-              <input
-                id="username"
-                type="text"
-                required
-                value={username || ''}
-                onChange={(e) => setUsername(e.target.value)}
-                className={styles.formInput}
-              />
-            </div>
-            
-            <div className={styles.formField}>
-              <label htmlFor="first_name" className={styles.formLabel}>First name</label>
-              <input
-                id="first_name"
-                type="text"
-                value={first_name || ''}
-                onChange={(e) => setFirstName(e.target.value)}
-                className={styles.formInput}
-              />
-            </div>
-            
-            <div className={styles.formField}>
-              <label htmlFor="last_name" className={styles.formLabel}>Last name</label>
-              <input
-                id="last_name"
-                type="text"
-                value={last_name || ''}
-                onChange={(e) => setLastName(e.target.value)}
-                className={styles.formInput}
-              />
-            </div>
+     <div className={styles.mainGrid}>
+  <div className={styles.leftColumn}>
+    <form onSubmit={updateProfile} className={styles.formWidget}>
+      <Avatar
+        url={avatar_url}
+        size={150}
+        onUpload={(event, url) => {
+          updateProfile(event, url);
+        }}
+      />
+      
+      <div className={styles.formField}>
+        <label htmlFor="email" className={styles.formLabel}>Email</label>
+        <input 
+          id="email" 
+          type="text" 
+          value={session.user.email} 
+          disabled 
+          className={styles.formInput}
+        />
+      </div>
+      
+      <div className={styles.formField}>
+        <label htmlFor="username" className={styles.formLabel}>Username</label>
+        <input
+          id="username"
+          type="text"
+          required
+          value={username || ''}
+          onChange={(e) => setUsername(e.target.value)}
+          className={styles.formInput}
+        />
+      </div>
+      
+      <div className={styles.formField}>
+        <label htmlFor="first_name" className={styles.formLabel}>First name</label>
+        <input
+          id="first_name"
+          type="text"
+          value={first_name || ''}
+          onChange={(e) => setFirstName(e.target.value)}
+          className={styles.formInput}
+        />
+      </div>
+      
+      <div className={styles.formField}>
+        <label htmlFor="last_name" className={styles.formLabel}>Last name</label>
+        <input
+          id="last_name"
+          type="text"
+          value={last_name || ''}
+          onChange={(e) => setLastName(e.target.value)}
+          className={styles.formInput}
+        />
+      </div>
 
-            {/* Gender */}
-            <div className={styles.formField}>
-              <label className={styles.formLabel}>Gender</label>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                padding: '15px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                marginTop: '10px'
-              }}>
-                {sex === 'M' ? (
-                  <span style={{ 
-                    color: '#d11d04', 
-                    fontWeight: 700, 
-                    fontSize: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}>
-                    <i className="fas fa-mars" style={{ fontSize: '1.3rem' }}></i> Male
-                  </span>
-                ) : sex === 'F' ? (
-                  <span style={{ 
-                    color: '#d11d04', 
-                    fontWeight: 700, 
-                    fontSize: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}>
-                    <i className="fas fa-venus" style={{ fontSize: '1.3rem' }}></i> Female
-                  </span>
-                ) : (
-                  <span style={{ color: '#868686' }}>Not specified</span>
-                )}
-              </div>
-            </div>
+      {/* YouTube Channel */}
+      <div className={styles.formField}>
+        <label htmlFor="youtube_channel" className={styles.formLabel}>
+          <i className="fab fa-youtube"></i> Your YouTube Channel
+        </label>
+        <input
+          id="youtube_channel"
+          type="url"
+          value={youtube_channel}
+          onChange={(e) => setYoutubeChannel(e.target.value)}
+          className={styles.formInput}
+          placeholder="https://youtube.com/@yourchannel"
+        />
+      </div>
 
-            <button
-              type="submit"
-              disabled={loading || !hasChanges}
-              className={styles.submitButton}
-              style={{ 
-                opacity: (!hasChanges && !loading) ? 0.5 : 1,
-                cursor: (!hasChanges && !loading) ? 'not-allowed' : 'pointer'
-              }}
-            >
-              {loading ? 'Loading ...' : 'Update'}
-            </button>
-          </form>
-        </div>
-
-        <div className={styles.rightColumn}>
-          <div className={styles.statsGrid}>
-            {/* Stat Card: Total Games */}
-            <div 
-              className={styles.statCard} 
-              onClick={handleTotalGamesClick}
-              style={{ cursor: 'pointer' }}
-              title="Click to view favorite games"
-            >
-              <div className={styles.statNumber}>{gameStats.totalGames}</div>
-              <div className={styles.statLabel}>Favorite Games</div>
-            </div>
-
-            {/* Stat Card: Genres  */}
-            <div 
-              className={styles.statCard}
-              onClick={handleGenresClick}
-              style={{ cursor: 'pointer' }}
-              title="Click to view favorite genres"
-            >
-              <div className={styles.statNumber}>{gameStats.totalGenres}</div>
-              <div className={styles.statLabel}>Genres</div>
-            </div>
-
-            {/* Stat Card: Top Genre */}
-            <div 
-              className={styles.statCard}
-              onClick={handleTopGenreClick}
-              style={{ cursor: gameStats.topGenre !== 'N/A' ? 'pointer' : 'default' }}
-              title={gameStats.topGenre !== 'N/A' ? `Click to view ${gameStats.topGenre} games` : ''}
-            >
-              <div className={styles.statNumber}>{gameStats.topGenre}</div>
-              <div className={styles.statLabel}>Top Genre</div>
-            </div>
-
-            {/* Stat Card: Latest Favorite */}
-            <div 
-              className={styles.statCard}
-              onClick={handleLatestFavoriteClick}
-              style={{ cursor: gameStats.newestFavoriteSlug ? 'pointer' : 'default' }}
-              title={gameStats.newestFavoriteSlug ? `Click to view ${gameStats.newestFavorite}` : ''}
-            >
-              <div className={styles.statNumber} style={{ fontSize: '0.8rem' }}>
-                {gameStats.newestFavorite.length > 15 
-                  ? gameStats.newestFavorite.substring(0, 15) + '...' 
-                  : gameStats.newestFavorite}
-              </div>
-              <div className={styles.statLabel}>Latest Favorite</div>
-            </div>
-          </div>
-
-          {/* Sezione Favorite Genres con ref */}
-          <div className={styles.sectionWidget} ref={genresRef}>
-            <h3 className={styles.alternativeSectionTitle}><i class="fa-solid fa-star"></i><span className='ms-3'>Favorite Genres</span></h3>
-            {favoriteGenres.length === 0 ? (
-              <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
-                Add favorite games to see your favorite genres!
-              </p>
-            ) : (
-              <div className={styles.genresList}>
-                {favoriteGenres.map((genre, index) => {
-                  const maxCount = favoriteGenres[0].count;
-                  return (
-                    <div key={index} className={styles.genreItem}>
-                      <span className={styles.genreName}>{genre.name}</span>
-                      <span className={styles.genreCount}>{genre.count} games</span>
-                      <div className={styles.genreBar}>
-                        <div 
-                          className={styles.genreBarFill} 
-                          style={{ width: `${(genre.count / maxCount) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+      {/* Gender */}
+      <div className={styles.formField}>
+        <label className={styles.formLabel}>Gender</label>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          padding: '15px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '8px',
+          marginTop: '10px'
+        }}>
+          {sex === 'M' ? (
+            <span style={{ 
+              color: '#d11d04', 
+              fontWeight: 700, 
+              fontSize: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}>
+              <i className="fas fa-mars" style={{ fontSize: '1.3rem' }}></i> Male
+            </span>
+          ) : sex === 'F' ? (
+            <span style={{ 
+              color: '#d11d04', 
+              fontWeight: 700, 
+              fontSize: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}>
+              <i className="fas fa-venus" style={{ fontSize: '1.3rem' }}></i> Female
+            </span>
+          ) : (
+            <span style={{ color: '#868686' }}>Not specified</span>
+          )}
         </div>
       </div>
+
+      <button
+        type="submit"
+        disabled={loading || !hasChanges}
+        className={styles.submitButton}
+        style={{ 
+          opacity: (!hasChanges && !loading) ? 0.5 : 1,
+          cursor: (!hasChanges && !loading) ? 'not-allowed' : 'pointer'
+        }}
+      >
+        {loading ? 'Loading ...' : 'Update'}
+      </button>
+    </form>
+  </div>
+
+  <div className={styles.rightColumn}>
+    <div className={styles.statsGrid}>
+      {/* Stat Card: Total Games */}
+      <div 
+        className={styles.statCard} 
+        onClick={handleTotalGamesClick}
+        style={{ cursor: 'pointer' }}
+        title="Click to view favorite games"
+      >
+        <div className={styles.statNumber}>{gameStats.totalGames}</div>
+        <div className={styles.statLabel}>Favorite Games</div>
+      </div>
+
+      {/* Stat Card: Genres  */}
+      <div 
+        className={styles.statCard}
+        onClick={handleGenresClick}
+        style={{ cursor: 'pointer' }}
+        title="Click to view favorite genres"
+      >
+        <div className={styles.statNumber}>{gameStats.totalGenres}</div>
+        <div className={styles.statLabel}>Genres</div>
+      </div>
+
+      {/* Stat Card: Top Genre */}
+      <div 
+        className={styles.statCard}
+        onClick={handleTopGenreClick}
+        style={{ cursor: gameStats.topGenre !== 'N/A' ? 'pointer' : 'default' }}
+        title={gameStats.topGenre !== 'N/A' ? `Click to view ${gameStats.topGenre} games` : ''}
+      >
+        <div className={styles.statNumber}>{gameStats.topGenre}</div>
+        <div className={styles.statLabel}>Top Genre</div>
+      </div>
+
+      {/* Stat Card: Latest Favorite */}
+      <div 
+        className={styles.statCard}
+        onClick={handleLatestFavoriteClick}
+        style={{ cursor: gameStats.newestFavoriteSlug ? 'pointer' : 'default' }}
+        title={gameStats.newestFavoriteSlug ? `Click to view ${gameStats.newestFavorite}` : ''}
+      >
+        <div className={styles.statNumber} style={{ fontSize: '0.8rem' }}>
+          {gameStats.newestFavorite.length > 15 
+            ? gameStats.newestFavorite.substring(0, 15) + '...' 
+            : gameStats.newestFavorite}
+        </div>
+        <div className={styles.statLabel}>Latest Favorite</div>
+      </div>
+    </div>
+
+    {/* About You */}
+    <div className={styles.sectionWidget}>
+      <h3 className={styles.alternativeSectionTitle}>
+        <i className="fa-solid fa-user"></i>
+        <span className='ms-3'>About You</span>
+      </h3>
+      <div className={styles.aboutContainer}>
+        <textarea
+          id="about"
+          maxLength={200}
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
+          className={styles.aboutTextarea}
+          placeholder="Tell us about yourself..."
+          rows={4}
+          spellCheck={false}
+        />
+        <div className={styles.characterCount}>
+          {about.length}/200 characters
+        </div>
+      </div>
+    </div>
+
+    {/* Sezione Favorite Genres con ref */}
+    <div className={styles.sectionWidget} ref={genresRef}>
+      <h3 className={styles.alternativeSectionTitle}>
+        <i className="fa-solid fa-star"></i>
+        <span className='ms-3'>Favorite Genres</span>
+      </h3>
+      {favoriteGenres.length === 0 ? (
+        <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
+          Add favorite games to see your favorite genres!
+        </p>
+      ) : (
+        <div className={styles.genresList}>
+          {favoriteGenres.map((genre, index) => {
+            const maxCount = favoriteGenres[0].count;
+            return (
+              <div key={index} className={styles.genreItem}>
+                <span className={styles.genreName}>{genre.name}</span>
+                <span className={styles.genreCount}>{genre.count} games</span>
+                <div className={styles.genreBar}>
+                  <div 
+                    className={styles.genreBarFill} 
+                    style={{ width: `${(genre.count / maxCount) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+</div>
 
       <YoutubeChannelSettings />
 
@@ -532,7 +586,7 @@ export default function AccountPage() {
 
       {lastMessage && (
         <div className={styles.lastMessageWidget}>
-          <h3 className={styles.alternativeSectionTitle}><i class="fa-solid fa-message"></i><span className='ms-3'>Latest Chat Activity</span></h3>
+          <h3 className={styles.alternativeSectionTitle}><i className="fa-solid fa-message"></i><span className='ms-3'>Latest Chat Activity</span></h3>
           <div className={styles.lastMessageCard}>
             <div className={styles.lastMessageHeader}>
               <span className={styles.lastMessageGameName}>
@@ -557,7 +611,7 @@ export default function AccountPage() {
 
       {/* Sezione Favorite Games con ref */}
       <div className={styles.sectionWidget} ref={favoriteGamesRef}>
-        <h3 className={styles.alternativeSectionTitle}><i class="fa-solid fa-heart"></i><span className='ms-3'>Favorite games</span> ({favoriteGames.length})</h3>
+        <h3 className={styles.alternativeSectionTitle}><i className="fa-solid fa-heart"></i><span className='ms-3'>Favorite games</span> ({favoriteGames.length})</h3>
         {favoriteGames.length === 0 ? (
           <p style={{ color: '#868686', textAlign: 'center', padding: '20px' }}>
             No favorite games yet. Start adding games to your favorites!

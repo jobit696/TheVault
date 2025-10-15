@@ -8,9 +8,9 @@ import App from './App.jsx'
 
 
   console.log = function () {};
-  console.warn = function () {};
-  console.error = function () {};
-  console.info = function () {};
+  // console.warn = function () {};
+  // console.error = function () {};
+  // console.info = function () {};
 
 
 

@@ -1,0 +1,78 @@
+.favoriteButton {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    color: #ffffff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+   
+    z-index: 1000;
+}
+
+.favoriteButton .fa-solid {
+    color: #ff4757;
+}
+
+.favoriteButton:hover {
+    background: #d11d04;
+    border-color: #ff4757;
+    color: white;
+    transform: scale(1.1);
+}
+
+.favoriteButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+.favoriteButtonActive {
+    background: rgba(255, 71, 87, 0.9);
+    border-color: #ff4757;
+    color: #fff;
+    box-shadow: 
+        0 0 15px rgba(255, 71, 87, 0.6),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+    animation: pulseFavorite 2s ease-in-out infinite;
+}
+
+/* Cuore rosso quando attivo */
+.favoriteButton.favoriteActive {
+    background: rgba(248, 43, 60, 0.9);
+    box-shadow: 
+        0 0 15px rgba(255, 71, 87, 0.6),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+    animation: pulseFavorite 2s ease-in-out infinite;
+}
+
+.favoriteButton.favoriteActive .fa-solid {
+    color: #ff0000;
+}
+
+.favoriteButtonActive:hover {
+    background: rgba(209, 29, 4, 1);
+    box-shadow: 
+        0 0 25px rgba(255, 71, 87, 0.8),
+        0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes pulseFavorite {
+    0%, 100% {
+        box-shadow: 
+            0 0 1px rgba(255, 71, 87, 0.6),
+            0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 
+            0 0 15px rgba(255, 71, 87, 0.9),
+            0 2px 12px rgba(0, 0, 0, 0.5);
+    }
+}

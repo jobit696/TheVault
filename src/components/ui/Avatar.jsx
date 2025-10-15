@@ -6,7 +6,7 @@ export default function Avatar({ url, size, onUpload }) {
   const [avatarUrl, setAvatarUrl] = useState(null)
   const [uploading, setUploading] = useState(false)
 
-  // Immagine di default SVG inline
+  // Immagine di default 
   const defaultAvatar = '/images/default-avatar.png';
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Avatar({ url, size, onUpload }) {
         return
       }
 
-      // Altrimenti, prova a scaricarlo da Supabase Storage
+      // Altrimenti,  Supabase Storage
       const { data, error } = await supabase.storage.from('avatars').download(path)
       
       if (error) {
@@ -69,8 +69,9 @@ export default function Avatar({ url, size, onUpload }) {
 
       const file = event.target.files[0]
       const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
+const fileName = `${Math.random()}.${fileExt}`;
+const filePath = `${fileName}`; 
+
 
       const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
 

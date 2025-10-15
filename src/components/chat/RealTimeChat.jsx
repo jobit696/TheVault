@@ -39,7 +39,7 @@ export default function RealtimeChat({ data }) {
         .from("messages")
         .select(`
           *,
-          profiles!inner(sex)
+          profiles!inner(sex, avatar_url)
         `)
         .eq("game_id", gameId)
         .order('created_at', { ascending: true });
@@ -131,57 +131,112 @@ export default function RealtimeChat({ data }) {
       {messages.length === 0 && !loadingInitial && !error && (
         <div className={styles.emptyState}>No comments yet. Be the first!</div>
       )}
-      {messages.map((message) => {
-        // Classe CSS in base al sesso
-        const userSex = message.profiles?.sex;
-        const cardClass = userSex === 'F' 
-          ? `${styles.messageCard} ${styles.female}` 
-          : userSex === 'M' 
-          ? `${styles.messageCard} ${styles.male}` 
-          : styles.messageCard;
+   {messages.map((message) => {
+  const userSex = message.profiles?.sex;
+  const cardClass = userSex === 'F' 
+    ? `${styles.messageCard} ${styles.female}` 
+    : userSex === 'M' 
+    ? `${styles.messageCard} ${styles.male}` 
+    : styles.messageCard;
 
-        return (
-          <div key={message.id} className={cardClass}>
-            <div className={styles.messageHeader}>
-              <div className={styles.messageHeaderLeft}>
-                {message.profile_id ? (
-                  <Link 
-                    to={`/user/${message.profile_id}`}
-                    className={styles.usernameLink}
-                  >
-                    <span className={styles.username}>
-                      {message.profile_username || 'Anonymous'}
-                    </span>
-                  </Link>
-                ) : (
-                  <span className={styles.username}>
-                    {message.profile_username || 'Anonymous'}
-                  </span>
-                )}
-                <span className={styles.timestamp}>
-                  {dayjs(message.created_at).fromNow()}
-                </span>
-              </div>
-              
-              {isAdmin && (
-                <button
-                  onClick={() => handleDeleteMessage(message.id)}
-                  disabled={deletingMessageId === message.id}
-                  className={styles.deleteButton}
-                  title="Delete message"
-                >
-                  {deletingMessageId === message.id ? (
-                    <i className="fas fa-spinner fa-spin"></i>
-                  ) : (
-                    <i className="fas fa-trash"></i>
-                  )}
-                </button>
-              )}
-            </div>
-            <div className={styles.messageContent}>{message.content}</div>
-          </div>
-        );
-      })}
+const getAvatarUrl = (avatarUrl) => {
+  const DEFAULT_AVATAR = '/images/default-avatar.png';
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
+  if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
+    return DEFAULT_AVATAR;
+  }
+
+  // Se è già un URL completo (http o https)
+  if (/^https?:\/\//i.test(avatarUrl)) {
+    return avatarUrl;
+  }
+
+  // Se è un’immagine locale
+  if (avatarUrl.startsWith('/images') || avatarUrl.startsWith('../images')) {
+    return avatarUrl.replace(/^\.\./, '');
+  }
+
+  //  Normalizza path 
+  const cleanPath = avatarUrl
+    .replace(/^\/+/, '')            
+    .replace(/^avatars\//, '')       
+    .replace(/^images\//, '');       
+
+  // URL pubblico corretto per Supabase
+  return `${SUPABASE_URL}/storage/v1/object/public/avatars/${cleanPath}`;
+};
+
+
+
+
+ return (
+  <div key={message.id} className={cardClass}>
+    <div className={styles.messageInner}>
+      {/* ===== LEFT SIDE: Avatar + Info ===== */}
+      <div className={styles.messageLeft}>
+        {message.profile_id ? (
+          <Link to={`/user/${message.profile_id}`} className={styles.avatarLink}>
+            <img
+              src={getAvatarUrl(message.profiles?.avatar_url)}
+              alt={message.profile_username || 'User'}
+              className={styles.messageAvatar}
+              onError={(e) => {
+                e.target.src = '/images/default-avatar.png';
+              }}
+            />
+          </Link>
+        ) : (
+          <img
+            src="/images/default-avatar.png"
+            alt="Anonymous"
+            className={styles.messageAvatar}
+          />
+        )}
+
+        <div className={styles.messageUserInfo}>
+          {message.profile_id ? (
+            <Link to={`/user/${message.profile_id}`} className={styles.usernameLink}>
+              <span className={styles.username}>
+                {message.profile_username || 'Anonymous'}
+              </span>
+            </Link>
+          ) : (
+            <span className={styles.username}>
+              {message.profile_username || 'Anonymous'}
+            </span>
+          )}
+          <span className={styles.timestamp}>
+            {dayjs(message.created_at).fromNow()}
+          </span>
+        </div>
+      </div>
+
+      {/* ===== RIGHT SIDE: Message text ===== */}
+      <div className={styles.messageRight}>
+        <p className={styles.messageContent}>{message.content}</p>
+      </div>
+
+      {/* ===== Delete button ===== */}
+      {isAdmin && (
+        <button
+          onClick={() => handleDeleteMessage(message.id)}
+          disabled={deletingMessageId === message.id}
+          className={styles.deleteButton}
+          title="Delete message"
+        >
+          {deletingMessageId === message.id ? (
+            <i className="fas fa-spinner fa-spin"></i>
+          ) : (
+            <i className="fas fa-trash"></i>
+          )}
+        </button>
+      )}
+    </div>
+  </div>
+);
+
+})}
     </div>
   );
 }

@@ -9,6 +9,7 @@ import ScrollToTop from './components/layout_comp/ScrollToTop'
 import { trackVisit } from './services/siteStatsService'
 import { AdminProvider } from './context/AdminContext'
 import EmailConfirmationHandler from './components/auth/EmailConfirmationHandler'
+import { FeaturedGamesProvider } from './context/FeaturedGamesContext';
 
 function App() {
 
@@ -24,11 +25,13 @@ function App() {
       <EmailConfirmationHandler />
       
       <SessionProvider>
+        <FeaturedGamesProvider>
         <AdminProvider>
           <YoutubeChannelProvider>
             <Routing />
           </YoutubeChannelProvider>
         </AdminProvider>
+        </FeaturedGamesProvider>
       </SessionProvider>
     </>
   )

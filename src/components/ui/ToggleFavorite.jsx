@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import supabase from "../../supabase/supabase-client";
 import SessionContext from "../../context/SessionContext";
+import styles from '../../css/FavoriteButton.module.css';
 
-export default function ToggleFavorite({ data }) {
+export default function ToggleFavorite({ data, className = "" }) {
   const { session } = useContext(SessionContext);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,6 @@ export default function ToggleFavorite({ data }) {
   const addFavorites = async (game) => {
     setLoading(true);
     
-    // Estrai i nomi dei generi dal gioco
     const genresString = game.genres 
       ? game.genres.map(g => g.name).join(', ') 
       : '';
@@ -91,8 +90,19 @@ export default function ToggleFavorite({ data }) {
   };
 
   return (
-    <button onClick={toggleFavorite} disabled={loading}>
-      {isFavorite() ? <FaHeart /> : <FaRegHeart />}
+    <button 
+      className={`${styles.favoriteButton} ${isFavorite() ? styles.favoriteActive : ''} ${className}`}
+      onClick={toggleFavorite} 
+      disabled={loading}
+      title={isFavorite() ? 'Remove from favorites' : 'Add to favorites'}
+    >
+      {loading ? (
+        <i className="fa-solid fa-spinner fa-spin"></i>
+      ) : isFavorite() ? (
+        <i className="fa-solid fa-heart"></i>
+      ) : (
+        <i className="fa-regular fa-heart"></i>
+      )}
     </button>
   );
 }

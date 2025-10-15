@@ -1,0 +1,74 @@
+.featuredButton {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+   
+}
+
+.featuredButton .fa-solid {
+    color: #ffb733;
+}
+
+.featuredButton:hover {
+    background: #c7850b;
+    border-color: #ffb733;
+    color: white;
+    transform: scale(1.1);
+}
+
+.featuredButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+.featuredButtonActive {
+    background: rgba(255, 165, 0, 0.9);
+    border-color: #ffb733;
+    color: #fff;
+    box-shadow: 
+        0 0 15px rgba(255, 165, 0, 0.6),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Stella gialla quando attivo */
+.featuredButton.featuredActive {
+    background: rgba(255, 165, 0, 0.9);
+    box-shadow: 
+        0 0 15px rgba(255, 165, 0, 0.6),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+.featuredButtonActive:hover {
+    background: rgba(255, 140, 0, 1);
+    box-shadow: 
+        0 0 25px rgba(255, 165, 0, 0.8),
+        0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 1px rgba(255, 165, 0, 0.6),
+            0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 
+            0 0 15px rgba(255, 165, 0, 0.9),
+            0 2px 12px rgba(0, 0, 0, 0.5);
+    }
+}

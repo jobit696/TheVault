@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Carousel } from 'react-bootstrap';
 import InteractiveImageCard from '../cards/InteractiveImageCard.jsx';
 import styles from '../../css/NewGameList.module.css';
 import { getFeaturedGames } from '../../services/featuredGamesServices.js';
+import { useFeaturedGames } from '../../context/FeaturedGamesContext';
 
 export default function CustomGameList({ title = 'Featured Games' }) {
     const [cardsPerSlide, setCardsPerSlide] = useState(5);
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { addListener, loadFeaturedIds } = useFeaturedGames();
 
     const API_KEY = import.meta.env.VITE_RAW_G_KEY;
     const BASE_URL = import.meta.env.VITE_RAW_G_URL;
@@ -31,44 +33,13 @@ export default function CustomGameList({ title = 'Featured Games' }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Carica i giochi featured dal DB
-    useEffect(() => {
-        const fetchGames = async () => {
-            setLoading(true);
-            try {
-                // Ottieni i game_id dal DB
-                const featuredGames = await getFeaturedGames();
-                
-                if (featuredGames.length === 0) {
-                    setGames([]);
-                    setLoading(false);
-                    return;
-                }
-
-                // Fetch dettagli da RAWG per ogni game_id
-                const promises = featuredGames.map(featured => 
-                    fetch(`${BASE_URL}/games/${featured.game_id}?key=${API_KEY}`)
-                        .then(res => res.json())
-                );
-                
-                const results = await Promise.all(promises);
-                setGames(results);
-                setError(null);
-            } catch (err) {
-                console.error('Errore caricamento featured games:', err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchGames();
-    }, []);
-
-    // Funzione per ricaricare i giochi dopo add/remove
-    const reloadGames = async () => {
+    // Funzione per caricare i giochi
+    const loadGames = useCallback(async () => {
         setLoading(true);
         try {
+            // Carica gli ID featured nel context
+            await loadFeaturedIds();
+            
             const featuredGames = await getFeaturedGames();
             
             if (featuredGames.length === 0) {
@@ -84,12 +55,43 @@ export default function CustomGameList({ title = 'Featured Games' }) {
             
             const results = await Promise.all(promises);
             setGames(results);
+            setError(null);
         } catch (err) {
-            console.error('Errore ricaricamento:', err);
+            console.error('Errore caricamento featured games:', err);
+            setError(err.message);
         } finally {
             setLoading(false);
         }
-    };
+    }, [API_KEY, BASE_URL, loadFeaturedIds]);
+
+    // Ascolta i cambiamenti featured da altri componenti
+    useEffect(() => {
+        const unsubscribe = addListener((gameId, isNowFeatured) => {
+            console.log('🔔 CustomGameList notificato:', gameId, isNowFeatured);
+            
+            if (isNowFeatured) {
+                // Gioco aggiunto - carica i dettagli
+                const exists = games.find(g => g.id === gameId);
+                if (!exists) {
+                    fetch(`${BASE_URL}/games/${gameId}?key=${API_KEY}`)
+                        .then(res => res.json())
+                        .then(newGame => {
+                            setGames(prev => [...prev, newGame]);
+                        });
+                }
+            } else {
+                // Gioco rimosso - filtra
+                setGames(prev => prev.filter(g => g.id !== gameId));
+            }
+        });
+
+        return unsubscribe;
+    }, [addListener, games, API_KEY, BASE_URL]);
+
+    // Carica i giochi al mount
+    useEffect(() => {
+        loadGames();
+    }, [loadGames]);
 
     const chunkedGames = [];
     for (let i = 0; i < games.length; i += cardsPerSlide) {
@@ -143,6 +145,7 @@ export default function CustomGameList({ title = 'Featured Games' }) {
                     {title}
                 </div>
                 <Carousel 
+                    key={games.length}
                     interval={null} 
                     indicators={true}
                     controls={true}
@@ -160,7 +163,6 @@ export default function CustomGameList({ title = 'Featured Games' }) {
                                             number={slideIndex * cardsPerSlide + index + 1}
                                             show_number={true}
                                             gioco={gioco}
-                                            onFeaturedChange={reloadGames} 
                                         />
                                     </div>
                                 ))}

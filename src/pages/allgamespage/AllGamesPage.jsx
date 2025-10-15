@@ -1,7 +1,7 @@
 import { useLoaderData, useNavigate, useSearchParams } from "react-router";
 import GenreGameCard from "../../components/cards/GenreGameCard";
 import styles from "../../css/AllGamesPage.module.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function AllGamesPage() {
     const data = useLoaderData();
@@ -31,7 +31,7 @@ export default function AllGamesPage() {
         const newFilters = { ...filters, [filterName]: value };
         setFilters(newFilters);
         
-        // Costruisci URL con i nuovi filtri
+        // URL con filtri
         const params = new URLSearchParams();
         params.set('page', '1'); // Reset alla pagina 1 quando cambi filtri
         
@@ -59,7 +59,7 @@ export default function AllGamesPage() {
     return (
         <div className={styles.allGamesPage}>
             <h2 className={`${styles.gamesTitle} ${styles.pageTitle}`}>
-                All Games
+                ALL GAMES
             </h2>
             
             <div className="container">
@@ -176,11 +176,23 @@ export default function AllGamesPage() {
                     )}
                 </div>
                 
-                <div className={styles.gridGamesList}>
-                    {giochi.map((game) => (
-                        <GenreGameCard key={game.id} game={game} />
-                    ))}
-                </div>
+                {/* Griglia giochi o messaggio vuoto */}
+                {giochi.length > 0 ? (
+                    <div className={styles.gridGamesList}>
+                        {giochi.map((game) => (
+                            <GenreGameCard key={game.id} game={game} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.noResultsContainer}>
+                        <h3 className={styles.noResultsText}>
+                            No games found
+                        </h3>
+                        <p className={styles.noResultsHint}>
+                            Try adjusting your filters
+                        </p>
+                    </div>
+                )}
 
                 {/* Pagination */}
                 {giochi.length > 0 && (

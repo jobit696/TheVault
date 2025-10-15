@@ -240,12 +240,25 @@ export async function getGamesByGenre({ params, request }) {
 }
 
 // Loader per ricerca
+// Loader per ricerca con filtri
 export async function getGamesBySearch({ request }) {
     const url = new URL(request.url);
     const query = url.searchParams.get('q') || '';
-    if (!query) return { results: [] };
-    const apiUrl = `${BASE_URL}/games?search=${query}`;
-    return fetchFromAPI(apiUrl, `search_${query}`);
+    const platform = url.searchParams.get('platform') || '';
+    const genre = url.searchParams.get('genre') || '';
+    const ordering = url.searchParams.get('ordering') || '-rating';
+    const minRating = url.searchParams.get('minRating') || '';
+    
+    if (!query) return { results: [], count: 0 };
+    
+    // Costruisci URL con filtri
+    let apiUrl = `${BASE_URL}/games?search=${query}&page_size=40&ordering=${ordering}`;
+    
+    if (platform) apiUrl += `&platforms=${platform}`;
+    if (genre) apiUrl += `&genres=${genre}`;
+    if (minRating) apiUrl += `&metacritic=${minRating},100`;
+    
+    return fetchFromAPI(apiUrl, `search_${query}_${platform}_${genre}_${ordering}_${minRating}`);
 }
 
 export async function getHomepageData() {

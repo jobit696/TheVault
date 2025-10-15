@@ -1,8 +1,9 @@
+/* === CHAT CONTAINER === */
 .chatContainer {
   margin-top: 20px;
   padding: 20px;
   width: 100%;
-  max-height: 500px;
+  max-height: 400px;
   display: flex;
   flex-direction: column;
   background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.95));
@@ -10,39 +11,44 @@
   border-radius: 10px;
   overflow-y: auto;
   gap: 12px;
-  box-shadow: 
+  box-shadow:
     inset 0 2px 8px rgba(0, 0, 0, 0.6),
     inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 }
 
+/* Scrollbar */
 .chatContainer::-webkit-scrollbar {
   width: 10px;
 }
-
 .chatContainer::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 5px;
 }
-
 .chatContainer::-webkit-scrollbar-thumb {
   background: linear-gradient(145deg, #fa260a, #d11d04);
   border-radius: 5px;
 }
-
 .chatContainer::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(145deg, #ff4757, #e63946);
 }
 
+/* === MESSAGE CARD === */
 .messageCard {
-  background: linear-gradient(145deg, rgba(40, 40, 40, 0.95), rgba(30, 30, 30, 0.9));
+  position: relative;
+  display: flex;
   border-radius: 10px;
   padding: 15px;
+  max-height: 150px;
+  min-height: 150px;
+  background: liear-gradient(145deg, rgba(40, 40, 40, 0.95), rgba(30, 30, 30, 0.9));
   border-left: 4px solid #e63946;
-  animation: slideIn 0.3s ease-out;
-  box-shadow: 
+  box-shadow:
     0 4px 10px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: slideIn 0.3s ease-out;
   transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .messageCard:hover {
@@ -60,100 +66,169 @@
   }
 }
 
-/* ========== MESSAGE HEADER CON DELETE BUTTON ========== */
-.messageHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    gap: 10px;
+/* === INNER LAYOUT: LEFT (avatar+info) + RIGHT (text) === */
+.messageInner {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  position: relative;
 }
 
-.messageHeaderLeft {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
+/* === LEFT SIDE: avatar + user info === */
+.messageLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start;
+  width: 70px;
+  flex-shrink: 0;
 }
 
-/* ========== DELETE BUTTON ========== */
-.deleteButton {
-    background: transparent;
-    border: none;
-    color: #868686;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.7;
+.messageAvatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: #111;
+  transition: all 0.3s ease;
 }
 
-.deleteButton:hover {
-    background: rgba(209, 29, 4, 0.15);
-    color: #d11d04;
-    opacity: 1;
-    transform: scale(1.1);
+.avatarLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
 }
 
-.deleteButton:active {
-    transform: scale(0.95);
+.avatarLink:hover .messageAvatar {
+  border-color: #d11d04;
+  transform: scale(1.05);
 }
 
-.deleteButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.deleteButton i {
-    font-size: 0.85rem;
-}
-
-/* Animation per spinner */
-.deleteButton .fa-spinner {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* === USER INFO UNDER AVATAR === */
+.messageUserInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  margin-top: 8px;
+  text-align: center;
 }
 
 .username {
   font-weight: 700;
-  color: #e63946;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
+  color: #fff;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
+}
+
+.usernameLink {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+.usernameLink:hover .username {
+  color: #d11d04;
+  text-decoration: underline;
 }
 
 .timestamp {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #868686;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  margin-top: 3px;
+}
+
+/* === RIGHT SIDE: message text === */
+.messageRight {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
 }
 
 .messageContent {
   color: #e0e0e0;
-  font-size: 15px;
+  font-size: 0.95rem;
   line-height: 1.6;
   word-wrap: break-word;
-  text-align: start;
+  margin: 0;
 }
 
-.loading {
+/* === DELETE BUTTON (top-right) === */
+.deleteButton {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background: transparent;
+  border: none;
+  color: #868686;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  z-index: 10;
+}
+
+.deleteButton:hover {
+  background: rgba(209, 29, 4, 0.15);
+  color: #d11d04;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.deleteButton:active {
+  transform: scale(0.95);
+}
+
+.deleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.deleteButton .fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === GENDER COLORS === */
+.messageCard.male {
+  background: rgba(0, 0, 0, 0.178);
+  border-left: 4px solid #4a9eff;
+ 
+}
+.messageCard.female {
+  background: rgba(0, 0, 0, 0.178);
+  border-left: 4px solid #ff69b4;
+  
+}
+.messageCard.male .username {
+  color: #4a65ff;
+}
+.messageCard.female .username {
+  color: #ff69b4;
+}
+
+/* === STATE STYLES === */
+.loading,
+.emptyState {
   text-align: center;
   color: #868686;
   padding: 40px 20px;
   font-size: 15px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .error {
@@ -165,89 +240,20 @@
   box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
 }
 
-.emptyState {
-  text-align: center;
-  color: #868686;
-  padding: 60px 20px;
-  font-size: 15px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-/* ========== USERNAME LINK ========== */
-.usernameLink {
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s ease;
-}
-
-.usernameLink:hover .username {
-    color: #d11d04;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.username {
-    font-weight: 700;
-    transition: color 0.3s ease;
-}
-
-.usernameLink:hover {
-    transform: scale(1.05);
-}
-
-/* ========== GENDER-BASED MESSAGE COLORS ========== */
-
-/* Messaggi utenti maschi - azzurrino */
-.messageCard.male {
-  background: linear-gradient(145deg, rgba(74, 158, 255, 0.12), rgba(64, 148, 245, 0.08));
-  border-left: 4px solid #4a9eff;
-  box-shadow: 
-    0 4px 10px rgba(74, 158, 255, 0.15),
-    inset 0 1px 0 rgba(74, 158, 255, 0.05);
-}
-
-.messageCard.male:hover {
-  background: linear-gradient(145deg, rgba(74, 158, 255, 0.15), rgba(64, 148, 245, 0.1));
-  box-shadow: 
-    0 6px 15px rgba(74, 158, 255, 0.2),
-    inset 0 1px 0 rgba(74, 158, 255, 0.08);
-}
-
-.messageCard.male .username {
-  color: #4a9eff;
-  text-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
-}
-
-/* Messaggi utenti femmine - rosato */
-.messageCard.female {
-  background: linear-gradient(145deg, rgba(255, 105, 180, 0.12), rgba(245, 95, 170, 0.08));
-  border-left: 4px solid #ff69b4;
-  box-shadow: 
-    0 4px 10px rgba(255, 105, 180, 0.15),
-    inset 0 1px 0 rgba(255, 105, 180, 0.05);
-}
-
-.messageCard.female:hover {
-  background: linear-gradient(145deg, rgba(255, 105, 180, 0.15), rgba(245, 95, 170, 0.1));
-  box-shadow: 
-    0 6px 15px rgba(255, 105, 180, 0.2),
-    inset 0 1px 0 rgba(255, 105, 180, 0.08);
-}
-
-.messageCard.female .username {
-  color: #ff69b4;
-  text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
-}
-
-/* ========== RESPONSIVE ========== */
+/* === RESPONSIVE === */
 @media (max-width: 767px) {
-    .messageHeader {
-        flex-wrap: wrap;
-    }
+  .messageInner {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .deleteButton {
-        padding: 5px 8px;
-        font-size: 0.8rem;
-    }
+  .messageRight {
+    width: 100%;
+    text-align: center;
+  }
+
+  .deleteButton {
+    top: 8px;
+    right: 8px;
+  }
 }
-

@@ -11,7 +11,7 @@ export async function getFeaturedGames() {
     if (error) throw error;
     return data || [];
   } catch (error) {
-    
+    console.error('Errore getFeaturedGames:', error);
     return [];
   }
 }
@@ -19,6 +19,13 @@ export async function getFeaturedGames() {
 // Aggiungi un gioco ai featured
 export async function addFeaturedGame(game) {
   try {
+    // Controlla prima se esiste già
+    const exists = await isFeaturedGame(game.id);
+    if (exists) {
+      console.log('Gioco già nei featured');
+      return null;
+    }
+
     // Ottieni la posizione massima attuale
     const { data: maxData } = await supabase
       .from('featured_games')
@@ -42,9 +49,10 @@ export async function addFeaturedGame(game) {
 
     if (error) throw error;
     
+    console.log('Gioco aggiunto ai featured:', data);
     return data;
   } catch (error) {
-    
+    console.error('Errore addFeaturedGame:', error);
     throw error;
   }
 }
@@ -58,10 +66,11 @@ export async function removeFeaturedGame(gameId) {
       .eq('game_id', gameId);
 
     if (error) throw error;
-  
+    
+    console.log('Gioco rimosso dai featured:', gameId);
     return true;
   } catch (error) {
-  
+    console.error('Errore removeFeaturedGame:', error);
     throw error;
   }
 }
@@ -73,12 +82,12 @@ export async function isFeaturedGame(gameId) {
       .from('featured_games')
       .select('id')
       .eq('game_id', gameId)
-      .single();
+      .maybeSingle(); 
 
-    if (error && error.code !== 'PGRST116') throw error;
+    if (error) throw error;
     return !!data;
   } catch (error) {
-
+    console.error('Errore isFeaturedGame:', error);
     return false;
   }
 }

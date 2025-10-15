@@ -42,7 +42,7 @@ export default function PlatformPage() {
         const newFilters = { ...filters, [filterName]: value };
         setFilters(newFilters);
         
-        // Costruisci URL con i nuovi filtri
+        // URL con filtri
         const params = new URLSearchParams();
         params.set('page', '1'); // Reset alla pagina 1 quando cambi filtri
         
@@ -164,11 +164,23 @@ export default function PlatformPage() {
                     )}
                 </div>
                 
-                <div className={styles.gridGamesList}>
-                    {giochi.map((game) => (
-                        <GenreGameCard key={game.id} game={game} />
-                    ))}
-                </div>
+                {/* Griglia giochi o messaggio vuoto */}
+                {giochi.length > 0 ? (
+                    <div className={styles.gridGamesList}>
+                        {giochi.map((game) => (
+                            <GenreGameCard key={game.id} game={game} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.noResultsContainer}>
+                        <h3 className={styles.noResultsText}>
+                            No games found
+                        </h3>
+                        <p className={styles.noResultsHint}>
+                            Try adjusting your filters
+                        </p>
+                    </div>
+                )}
 
                 {/* Pagination */}
                 {giochi.length > 0 && (
