@@ -55,7 +55,7 @@ export default function SearchPage() {
                 Search Results: <span className={styles.searchQuery}>{query}</span>
             </h1>
             
-            <div className="container">
+            <div className="container mb-5">
                 <div className={styles.gamesHeader}>
                     <p className={styles.gamesCount}>
                         {totalCount.toLocaleString()} games found

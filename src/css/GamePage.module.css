@@ -248,7 +248,8 @@ left: -10px;
 /* Favorite Button */
 .favoriteButton {
     position: relative;
-    margin-bottom: 10px;
+  
+   
     z-index: 10;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 50%;

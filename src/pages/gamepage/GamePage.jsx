@@ -86,7 +86,7 @@ export default function GamePage() {
                                 {game?.name}
                             </h1>
 
-                            <div className={`mb-3 ${styles.heroInfo}`}>
+                            <div className={`${styles.heroInfo} mb-3`}>
                                 {game?.rating >= 4.2 && (
                                     <span className={`badge bg-danger me-2 ${styles.topRatedBadge}`}>
                                         TOP RATED
@@ -106,7 +106,7 @@ export default function GamePage() {
                                 )}
                             </div>
 
-                            <div className={styles.favoriteButton} onClick={(e) => e.preventDefault()}>
+                            <div className={`${styles.favoriteButton} mb-3`} onClick={(e) => e.preventDefault()}>
                                 <ToggleFavorite data={game} />
                             </div>
 
